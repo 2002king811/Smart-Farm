@@ -187,7 +187,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 # --- CORS / CSRF -------------------------------------------------------------------------
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5173"])
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5180", "http://127.0.0.1:5180"])
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -246,7 +246,7 @@ AFRICASTALKING_USERNAME = env("AFRICASTALKING_USERNAME", default="sandbox")
 AFRICASTALKING_API_KEY = env("AFRICASTALKING_API_KEY", default="")
 AFRICASTALKING_SENDER_ID = env("AFRICASTALKING_SENDER_ID", default="SMARTFARM")
 
-FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5173")
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5180")
 ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 
 # --- Logging: structured JSON ------------------------------------------------------------

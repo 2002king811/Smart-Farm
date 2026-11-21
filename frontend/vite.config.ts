@@ -8,11 +8,11 @@ export default defineConfig({
   resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
   server: {
     host: true,
-    port: 5173,
+    port: Number(process.env.VITE_PORT ?? 5180),
     strictPort: true, // fail loudly instead of silently moving to another port
     proxy: {
-      '/api': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8000', changeOrigin: true },
-      '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8001', ws: true },
+      '/api': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8010', changeOrigin: true },
+      '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8011', ws: true },
     },
   },
   build: {

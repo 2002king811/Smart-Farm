@@ -112,7 +112,7 @@ services:
     environment:
       VITE_PROXY_TARGET: http://api:8000
       VITE_WS_PROXY_TARGET: http://websocket:8001
-    ports: ["${WEB_PORT:-5180}:5173"]
+    ports: ["${WEB_PORT:-5180}:5180"]
     volumes: ["./frontend:/app", "/app/node_modules"]
     depends_on: [api]
 

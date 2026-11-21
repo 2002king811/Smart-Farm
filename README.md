@@ -90,7 +90,7 @@ cd backend && python3.12 -m venv .venv && . .venv/bin/activate && pip install -r
 ```
 
 ```bash
-cd backend && python manage.py migrate && python manage.py runserver
+cd backend && python manage.py migrate && python manage.py runserver 8010
 ```
 
 ```bash
@@ -98,12 +98,14 @@ cd backend && celery -A config worker -l info
 ```
 
 ```bash
-cd backend && uvicorn config.asgi:application --port 8001
+cd backend && uvicorn config.asgi:application --port 8011
 ```
 
 ```bash
 cd frontend && npm install && npm run dev
 ```
+
+The web app opens on http://localhost:5180 either way (with or without Docker).
 
 ## Testing and checks
 
