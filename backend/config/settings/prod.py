@@ -24,3 +24,6 @@ STORAGES["staticfiles"] = {  # noqa: F405
 
 if env("MESSAGING_ADAPTER", default="") == "":
     raise RuntimeError("MESSAGING_ADAPTER must be set explicitly in staging/production")
+
+if not USE_REDIS:  # noqa: F405
+    raise RuntimeError("USE_REDIS=false is for local use only; staging/production need Redis")

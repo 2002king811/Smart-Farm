@@ -77,6 +77,17 @@ docker compose exec api python manage.py createsuperuser
 
 Phase 1 has no sign-in yet (it arrives in phase 2). In development the web app shows a **preview** switch, so you can see the app shell as an Administrator, a Farm Manager or a Livestock Attendant. It shows no demo data.
 
+### On Windows without Docker (simplest)
+
+1. Install these three programs. Each has a normal Windows installer:
+   - **Python 3.12** from https://www.python.org/downloads/ (tick "Add python.exe to PATH")
+   - **Node.js LTS** from https://nodejs.org/
+   - **PostgreSQL 16** from https://www.postgresql.org/download/windows/ (remember the password you choose; you don't need Stack Builder)
+2. In the Smart Farm folder, double-click **`windows-setup.bat`**. Run it once; it asks for your PostgreSQL password.
+3. Double-click **`windows-start.bat`**. Your browser opens **http://localhost:5180**.
+
+This uses simple local mode (`USE_REDIS=false`): background jobs run straight away and live updates stay in memory, so neither Redis nor Docker is needed. It's fine for one computer, but staging and production always use Redis.
+
 ### Without Docker
 
 You need Python 3.12, Node 22, PostgreSQL 16 and Redis 7.
