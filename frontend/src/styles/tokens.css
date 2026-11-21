@@ -1,0 +1,79 @@
+/*
+ * Smart Farm design tokens — the one place for colour, type, radius, spacing and shadow.
+ * Brand values come from the approved prototype: #1B5E20 #2E7D32 #E8F5E9 #66BB6A,
+ * Inter (body) and Manrope (headings). Status colours are used only via <StatusBadge>.
+ */
+:root {
+  /* Brand */
+  --color-primary-900: #1b5e20;
+  --color-primary-700: #2e7d32;
+  --color-primary-400: #66bb6a;
+  --color-primary-50: #e8f5e9;
+
+  /* Neutrals */
+  --color-bg: #f6f8f6;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f4f1;
+  --color-border: #e2e8e2;
+  --color-text: #1a2b1c;
+  --color-text-muted: #5b6b5d;
+  --color-text-inverse: #ffffff;
+  --color-focus: #1b5e20;
+
+  /* Status tones (text on tinted background; each pair meets 4.5:1 contrast) */
+  --tone-green-fg: #1b5e20;
+  --tone-green-bg: #e8f5e9;
+  --tone-amber-fg: #8a4b00;
+  --tone-amber-bg: #fff3e0;
+  --tone-red-fg: #b71c1c;
+  --tone-red-bg: #ffebee;
+  --tone-blue-fg: #0d47a1;
+  --tone-blue-bg: #e3f2fd;
+  --tone-purple-fg: #5e2a84;
+  --tone-purple-bg: #f3e5f5;
+  --tone-pink-fg: #9c1c5b;
+  --tone-pink-bg: #fce4ec;
+  --tone-grey-fg: #455a64;
+  --tone-grey-bg: #eceff1;
+
+  /* Type */
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Manrope', 'Inter', system-ui, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Spacing (4 px scale) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(16, 40, 18, 0.06);
+  --shadow-md: 0 4px 12px rgba(16, 40, 18, 0.08);
+  --shadow-lg: 0 12px 32px rgba(16, 40, 18, 0.14);
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --header-height: 64px;
+  --mobile-nav-height: 64px;
+  --touch-target: 44px;
+}

@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "Smart Farm",
+    "skipToContent": "Skip to main content"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "livestock": "Livestock",
+    "health": "Animal Health",
+    "calendar": "Health Calendar",
+    "activities": "Farm Activities",
+    "breeding": "Breeding & Kids",
+    "nutrition": "Nutrition & Feeding",
+    "notifications": "Notifications",
+    "reports": "Reports",
+    "users": "User Management",
+    "settings": "Settings",
+    "home": "Home",
+    "tasks": "Tasks",
+    "animals": "Animals",
+    "alerts": "Alerts",
+    "main": "Main navigation",
+    "calendarShort": "Calendar"
+  },
+  "header": {
+    "search": "Search animals, tasks, records…",
+    "notifications": "Notifications",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "account": "Account",
+    "signOut": "Sign out"
+  },
+  "farm": {
+    "switch": "Switch farm",
+    "current": "Current farm"
+  },
+  "placeholder": {
+    "title": "{{module}} is on the way",
+    "message": "This screen is built in phase {{phase}} of the Smart Farm build plan."
+  },
+  "preview": {
+    "banner": "Development preview — sign-in arrives in phase 2.",
+    "as": "Preview the app shell as"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you asked for does not exist."
+  }
+}

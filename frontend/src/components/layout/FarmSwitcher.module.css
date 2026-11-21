@@ -1,0 +1,43 @@
+.switcher {
+  display: grid;
+  gap: 2px;
+  margin: 0 var(--space-3) var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
+}
+.label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.7);
+}
+.farm {
+  font-weight: var(--weight-semibold);
+}
+.selectWrap {
+  position: relative;
+}
+.select {
+  width: 100%;
+  min-height: 36px;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-md);
+  padding-right: var(--space-6);
+}
+.select option {
+  color: var(--color-text);
+}
+.chevron {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.role {
+  font-size: var(--text-xs);
+  color: var(--color-primary-400);
+}

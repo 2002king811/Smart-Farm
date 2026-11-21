@@ -1,0 +1,592 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Smart Farm API",
+        "version": "1.0.0",
+        "description": "Multi-farm livestock health and farm management API. Every farm-scoped request must send the X-Farm-ID header with a farm the user belongs to."
+    },
+    "paths": {
+        "/api/v1/audit-logs": {
+            "get": {
+                "operationId": "audit_logs_list",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "action",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "create",
+                                "delete",
+                                "restore",
+                                "status_change",
+                                "update"
+                            ]
+                        },
+                        "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed"
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "object_id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "user",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "tags": [
+                    "audit-logs"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedAuditLogList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/audit-logs/{id}": {
+            "get": {
+                "operationId": "audit_logs_retrieve",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this audit log.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "audit-logs"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuditLog"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/me": {
+            "get": {
+                "operationId": "me_retrieve",
+                "description": "The signed-in user. Not farm-scoped.",
+                "tags": [
+                    "me"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Me"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/me/farms": {
+            "get": {
+                "operationId": "me_farms_list",
+                "summary": "Farms the signed-in user can switch to",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "me"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MyFarm"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ActionEnum": {
+                "enum": [
+                    "create",
+                    "update",
+                    "delete",
+                    "restore",
+                    "status_change"
+                ],
+                "type": "string",
+                "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed"
+            },
+            "AuditLog": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "action": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ActionEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "user": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "user_name": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "object_type": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "object_id": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "object_repr": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "changed_fields": {
+                        "readOnly": true
+                    },
+                    "before": {
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "after": {
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "ip": {
+                        "type": "string",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "action",
+                    "after",
+                    "at",
+                    "before",
+                    "changed_fields",
+                    "id",
+                    "ip",
+                    "object_id",
+                    "object_repr",
+                    "object_type",
+                    "user",
+                    "user_name"
+                ]
+            },
+            "DefaultCalendarViewEnum": {
+                "enum": [
+                    "month",
+                    "week",
+                    "day",
+                    "agenda"
+                ],
+                "type": "string",
+                "description": "* `month` - Month\n* `week` - Week\n* `day` - Day\n* `agenda` - Agenda"
+            },
+            "FarmSummary": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "slug": {
+                        "type": "string",
+                        "maxLength": 140,
+                        "pattern": "^[-a-zA-Z0-9_]+$"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true
+                    },
+                    "county": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2
+                    },
+                    "timezone": {
+                        "type": "string",
+                        "maxLength": 64
+                    },
+                    "currency": {
+                        "type": "string",
+                        "maxLength": 3
+                    },
+                    "weight_unit": {
+                        "$ref": "#/components/schemas/WeightUnitEnum"
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/LanguageEnum"
+                    },
+                    "date_format": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "default_calendar_view": {
+                        "$ref": "#/components/schemas/DefaultCalendarViewEnum"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/FarmSummaryStatusEnum"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ]
+            },
+            "FarmSummaryStatusEnum": {
+                "enum": [
+                    "active",
+                    "suspended"
+                ],
+                "type": "string",
+                "description": "* `active` - Active\n* `suspended` - Suspended"
+            },
+            "LanguageEnum": {
+                "enum": [
+                    "en",
+                    "sw"
+                ],
+                "type": "string",
+                "description": "* `en` - English\n* `sw` - Kiswahili"
+            },
+            "Me": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "readOnly": true,
+                        "title": "Email address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "photo": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "language": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/LanguageEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "phone_verified": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "must_change_password": {
+                        "type": "boolean",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "email",
+                    "email_verified",
+                    "first_name",
+                    "full_name",
+                    "id",
+                    "language",
+                    "last_name",
+                    "must_change_password",
+                    "phone",
+                    "phone_verified",
+                    "photo",
+                    "username"
+                ]
+            },
+            "MyFarm": {
+                "type": "object",
+                "description": "One entry in the sidebar farm switcher, with the role table for that farm.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "farm": {
+                        "$ref": "#/components/schemas/FarmSummary"
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "role_label": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/MyFarmStatusEnum"
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "permissions": {
+                        "type": "object",
+                        "additionalProperties": {},
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "farm",
+                    "id",
+                    "joined_at",
+                    "permissions",
+                    "role",
+                    "role_label"
+                ]
+            },
+            "MyFarmStatusEnum": {
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "type": "string",
+                "description": "* `active` - Active\n* `inactive` - Inactive"
+            },
+            "PaginatedAuditLogList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AuditLog"
+                        }
+                    }
+                }
+            },
+            "RoleEnum": {
+                "enum": [
+                    "administrator",
+                    "farm_manager",
+                    "livestock_attendant"
+                ],
+                "type": "string",
+                "description": "* `administrator` - Administrator\n* `farm_manager` - Farm Manager\n* `livestock_attendant` - Livestock Attendant"
+            },
+            "WeightUnitEnum": {
+                "enum": [
+                    "kg",
+                    "lb"
+                ],
+                "type": "string",
+                "description": "* `kg` - Kilograms (kg)\n* `lb` - Pounds (lb)"
+            }
+        },
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+  "$comment": "Single source of truth for the role table (development prompt, section 3). The backend enforces it; the frontend copy at frontend/src/routes/permissions.json is checked against this file in CI (manage.py export_permissions --check). Actions: '*' means full access. scope 'own' limits records to the user's own (assigned tasks, own alerts).",
+  "modules": {
+    "dashboard": "Dashboard",
+    "livestock": "Livestock",
+    "health": "Animal health",
+    "calendar": "Health calendar",
+    "activities": "Farm activities",
+    "breeding": "Breeding and kids",
+    "nutrition": "Nutrition and feeding",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "users": "User management",
+    "settings": "Farm settings",
+    "audit": "Audit log"
+  },
+  "roles": {
+    "administrator": {
+      "dashboard": {"actions": "*", "scope": "all"},
+      "livestock": {"actions": "*", "scope": "all"},
+      "health": {"actions": "*", "scope": "all"},
+      "calendar": {"actions": "*", "scope": "all"},
+      "activities": {"actions": "*", "scope": "all"},
+      "breeding": {"actions": "*", "scope": "all"},
+      "nutrition": {"actions": "*", "scope": "all"},
+      "reports": {"actions": "*", "scope": "all"},
+      "notifications": {"actions": "*", "scope": "own"},
+      "users": {"actions": "*", "scope": "all"},
+      "settings": {"actions": "*", "scope": "all"},
+      "audit": {"actions": ["view"], "scope": "all"}
+    },
+    "farm_manager": {
+      "dashboard": {"actions": "*", "scope": "all"},
+      "livestock": {"actions": "*", "scope": "all"},
+      "health": {"actions": "*", "scope": "all"},
+      "calendar": {"actions": "*", "scope": "all"},
+      "activities": {"actions": "*", "scope": "all"},
+      "breeding": {"actions": "*", "scope": "all"},
+      "nutrition": {"actions": "*", "scope": "all"},
+      "reports": {"actions": "*", "scope": "all"},
+      "notifications": {"actions": "*", "scope": "own"}
+    },
+    "livestock_attendant": {
+      "dashboard": {"actions": ["view"], "scope": "own"},
+      "livestock": {"actions": ["view", "create", "record_weight"], "scope": "all"},
+      "health": {"actions": ["view", "create", "update"], "scope": "all"},
+      "calendar": {"actions": ["view"], "scope": "all"},
+      "activities": {"actions": ["view", "start", "complete", "add_note"], "scope": "own"},
+      "breeding": {"actions": ["view", "record_birth"], "scope": "all"},
+      "nutrition": {"actions": ["view", "record_feeding"], "scope": "all"},
+      "notifications": {"actions": "*", "scope": "own"}
+    }
+  }
+}

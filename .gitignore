@@ -1,0 +1,29 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+backend/media/
+backend/staticfiles/*
+!backend/staticfiles/.gitkeep
+
+# Node
+node_modules/
+frontend/dist/
+frontend/coverage/
+*.tsbuildinfo
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

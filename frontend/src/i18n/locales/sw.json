@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "Smart Farm",
+    "skipToContent": "Ruka hadi maudhui makuu"
+  },
+  "nav": {
+    "dashboard": "Dashibodi",
+    "livestock": "Mifugo",
+    "health": "Afya ya Wanyama",
+    "calendar": "Kalenda ya Afya",
+    "activities": "Shughuli za Shamba",
+    "breeding": "Uzazi na Watoto",
+    "nutrition": "Lishe na Ulishaji",
+    "notifications": "Arifa",
+    "reports": "Ripoti",
+    "users": "Usimamizi wa Watumiaji",
+    "settings": "Mipangilio",
+    "home": "Nyumbani",
+    "tasks": "Kazi",
+    "animals": "Wanyama",
+    "alerts": "Arifa",
+    "main": "Urambazaji mkuu",
+    "calendarShort": "Kalenda"
+  },
+  "header": {
+    "search": "Tafuta wanyama, kazi, rekodi…",
+    "notifications": "Arifa",
+    "openMenu": "Fungua menyu",
+    "closeMenu": "Funga menyu",
+    "account": "Akaunti",
+    "signOut": "Ondoka"
+  },
+  "farm": {
+    "switch": "Badilisha shamba",
+    "current": "Shamba la sasa"
+  },
+  "placeholder": {
+    "title": "{{module}} inakuja",
+    "message": "Skrini hii inajengwa katika awamu ya {{phase}} ya mpango wa Smart Farm."
+  },
+  "preview": {
+    "banner": "Onyesho la uundaji — kuingia kunakuja katika awamu ya 2.",
+    "as": "Onyesha programu kama"
+  },
+  "notFound": {
+    "title": "Ukurasa haupatikani",
+    "message": "Ukurasa ulioomba haupo."
+  }
+}
