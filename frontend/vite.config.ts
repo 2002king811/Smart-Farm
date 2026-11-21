@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
+    strictPort: true, // fail loudly instead of silently moving to another port
     proxy: {
       '/api': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8000', changeOrigin: true },
       '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8001', ws: true },

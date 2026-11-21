@@ -51,13 +51,21 @@ docker compose up --build
 
 | Service | URL |
 |---------|-----|
-| Web app (Vite dev server) | http://localhost:5173 |
-| API | http://localhost:8000/api/v1/ |
-| API docs (Swagger UI) | http://localhost:8000/api/docs/ |
-| Health check | http://localhost:8000/api/health |
-| Django admin (platform Super Admin) | http://localhost:8000/admin/ |
-| Mailpit (captured email) | http://localhost:8025 |
-| MinIO console | http://localhost:9001 (user `smartfarm`, password `smartfarm-dev-secret`) |
+| Web app (Vite dev server) | http://localhost:5180 |
+| API | http://localhost:8010/api/v1/ |
+| API docs (Swagger UI) | http://localhost:8010/api/docs/ |
+| Health check | http://localhost:8010/api/health |
+| Django admin (platform Super Admin) | http://localhost:8010/admin/ |
+| Mailpit (captured email) | http://localhost:8026 |
+| MinIO console | http://localhost:9011 (user `smartfarm`, password `smartfarm-dev-secret`) |
+
+The host ports deliberately avoid the common defaults (5173, 8000, 5432, 6379, 8025, 9000), so Smart Farm can run next to other projects. If one of these ports is still taken on your machine, override it, for example:
+
+```bash
+WEB_PORT=5190 API_PORT=8020 docker compose up
+```
+
+Postgres is published on 5433 and Redis on 6380 (`DB_PORT`, `REDIS_PORT`). If you open http://localhost:5180 and see a different app, another program is using that port: pick a different `WEB_PORT`.
 
 Compose starts `db`, `redis`, `minio` (+ `minio-setup`, which creates the bucket), `mailpit`, `migrate` (a one-off migration step), `api`, `websocket`, `worker`, `beat` and `web`. Every value in the compose file is a development default, so you don't need a `.env` file.
 
