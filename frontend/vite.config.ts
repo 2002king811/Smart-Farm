@@ -10,6 +10,8 @@ export default defineConfig({
     host: true,
     port: Number(process.env.VITE_PORT ?? 5180),
     strictPort: true, // fail loudly instead of silently moving to another port
+    // Codespaces forwards the dev server through *.app.github.dev; allow that host.
+    allowedHosts: ['.app.github.dev'],
     proxy: {
       '/api': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8010', changeOrigin: true },
       '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8011', ws: true },

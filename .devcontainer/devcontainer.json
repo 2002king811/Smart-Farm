@@ -1,0 +1,29 @@
+{
+  // GitHub Codespaces: runs the whole Smart Farm stack in the cloud. Open the repository on
+  // GitHub → Code → Codespaces → Create codespace. When it is ready, the web app opens on the
+  // forwarded port 5180 (Ports tab).
+  "name": "Smart Farm",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "hostRequirements": { "cpus": 2, "memory": "8gb" },
+  "forwardPorts": [5180, 8010, 8026],
+  "portsAttributes": {
+    "5180": { "label": "Smart Farm web app", "onAutoForward": "openBrowser" },
+    "8010": { "label": "Smart Farm API", "onAutoForward": "silent" },
+    "8026": { "label": "Mailpit (email)", "onAutoForward": "silent" },
+    "8011": { "label": "WebSocket", "onAutoForward": "silent" },
+    "5433": { "label": "PostgreSQL", "onAutoForward": "ignore" },
+    "6380": { "label": "Redis", "onAutoForward": "ignore" },
+    "1026": { "label": "SMTP", "onAutoForward": "ignore" }
+  },
+  // MinIO is skipped here (files are stored on the codespace disk); everything else runs.
+  "postStartCommand": "USE_S3=false docker compose up -d --build db redis mailpit migrate api websocket worker beat web",
+  "customizations": {
+    "codespaces": { "openFiles": ["README.md"] },
+    "vscode": {
+      "extensions": ["ms-python.python", "charliermarsh.ruff", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+    }
+  }
+}

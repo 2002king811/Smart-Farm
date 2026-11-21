@@ -43,6 +43,19 @@ docker-compose.yml   local stack
 
 ## Run it locally
 
+### In the cloud with GitHub Codespaces (nothing to install)
+
+1. Open https://github.com/2002king811/Smart-Farm and choose the branch you want to run.
+2. Click **Code → Codespaces → Create codespace on <branch>**.
+3. Wait for the first start (about 5–10 minutes). The stack starts by itself (`docker compose up`, without MinIO).
+4. Open the **Ports** tab and click the globe icon next to **Smart Farm web app (5180)**.
+
+Stop the codespace when you're done (**Code → Codespaces → … → Stop codespace**) so it doesn't use your free monthly hours. To restart the stack inside a codespace:
+
+```bash
+USE_S3=false docker compose up -d --build db redis mailpit migrate api websocket worker beat web
+```
+
 ### With Docker (recommended)
 
 ```bash
