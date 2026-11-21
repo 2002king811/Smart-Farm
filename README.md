@@ -79,6 +79,10 @@ Phase 1 has no sign-in yet (it arrives in phase 2). In development the web app s
 
 ### On Windows without Docker (simplest)
 
+**One click:** double-click **`windows-install.bat`**. It uses winget (built into Windows 10/11) to install Python 3.12, Node.js LTS and PostgreSQL 16, then sets up and starts Smart Farm. If it installs PostgreSQL itself, it gives it a random password and saves it only in the project's `.env` file (which git ignores).
+
+**Or step by step:**
+
 1. Install these three programs. Each has a normal Windows installer:
    - **Python 3.12** from https://www.python.org/downloads/ (tick "Add python.exe to PATH")
    - **Node.js LTS** from https://nodejs.org/

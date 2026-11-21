@@ -2,6 +2,7 @@
 `smartfarm` database if needed and writes the project's .env for simple local mode."""
 
 import getpass
+import os
 import secrets
 import sys
 from pathlib import Path
@@ -19,10 +20,16 @@ def main() -> int:
         print(f".env already exists ({ENV_FILE}); keeping it.")
         return 0
 
-    host = input("PostgreSQL host [localhost]: ").strip() or "localhost"
-    port = input("PostgreSQL port [5432]: ").strip() or "5432"
-    user = input("PostgreSQL user [postgres]: ").strip() or "postgres"
-    password = getpass.getpass("PostgreSQL password (the one you chose when installing): ")
+    preset = os.environ.get(
+        "SF_PG_PASSWORD"
+    )  # set by windows-install.bat after it installs PostgreSQL
+    if preset:
+        host, port, user, password = "localhost", "5432", "postgres", preset
+    else:
+        host = input("PostgreSQL host [localhost]: ").strip() or "localhost"
+        port = input("PostgreSQL port [5432]: ").strip() or "5432"
+        user = input("PostgreSQL user [postgres]: ").strip() or "postgres"
+        password = getpass.getpass("PostgreSQL password (the one you chose when installing): ")
 
     try:
         conn = psycopg.connect(

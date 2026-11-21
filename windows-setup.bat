@@ -8,6 +8,9 @@ echo.
 echo === Smart Farm setup ===
 echo.
 
+rem Programs installed a moment ago may not be on PATH yet in this window.
+set "PATH=%PATH%;%LOCALAPPDATA%\Programs\Python\Launcher;%ProgramFiles%\nodejs;%APPDATA%\npm"
+
 where py >nul 2>nul
 if errorlevel 1 (
   echo Python was not found. Install Python 3.12 from https://www.python.org/downloads/
@@ -50,7 +53,7 @@ popd
 
 echo.
 echo === Setup finished. Double-click windows-start.bat to run Smart Farm. ===
-pause
+if not defined SF_NO_PAUSE pause
 exit /b 0
 
 :fail

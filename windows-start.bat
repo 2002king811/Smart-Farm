@@ -2,6 +2,7 @@
 rem Smart Farm - start on Windows without Docker. Run windows-setup.bat once first.
 setlocal
 cd /d "%~dp0"
+set "PATH=%PATH%;%LOCALAPPDATA%\Programs\Python\Launcher;%ProgramFiles%\nodejs;%APPDATA%\npm"
 
 if not exist "backend\.venv\Scripts\python.exe" (
   echo Run windows-setup.bat first.
