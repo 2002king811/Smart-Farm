@@ -535,7 +535,7 @@ def build_message(out: OutboundMessage) -> Message:
 
 
 def over_allowance(out: OutboundMessage) -> bool:
-    if out.channel not in METERED or out.notification.urgent:
+    if out.channel not in METERED or (out.notification is not None and out.notification.urgent):
         return False
     info = usage(out.farm)[out.channel]
     return bool(info["allowance"]) and info["used"] >= info["allowance"]

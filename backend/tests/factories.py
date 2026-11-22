@@ -35,6 +35,7 @@ from apps.nutrition.models import (
     Supplementation,
     WaterHygieneCheck,
 )
+from apps.reports.models import ReportRun, ReportSchedule
 from tests.testapp.models import Goat, Pen
 
 
@@ -409,11 +410,31 @@ class NotificationSettingsFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
 
 
+class ReportRunFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ReportRun
+
+    farm = factory.SubFactory(FarmFactory)
+    report_type = "vaccination"
+    date_from = factory.LazyFunction(timezone.localdate)
+    date_to = factory.LazyFunction(timezone.localdate)
+    format = "pdf"
+
+
+class ReportScheduleFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ReportSchedule
+
+    farm = factory.SubFactory(FarmFactory)
+    report_type = "monthly_activities"
+    recipients = ["owner@example.com"]
+
+
 # Endpoints whose list shows only some rows of a model need a matching factory.
 FACTORY_FOR_ROUTE = {"kids": KidFactory}
 # Endpoints that list only the signed-in person's rows: {route: field}. The isolation test
 # points this field at its user, on both farms.
-OWNER_FIELD_FOR_ROUTE = {"notifications": "recipient"}
+OWNER_FIELD_FOR_ROUTE = {"notifications": "recipient", "report-runs": "requested_by"}
 
 # Farm-scoped endpoints whose model is not a FarmOwnedModel.
 FACTORY_FOR_ENDPOINT_MODEL = {
@@ -458,4 +479,6 @@ FACTORY_FOR_MODEL = {
     OutboundMessage: OutboundMessageFactory,
     NotificationPreference: NotificationPreferenceFactory,
     NotificationSettings: NotificationSettingsFactory,
+    ReportRun: ReportRunFactory,
+    ReportSchedule: ReportScheduleFactory,
 }

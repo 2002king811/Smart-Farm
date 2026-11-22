@@ -28,6 +28,7 @@ MATRIX_EVENTS = list(DEFAULTS)
 FIXED: dict[str, dict[str, bool]] = {
     EventType.USAGE_WARNING: {C.IN_APP: True, C.WHATSAPP: False, C.SMS: False, C.EMAIL: True},
     EventType.TEST: {C.IN_APP: True, C.WHATSAPP: False, C.SMS: False, C.EMAIL: False},
+    EventType.REPORT_READY: {C.IN_APP: True, C.WHATSAPP: False, C.SMS: False, C.EMAIL: True},
 }
 
 
@@ -51,6 +52,7 @@ RECIPIENTS: dict[str, str] = {
     EventType.USAGE_WARNING: "admins",
     EventType.DAILY_SUMMARY: "recipient",
     EventType.TEST: "recipient",
+    EventType.REPORT_READY: "recipient",
 }
 
 # Pre-approved WhatsApp template per event (created in Meta Business Manager, English and
@@ -69,6 +71,8 @@ WHATSAPP_TEMPLATES: dict[str, str] = {
     EventType.DAILY_SUMMARY: "smartfarm_daily_summary",
     EventType.USAGE_WARNING: "smartfarm_usage_warning",
     EventType.TEST: "smartfarm_test",
+    EventType.REPORT_READY: "smartfarm_report_ready",
+    EventType.REPORT_SHARED: "smartfarm_report_share",
 }
 QUICK_REPLY_EVENTS = {
     EventType.UPCOMING,

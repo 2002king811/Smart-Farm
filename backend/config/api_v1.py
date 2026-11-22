@@ -55,6 +55,20 @@ from apps.nutrition.views import (
     SupplementationViewSet,
     WaterHygieneViewSet,
 )
+from apps.reports.views import (
+    DashboardChartsView,
+    DashboardRecentHealthView,
+    DashboardSummaryView,
+    DashboardUpcomingView,
+    FarmDataExportView,
+    ReportCatalogView,
+    ReportExportView,
+    ReportPreviewView,
+    ReportRunViewSet,
+    ReportScheduleViewSet,
+    ReportShareView,
+    download_run,
+)
 
 router.register("audit-logs", AuditLogViewSet, basename="audit-log")
 router.register("members", MemberViewSet, basename="member")
@@ -88,6 +102,8 @@ router.register(
 router.register("supplementation", SupplementationViewSet, basename="supplementation")
 router.register("water-hygiene", WaterHygieneViewSet, basename="water-hygiene")
 router.register("notifications", NotificationViewSet, basename="notification")
+router.register("report-runs", ReportRunViewSet, basename="report-run")
+router.register("report-schedules", ReportScheduleViewSet, basename="report-schedule")
 
 urlpatterns = [
     path("", include("apps.accounts.urls")),
@@ -102,6 +118,20 @@ urlpatterns = [
         TemplateApplyView.as_view(),
         name="activity-template-apply",
     ),
+    path("dashboard/summary", DashboardSummaryView.as_view(), name="dashboard-summary"),
+    path("dashboard/charts", DashboardChartsView.as_view(), name="dashboard-charts"),
+    path("dashboard/upcoming", DashboardUpcomingView.as_view(), name="dashboard-upcoming"),
+    path(
+        "dashboard/recent-health",
+        DashboardRecentHealthView.as_view(),
+        name="dashboard-recent-health",
+    ),
+    path("reports", ReportCatalogView.as_view(), name="reports"),
+    path("reports/<str:report_type>", ReportPreviewView.as_view(), name="report-preview"),
+    path("reports/<str:report_type>/export", ReportExportView.as_view(), name="report-export"),
+    path("reports/<str:report_type>/share", ReportShareView.as_view(), name="report-share"),
+    path("report-runs/<uuid:pk>/download", download_run, name="report-run-download"),
+    path("farm/export", FarmDataExportView.as_view(), name="farm-export"),
     path("notification-preferences", PreferencesView.as_view(), name="notification-preferences"),
     path("channel-contacts", ContactsView.as_view(), name="channel-contacts"),
     path("channel-contacts/<str:channel>", ContactDetailView.as_view(), name="channel-contact"),

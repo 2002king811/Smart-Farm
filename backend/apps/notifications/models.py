@@ -33,6 +33,8 @@ class EventType(models.TextChoices):
     LOW_STOCK = "feed.low_stock", "Low feed stock"
     DAILY_SUMMARY = "daily.summary", "Daily summary"
     USAGE_WARNING = "usage.warning", "Message allowance warning"
+    REPORT_READY = "report.ready", "Report ready"
+    REPORT_SHARED = "report.shared", "Report shared"
     TEST = "test", "Test message"
 
 
@@ -168,8 +170,9 @@ class OutboundMessage(FarmOwnedModel):
     """One message on one external channel, sent by a Celery worker, tracked by webhooks."""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # Empty for messages to people outside the farm's users (e.g. a report shared with the vet).
     notification = models.ForeignKey(
-        Notification, on_delete=models.CASCADE, related_name="deliveries"
+        Notification, null=True, blank=True, on_delete=models.CASCADE, related_name="deliveries"
     )
     channel = models.CharField(max_length=10, choices=Channel.choices)
     to = models.CharField(max_length=254)

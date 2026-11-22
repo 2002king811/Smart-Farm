@@ -4374,6 +4374,186 @@
                 }
             }
         },
+        "/api/v1/dashboard/charts": {
+            "get": {
+                "operationId": "dashboard_charts_retrieve",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "range",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "12m",
+                                "3m",
+                                "6m"
+                            ]
+                        }
+                    }
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/recent-health": {
+            "get": {
+                "operationId": "dashboard_recent_health_retrieve",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/summary": {
+            "get": {
+                "operationId": "dashboard_summary_retrieve",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/dashboard/upcoming": {
+            "get": {
+                "operationId": "dashboard_upcoming_retrieve",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "dashboard"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/dewormings": {
             "get": {
                 "operationId": "dewormings_list",
@@ -4843,6 +5023,44 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Farm"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/farm/export": {
+            "get": {
+                "operationId": "farm_export_retrieve",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "farm"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/zip": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
                                 }
                             }
                         },
@@ -10791,6 +11009,756 @@
                 }
             }
         },
+        "/api/v1/report-runs": {
+            "get": {
+                "operationId": "report_runs_list",
+                "description": "Your exports on this farm (the background ones keep a file for 24 hours).",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "report-runs"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedReportRunList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/report-runs/{id}": {
+            "get": {
+                "operationId": "report_runs_retrieve",
+                "description": "Your exports on this farm (the background ones keep a file for 24 hours).",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this report run.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "report-runs"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ReportRun"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/report-schedules": {
+            "get": {
+                "operationId": "report_schedules_list",
+                "description": "Monthly activities / quarterly health report by email. Administrators only.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "report-schedules"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Schedule"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "report_schedules_create",
+                "description": "Monthly activities / quarterly health report by email. Administrators only.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "report-schedules"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schedule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/report-schedules/{id}": {
+            "get": {
+                "operationId": "report_schedules_retrieve",
+                "description": "Monthly activities / quarterly health report by email. Administrators only.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this report schedule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "report-schedules"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schedule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "report_schedules_update",
+                "description": "Monthly activities / quarterly health report by email. Administrators only.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this report schedule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "report-schedules"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScheduleRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schedule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "report_schedules_partial_update",
+                "description": "Monthly activities / quarterly health report by email. Administrators only.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this report schedule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "report-schedules"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedScheduleRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedScheduleRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedScheduleRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Schedule"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "report_schedules_destroy",
+                "description": "Monthly activities / quarterly health report by email. Administrators only.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this report schedule.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "report-schedules"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/v1/reports": {
+            "get": {
+                "operationId": "reports_catalog",
+                "description": "The 15 reports, with their filters and default period.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/reports/{report_type}": {
+            "get": {
+                "operationId": "reports_retrieve",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "day",
+                                "month",
+                                "week"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "report_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/reports/{report_type}/export": {
+            "get": {
+                "operationId": "reports_export_retrieve",
+                "description": "The file straight away, or – over 2,000 rows – 202 with a run that finishes in the\nbackground and notifies you (in-app and by email) with a link valid for 24 hours.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "format",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "csv",
+                                "pdf",
+                                "xlsx"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "day",
+                                "month",
+                                "week"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "report_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        },
+                        "description": ""
+                    },
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/reports/{report_type}/share": {
+            "post": {
+                "operationId": "reports_share_create",
+                "description": "Send a short summary and a 24-hour link to the PDF by WhatsApp.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "from",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "day",
+                                "month",
+                                "week"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "report_type",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShareRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShareRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShareRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/supplementation": {
             "get": {
                 "operationId": "supplementation_list",
@@ -15758,6 +16726,15 @@
                     "identifier"
                 ]
             },
+            "FormatEnum": {
+                "enum": [
+                    "pdf",
+                    "xlsx",
+                    "csv"
+                ],
+                "type": "string",
+                "description": "* `pdf` - PDF\n* `xlsx` - Excel\n* `csv` - CSV"
+            },
             "HealthInspection": {
                 "type": "object",
                 "description": "Shared behaviour: subject labels, who recorded it, and date checks.",
@@ -17584,10 +18561,12 @@
                     "feed.low_stock",
                     "daily.summary",
                     "usage.warning",
+                    "report.ready",
+                    "report.shared",
                     "test"
                 ],
                 "type": "string",
-                "description": "* `activity.upcoming` - Upcoming activity\n* `activity.due_today` - Activity due today\n* `activity.overdue` - Overdue activity\n* `vaccination.reminder` - Vaccination reminder\n* `deworming.reminder` - Deworming reminder\n* `health.alert` - Health alert\n* `task.assigned` - Task assigned\n* `activity.completed` - Activity completed\n* `feed.low_stock` - Low feed stock\n* `daily.summary` - Daily summary\n* `usage.warning` - Message allowance warning\n* `test` - Test message"
+                "description": "* `activity.upcoming` - Upcoming activity\n* `activity.due_today` - Activity due today\n* `activity.overdue` - Overdue activity\n* `vaccination.reminder` - Vaccination reminder\n* `deworming.reminder` - Deworming reminder\n* `health.alert` - Health alert\n* `task.assigned` - Task assigned\n* `activity.completed` - Activity completed\n* `feed.low_stock` - Low feed stock\n* `daily.summary` - Daily summary\n* `usage.warning` - Message allowance warning\n* `report.ready` - Report ready\n* `report.shared` - Report shared\n* `test` - Test message"
             },
             "NotificationSettings": {
                 "type": "object",
@@ -18429,6 +19408,37 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ParasiteControl"
+                        }
+                    }
+                }
+            },
+            "PaginatedReportRunList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReportRun"
                         }
                     }
                 }
@@ -19701,6 +20711,29 @@
                     }
                 }
             },
+            "PatchedScheduleRequest": {
+                "type": "object",
+                "properties": {
+                    "report_type": {
+                        "$ref": "#/components/schemas/ReportTypeEnum"
+                    },
+                    "recipients": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "email",
+                            "minLength": 1,
+                            "maxLength": 254
+                        }
+                    },
+                    "format": {
+                        "$ref": "#/components/schemas/FormatEnum"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                }
+            },
             "PatchedSupplementationRequest": {
                 "type": "object",
                 "description": "Shared behaviour: subject labels, who recorded it, and date checks.",
@@ -20201,6 +21234,96 @@
                 "type": "string",
                 "description": "* `` - Does not repeat\n* `weekly` - Weekly\n* `monthly` - Monthly\n* `quarterly` - Quarterly\n* `yearly` - Yearly"
             },
+            "ReportRun": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "report_type": {
+                        "type": "string",
+                        "maxLength": 40
+                    },
+                    "title": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "filters": {},
+                    "date_from": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "date_to": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "format": {
+                        "$ref": "#/components/schemas/FormatEnum"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/ReportRunStatusEnum"
+                    },
+                    "row_count": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": 0
+                    },
+                    "error": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "purpose": {
+                        "type": "string",
+                        "description": "download | schedule | share",
+                        "maxLength": 10
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "finished_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "download_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "date_from",
+                    "date_to",
+                    "download_url",
+                    "format",
+                    "id",
+                    "report_type",
+                    "title"
+                ]
+            },
+            "ReportRunStatusEnum": {
+                "enum": [
+                    "queued",
+                    "running",
+                    "done",
+                    "failed"
+                ],
+                "type": "string",
+                "description": "* `queued` - Queued\n* `running` - Running\n* `done` - Done\n* `failed` - Failed"
+            },
+            "ReportTypeEnum": {
+                "enum": [
+                    "monthly_activities",
+                    "quarterly_health"
+                ],
+                "type": "string",
+                "description": "* `monthly_activities` - Monthly Farm Activities (1st of each month)\n* `quarterly_health` - Quarterly Health Report (1st of each quarter)"
+            },
             "ResetMemberPasswordRequest": {
                 "type": "object",
                 "properties": {
@@ -20295,6 +21418,81 @@
                 "type": "string",
                 "description": "* `confirmed` - confirmed\n* `not_pregnant` - not_pregnant"
             },
+            "Schedule": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "report_type": {
+                        "$ref": "#/components/schemas/ReportTypeEnum"
+                    },
+                    "report_label": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "recipients": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "email",
+                            "maxLength": 254
+                        }
+                    },
+                    "format": {
+                        "$ref": "#/components/schemas/FormatEnum"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "last_period": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Last period sent, e.g. 2026-10 or 2026-Q3"
+                    },
+                    "last_sent_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "last_period",
+                    "last_sent_at",
+                    "report_label",
+                    "report_type"
+                ]
+            },
+            "ScheduleRequest": {
+                "type": "object",
+                "properties": {
+                    "report_type": {
+                        "$ref": "#/components/schemas/ReportTypeEnum"
+                    },
+                    "recipients": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "email",
+                            "minLength": 1,
+                            "maxLength": 254
+                        }
+                    },
+                    "format": {
+                        "$ref": "#/components/schemas/FormatEnum"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "report_type"
+                ]
+            },
             "ScopeEnum": {
                 "enum": [
                     "this",
@@ -20319,6 +21517,19 @@
                 ],
                 "type": "string",
                 "description": "* `female` - Female\n* `male` - Male"
+            },
+            "ShareRequest": {
+                "type": "object",
+                "properties": {
+                    "phone": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20
+                    }
+                },
+                "required": [
+                    "phone"
+                ]
             },
             "SignupRequest": {
                 "type": "object",

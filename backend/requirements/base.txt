@@ -23,5 +23,6 @@ whitenoise>=6.8,<7
 boto3>=1.35,<2
 Pillow>=11,<13
 openpyxl>=3.1,<4
+reportlab>=4.2,<6  # report PDFs (pure Python, installs on Windows too)
 python-dateutil>=2.9,<3
 requests>=2.32,<3
