@@ -278,6 +278,8 @@ else:
     CELERY_RESULT_BACKEND = "cache+memory://"
     CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
     CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+    # `runserver` then also serves the live-update WebSocket (/ws/...) on the same port.
+    INSTALLED_APPS = ["daphne", *INSTALLED_APPS]
 
 # --- Email -------------------------------------------------------------------------------
 EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
@@ -299,12 +301,9 @@ AFRICASTALKING_USERNAME = env("AFRICASTALKING_USERNAME", default="sandbox")
 AFRICASTALKING_API_KEY = env("AFRICASTALKING_API_KEY", default="")
 AFRICASTALKING_SENDER_ID = env("AFRICASTALKING_SENDER_ID", default="SMARTFARM")
 # Per channel: "console" logs messages; real providers are used only in staging/production.
-SMS_ADAPTER = env(
-    "SMS_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "africastalking"
-)
-WHATSAPP_ADAPTER = env(
-    "WHATSAPP_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "whatsapp_cloud"
-)
+_live = MESSAGING_ADAPTER != "console"
+SMS_ADAPTER = env("SMS_ADAPTER", default="") or ("africastalking" if _live else "console")
+WHATSAPP_ADAPTER = env("WHATSAPP_ADAPTER", default="") or ("whatsapp_cloud" if _live else "console")
 # Shared secret in the SMS and email webhook URLs (?token=…); WhatsApp uses its signature.
 WEBHOOK_TOKEN = env("WEBHOOK_TOKEN", default="")
 

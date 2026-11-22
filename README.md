@@ -103,7 +103,7 @@ Open http://localhost:5180 and choose **Create an account for your farm**. While
 2. In the Smart Farm folder, double-click **`windows-setup.bat`**. Run it once; it asks for your PostgreSQL password.
 3. Double-click **`windows-start.bat`**. Your browser opens **http://localhost:5180**.
 
-This uses simple local mode (`USE_REDIS=false`): background jobs run straight away and live updates stay in memory, so neither Redis nor Docker is needed. It's fine for one computer, but staging and production always use Redis.
+This uses simple local mode (`USE_REDIS=false`): background jobs run straight away and live updates stay in memory, so neither Redis nor Docker is needed. A third window, "Smart Farm reminders", runs the scheduled jobs (reminders, overdue checks, held messages) every minute with `python manage.py run_jobs`. It's fine for one computer, but staging and production always use Redis and Celery beat.
 
 ### Without Docker
 
@@ -248,6 +248,48 @@ cd backend && python manage.py export_permissions
 - **Feeding:** `/feeding-records` takes the quantity out of stock and refuses more than is in store. Editing or deleting a record puts the stock right. Attendants can record feeding.
 - **Other nutrition records:** `/nutrition-assessments` (a next date adds a calendar task), `/supplementation` (can take from stock), `/water-hygiene` (scored out of 5), and `/nutrition/summary`.
 - **Sessions:** a refresh token replaced by rotation stays usable for 60 seconds, so a page reload or a second tab doesn't log people out. Logout, password changes and deactivation still end sessions at once.
+
+## Notifications (phase 6)
+
+Code emits one event (`apps/notifications/events.emit`); `apps/notifications/services.py` turns it into:
+
+- one **in-app notification** per recipient (the bell badge, the Notifications page), and
+- one **message per external channel** the person has switched on (WhatsApp, SMS, email), sent by a background task and tracked as Queued → Sent → Delivered → Read, or Failed with the reason.
+
+**Who gets what.** Defaults per event and channel follow the build spec (`catalog.py`); each person changes them in **Settings → Notifications**. The channels picked at sign-up are the starting point.
+
+| Event | Goes to |
+|---|---|
+| Upcoming / due today / vaccination / deworming reminders | the assignee, or managers if nobody is assigned |
+| Overdue | the assignee and managers |
+| Task assigned, activity completed | the person concerned |
+| Health alert (severe observation, fever, death), low feed stock | administrators and farm managers |
+| Message allowance warning | administrators |
+
+**Rules.**
+- SMS and WhatsApp need a confirmed mobile number; email needs a confirmed address. WhatsApp also needs the person's consent ("Yes, send me WhatsApp messages"). A changed number needs consent again.
+- **Quiet hours** (default 21:00–06:00, farm time zone) hold SMS and WhatsApp until they end. Urgent health alerts still go straight out.
+- Failed sends are retried 3 times (after 1, 2 and 4 minutes). Errors that won't fix themselves (wrong number, template not approved, missing keys) fail at once.
+- Each farm has a monthly allowance (SMS 500, WhatsApp 1,000). Administrators get a warning at 80 %, and non-urgent messages stop at 100 %. Usage is shown to administrators under Settings → Notifications.
+
+**Schedules** (farm local time; `notifications.run_schedules` every 15 minutes, `notifications.release_due` every minute):
+- 06:00: reminders N days before an activity (its "remind me" days) and "due today";
+- 07:00: overdue activities (once per activity and due date);
+- each person's digest time (default 07:00): the daily summary, by email by default.
+
+**Providers.** Everything uses the **console** adapter except staging and production: messages are logged and shown at http://localhost:8010/api/dev/outbox. Set `MESSAGING_ADAPTER=live` (or `SMS_ADAPTER=africastalking`, `WHATSAPP_ADAPTER=whatsapp_cloud`) and the keys in `.env` to send for real:
+- **Africa's Talking** (SMS): `AFRICASTALKING_USERNAME` (`sandbox` uses the sandbox), `AFRICASTALKING_API_KEY`, `AFRICASTALKING_SENDER_ID`.
+- **WhatsApp Cloud API**: `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_APP_SECRET`, `WHATSAPP_WEBHOOK_VERIFY_TOKEN`. Templates must be approved in Meta Business Manager in English (`en`) and Kiswahili (`sw`), named as in `catalog.WHATSAPP_TEMPLATES` (e.g. `smartfarm_task_assigned`), with body `{{1}}` title and `{{2}}` details. Activity templates add two quick-reply buttons: "Mark done" and "Reschedule".
+- **Email**: Django's mail settings (`EMAIL_*`), HTML and plain text.
+
+**Webhooks** (set these URLs in each provider's dashboard):
+- WhatsApp: `/api/v1/webhooks/whatsapp` (verified with the verify token; posts must carry a valid signature). It records delivery and read receipts, and the buttons or a reply of `1` (mark done) / `2` (move to tomorrow).
+- Africa's Talking: `/api/v1/webhooks/sms/delivery?token=…` (delivery reports) and `/api/v1/webhooks/sms/inbound?token=…` (replies: `1`, `2`, `STOP`).
+- Email: `/api/v1/webhooks/email?token=…` (SendGrid-style events; bounces and complaints stop email to that address).
+
+**Live updates.** The browser opens `/ws/notifications?token=<access token>`, so the bell updates at once. If the connection fails, it checks every 60 seconds instead.
+
+**API.** `/notifications` (`?unread=true`, `?urgent=true`), `/notifications/{id}/read`, `/notifications/read-all`, `/notifications/unread-count`, `/notifications/test`, `/notifications/usage` (administrators), `/notification-preferences` (GET/PUT the matrix and quiet hours), `/channel-contacts` and `PATCH /channel-contacts/{email|sms|whatsapp}` (opt in or out).
 
 ## End-to-end tests
 

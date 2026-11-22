@@ -15,7 +15,9 @@ export default defineConfig({
     proxy: {
       '/api': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8010', changeOrigin: true },
       '/media': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8010', changeOrigin: true },
-      '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8011', ws: true },
+      // Docker runs a separate WebSocket server (VITE_WS_PROXY_TARGET); the simple local mode serves it
+      // from the API on 8010.
+      '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8010', ws: true },
     },
   },
   build: {

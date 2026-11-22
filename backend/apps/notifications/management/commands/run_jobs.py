@@ -41,8 +41,10 @@ class Command(BaseCommand):
                 sent = run_schedules()
                 released = release_due()
                 if sent or released:
-                    self.stdout.write(f"{now:%H:%M} reminders: {sent}, queued messages sent: {released}")
-            except Exception:  # noqa: BLE001 - keep the loop alive
+                    self.stdout.write(
+                        f"{now:%H:%M} reminders: {sent}, queued messages sent: {released}"
+                    )
+            except Exception:
                 logger.exception("Scheduled jobs failed")
             if options["once"]:
                 return
