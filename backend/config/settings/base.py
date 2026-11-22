@@ -4,6 +4,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -196,6 +197,9 @@ SPECTACULAR_SETTINGS = {
         "ExitReasonEnum": "apps.livestock.models.ExitReason",
         "HealthStatusEnum": "apps.livestock.models.HealthStatus",
         "BreedingStatusEnum": "apps.livestock.models.BreedingStatus",
+        "ActivityStatusEnum": "apps.calendar.models.ActivityStatus",
+        "TreatmentStatusEnum": "apps.health.models.TreatmentStatus",
+        "DoneStatusEnum": "apps.health.models.DoneStatus",
     },
 }
 
@@ -226,6 +230,14 @@ CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TASK_TIME_LIMIT = 15 * 60
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_TASK_ALWAYS_EAGER = env.bool("CELERY_TASK_ALWAYS_EAGER", default=False)
+CELERY_BEAT_SCHEDULE = {
+    # Overdue activities: hourly at :05, each farm switching over after its own midnight.
+    "calendar-mark-overdue": {"task": "calendar.mark_overdue", "schedule": crontab(minute=5)},
+    "calendar-extend-series": {
+        "task": "calendar.extend_series",
+        "schedule": crontab(minute=20, hour=1),
+    },
+}
 
 # USE_REDIS=false is a simple local mode for machines without Redis or Docker (e.g. Windows):
 # background tasks run immediately inside the request, and the cache and WebSocket layer live

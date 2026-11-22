@@ -7,6 +7,18 @@ from django.utils import timezone
 from apps.accounts.models import Farm, FarmMembership, Invitation, Role, User
 from apps.accounts.security import hash_token
 from apps.audit.models import AuditLog
+from apps.calendar.models import Activity, ActivityCategory, ActivityNote, ActivityStatusHistory
+from apps.health.models import (
+    Deworming,
+    HealthInspection,
+    HealthObservation,
+    Medicine,
+    ParasiteControl,
+    Treatment,
+    Vaccination,
+    Vaccine,
+    VetVisit,
+)
 from apps.livestock.models import Animal, AnimalGroup, AnimalPhoto, Location, WeightRecord
 from tests.testapp.models import Goat, Pen
 
@@ -135,6 +147,126 @@ class AnimalPhotoFactory(factory.django.DjangoModelFactory):
     thumbnail = factory.django.ImageField(color="green", width=40, height=40)
 
 
+def _animal(o):  # type: ignore[no-untyped-def]
+    return AnimalFactory(farm=o.farm)
+
+
+class VaccineFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Vaccine
+
+    farm = factory.SubFactory(FarmFactory)
+    name = factory.Sequence(lambda n: f"Vaccine {n}")
+    disease_category = "ppr"
+
+
+class MedicineFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Medicine
+
+    farm = factory.SubFactory(FarmFactory)
+    name = factory.Sequence(lambda n: f"Medicine {n}")
+    withdrawal_days = 14
+
+
+class VaccinationFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Vaccination
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(_animal)
+    disease_category = "ppr"
+    vaccine_name = "PPR vaccine"
+
+
+class DewormingFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Deworming
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(_animal)
+    product_name = "Albendazole"
+
+
+class TreatmentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Treatment
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(_animal)
+    diagnosis = "Pneumonia"
+
+
+class VetVisitFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = VetVisit
+
+    farm = factory.SubFactory(FarmFactory)
+    vet_name = "Dr. Samuel Mutua"
+    reason = "Routine check"
+
+
+class HealthObservationFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = HealthObservation
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(_animal)
+    symptoms = "Coughing"
+
+
+class HealthInspectionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = HealthInspection
+
+    farm = factory.SubFactory(FarmFactory)
+    inspector = "Grace Wanjiru"
+
+
+class ParasiteControlFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ParasiteControl
+
+    farm = factory.SubFactory(FarmFactory)
+    method = "spraying"
+    target = "Ticks"
+
+
+class ActivityCategoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ActivityCategory
+
+    farm = factory.SubFactory(FarmFactory)
+    name = factory.Sequence(lambda n: f"Category {n}")
+
+
+class ActivityFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Activity
+
+    farm = factory.SubFactory(FarmFactory)
+    title = factory.Sequence(lambda n: f"Task {n}")
+    date = factory.LazyFunction(lambda: timezone.localdate() + timedelta(days=3))
+
+
+class ActivityNoteFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ActivityNote
+
+    farm = factory.SubFactory(FarmFactory)
+    activity = factory.LazyAttribute(lambda o: ActivityFactory(farm=o.farm))
+    text = "Note"
+
+
+class ActivityStatusHistoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ActivityStatusHistory
+
+    farm = factory.SubFactory(FarmFactory)
+    activity = factory.LazyAttribute(lambda o: ActivityFactory(farm=o.farm))
+    to_status = "completed"
+
+
 # Farm-scoped endpoints whose model is not a FarmOwnedModel.
 FACTORY_FOR_ENDPOINT_MODEL = {
     FarmMembership: MembershipFactory,
@@ -152,4 +284,17 @@ FACTORY_FOR_MODEL = {
     Animal: AnimalFactory,
     WeightRecord: WeightRecordFactory,
     AnimalPhoto: AnimalPhotoFactory,
+    Vaccine: VaccineFactory,
+    Medicine: MedicineFactory,
+    Vaccination: VaccinationFactory,
+    Deworming: DewormingFactory,
+    Treatment: TreatmentFactory,
+    VetVisit: VetVisitFactory,
+    HealthObservation: HealthObservationFactory,
+    HealthInspection: HealthInspectionFactory,
+    ParasiteControl: ParasiteControlFactory,
+    ActivityCategory: ActivityCategoryFactory,
+    Activity: ActivityFactory,
+    ActivityNote: ActivityNoteFactory,
+    ActivityStatusHistory: ActivityStatusHistoryFactory,
 }

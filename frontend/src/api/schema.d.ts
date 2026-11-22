@@ -4,6 +4,271 @@
  */
 
 export interface paths {
+    "/api/v1/activities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        get: operations["activities_list"];
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        get: operations["activities_retrieve"];
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        put: operations["activities_update"];
+        post?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        delete: operations["activities_destroy"];
+        options?: never;
+        head?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        patch: operations["activities_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/assign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_assign_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_cancel_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_complete_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        get: operations["activities_history_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/notes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        get: operations["activities_notes_list"];
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_notes_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/reopen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_reopen_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/{id}/start": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Farm activities and tasks. Attendants see and act on their own tasks only. */
+        post: operations["activities_start_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activities/calendar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The health calendar: every activity in the range (attendants can view it). */
+        get: operations["activities_calendar_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activity-categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["activity_categories_list"];
+        put?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        post: operations["activity_categories_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activity-categories/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["activity_categories_retrieve"];
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        put: operations["activity_categories_update"];
+        post?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        delete: operations["activity_categories_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        patch: operations["activity_categories_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/activity-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["activity_templates_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/activity-templates/{key}/apply": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        post: operations["activity_templates_apply_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/animal-groups": {
         parameters: {
             query?: never;
@@ -513,6 +778,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/dewormings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["dewormings_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["dewormings_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dewormings/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["dewormings_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["dewormings_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["dewormings_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["dewormings_partial_update"];
+        trace?: never;
+    };
     "/api/v1/farm": {
         parameters: {
             query?: never;
@@ -561,6 +882,79 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/health/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["health_summary_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/inspections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["inspections_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["inspections_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/inspections/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["inspections_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["inspections_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["inspections_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["inspections_partial_update"];
         trace?: never;
     };
     "/api/v1/invitations": {
@@ -815,6 +1209,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/medicines": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["medicines_list"];
+        put?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        post: operations["medicines_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/medicines/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["medicines_retrieve"];
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        put: operations["medicines_update"];
+        post?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        delete: operations["medicines_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        patch: operations["medicines_partial_update"];
+        trace?: never;
+    };
     "/api/v1/members": {
         parameters: {
             query?: never;
@@ -903,6 +1353,362 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/observations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["observations_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["observations_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["observations_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["observations_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["observations_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["observations_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/parasite-control": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["parasite_control_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["parasite_control_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/parasite-control/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["parasite_control_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["parasite_control_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["parasite_control_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["parasite_control_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/treatments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["treatments_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["treatments_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/treatments/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["treatments_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["treatments_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["treatments_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["treatments_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/treatments/{id}/resolve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["treatments_resolve_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vaccinations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["vaccinations_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["vaccinations_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vaccinations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["vaccinations_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["vaccinations_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["vaccinations_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["vaccinations_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/vaccines": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["vaccines_list"];
+        put?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        post: operations["vaccines_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vaccines/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["vaccines_retrieve"];
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        put: operations["vaccines_update"];
+        post?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        delete: operations["vaccines_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        patch: operations["vaccines_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/vet-visits": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["vet_visits_list"];
+        put?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        post: operations["vet_visits_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/vet-visits/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        get: operations["vet_visits_retrieve"];
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        put: operations["vet_visits_update"];
+        post?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        delete: operations["vet_visits_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description Attendants view and record (no delete). Saving keeps the linked calendar activity and the
+         *     animal's health status in step.
+         */
+        patch: operations["vet_visits_partial_update"];
+        trace?: never;
+    };
     "/api/v1/weights": {
         parameters: {
             query?: never;
@@ -968,6 +1774,121 @@ export interface components {
          * @enum {string}
          */
         ActionEnum: "create" | "update" | "delete" | "restore" | "status_change";
+        ActionRequest: {
+            note?: string;
+        };
+        Activity: {
+            /** Format: uuid */
+            readonly id: string;
+            title: string;
+            readonly category: components["schemas"]["Category"] | null;
+            /** Format: date */
+            date: string;
+            /** Format: time */
+            start_time?: string | null;
+            /** Format: time */
+            end_time?: string | null;
+            all_day?: boolean;
+            readonly assigned_to: {
+                [key: string]: string;
+            } | null;
+            readonly animals: {
+                [key: string]: string;
+            }[];
+            readonly group: {
+                [key: string]: string;
+            } | null;
+            description?: string;
+            priority?: components["schemas"]["PriorityEnum"];
+            status?: components["schemas"]["ActivityStatusEnum"];
+            reminder_days?: number[];
+            recurrence_rule?: string;
+            readonly is_recurring: boolean;
+            /** Format: uuid */
+            readonly series_id: string | null;
+            /** Format: date-time */
+            completed_at?: string | null;
+            readonly completed_by_name: string | null;
+            source?: components["schemas"]["SourceEnum"];
+            readonly source_label: string;
+            readonly source_record: {
+                [key: string]: string;
+            } | null;
+            template_key?: string;
+            readonly created_by_name: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /**
+         * @description * `pending` - Pending
+         *     * `in_progress` - In Progress
+         *     * `completed` - Completed
+         *     * `overdue` - Overdue
+         *     * `cancelled` - Cancelled
+         * @enum {string}
+         */
+        ActivityStatusEnum: "pending" | "in_progress" | "completed" | "overdue" | "cancelled";
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        ActivityWrite: {
+            /** Format: uuid */
+            readonly id: string;
+            title: string;
+            /** Format: uuid */
+            category?: string | null;
+            /** Format: date */
+            date: string;
+            /** Format: time */
+            start_time?: string | null;
+            /** Format: time */
+            end_time?: string | null;
+            all_day?: boolean;
+            /** Format: uuid */
+            assigned_to?: string | null;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            description?: string;
+            priority?: components["schemas"]["PriorityEnum"];
+            reminder_days?: number[];
+            recurrence_rule?: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        ActivityWriteRequest: {
+            title: string;
+            /** Format: uuid */
+            category?: string | null;
+            /** Format: date */
+            date: string;
+            /** Format: time */
+            start_time?: string | null;
+            /** Format: time */
+            end_time?: string | null;
+            all_day?: boolean;
+            /** Format: uuid */
+            assigned_to?: string | null;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            description?: string;
+            priority?: components["schemas"]["PriorityEnum"];
+            reminder_days?: number[];
+            recurrence_rule?: string;
+            /**
+             * @description Shortcut for recurrence_rule
+             *
+             *     * `` - Does not repeat
+             *     * `weekly` - Weekly
+             *     * `monthly` - Monthly
+             *     * `quarterly` - Quarterly
+             *     * `yearly` - Yearly
+             */
+            repeat?: components["schemas"]["RepeatEnum"] | components["schemas"]["BlankEnum"];
+            /** Format: date */
+            repeat_until?: string | null;
+            scope?: components["schemas"]["ScopeEnum"];
+        };
         /**
          * @description * `in_app` - In-app
          *     * `whatsapp` - WhatsApp
@@ -1024,6 +1945,11 @@ export interface components {
             readonly created_by_name: string | null;
             /** Format: date-time */
             readonly updated_at: string;
+            /**
+             * Format: date
+             * @description Do not sell or milk until this date (from treatments and vaccinations)
+             */
+            readonly withdrawal_until: string | null;
         };
         /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
         AnimalGroup: {
@@ -1158,6 +2084,14 @@ export interface components {
             previous_history?: string;
             remarks?: string;
         };
+        ApplyResult: {
+            created: number;
+            skipped: number;
+        };
+        AssignRequest: {
+            /** Format: uuid */
+            assigned_to: string | null;
+        };
         AuditLog: {
             readonly id: number;
             /** Format: date-time */
@@ -1192,6 +2126,30 @@ export interface components {
          * @enum {string}
          */
         BreedingStatusEnum: "open" | "served" | "pregnant" | "lactating" | "dry" | "breeding_male" | "castrated" | "too_young";
+        Calendar: {
+            view: string;
+            /** Format: date */
+            start: string;
+            /** Format: date */
+            end: string;
+            activities: components["schemas"]["Activity"][];
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        Category: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            /** @description Set for the built-in categories */
+            readonly key: string;
+            colour?: string;
+            icon?: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        CategoryRequest: {
+            name: string;
+            colour?: string;
+            icon?: string;
+        };
         ChangePasswordRequest: {
             current_password: string;
             password: string;
@@ -1231,6 +2189,68 @@ export interface components {
         Detail: {
             detail: string;
         };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        Deworming: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: uuid */
+            animal?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            /** Format: uuid */
+            product?: string | null;
+            product_name?: string;
+            readonly product_label: string;
+            dosage?: string;
+            administered_by?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+            status?: components["schemas"]["DoneStatusEnum"];
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        DewormingRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            /** Format: uuid */
+            product?: string | null;
+            product_name?: string;
+            dosage?: string;
+            administered_by?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+            status?: components["schemas"]["DoneStatusEnum"];
+        };
+        /**
+         * @description * `clostridial` - Clostridial
+         *     * `ppr` - PPR
+         *     * `goat_pox` - Goat Pox
+         *     * `brucellosis` - Brucellosis
+         *     * `anthrax` - Anthrax
+         *     * `ccpp` - CCPP
+         *     * `fmd` - FMD
+         *     * `other` - Other
+         * @enum {string}
+         */
+        DiseaseCategoryEnum: "clostridial" | "ppr" | "goat_pox" | "brucellosis" | "anthrax" | "ccpp" | "fmd" | "other";
+        /**
+         * @description * `completed` - Completed
+         *     * `missed` - Missed
+         * @enum {string}
+         */
+        DoneStatusEnum: "completed" | "missed";
         /**
          * @description * `sold` - Sold
          *     * `died` - Died
@@ -1303,6 +2323,85 @@ export interface components {
             /** @default email */
             channel: components["schemas"]["ChannelEnum"];
         };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        HealthInspection: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            inspector: string;
+            animals?: string[];
+            readonly animal_labels: string[];
+            /** Format: uuid */
+            group?: string | null;
+            animals_inspected?: number | null;
+            findings?: string;
+            /** @description 1 (poor) to 10 (excellent) */
+            score?: number | null;
+            result?: components["schemas"]["ResultEnum"];
+            /** Format: date */
+            next_inspection_date?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        HealthInspectionRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            inspector: string;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            animals_inspected?: number | null;
+            findings?: string;
+            /** @description 1 (poor) to 10 (excellent) */
+            score?: number | null;
+            result?: components["schemas"]["ResultEnum"];
+            /** Format: date */
+            next_inspection_date?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        HealthObservation: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: uuid */
+            animal: string;
+            observed_by?: string;
+            symptoms: string;
+            /** Format: decimal */
+            temperature_c?: string | null;
+            severity?: components["schemas"]["SeverityEnum"];
+            suspected_disease?: string;
+            action_taken?: string;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        HealthObservationRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal: string;
+            observed_by?: string;
+            symptoms: string;
+            /** Format: decimal */
+            temperature_c?: string | null;
+            severity?: components["schemas"]["SeverityEnum"];
+            suspected_disease?: string;
+            action_taken?: string;
+        };
         /**
          * @description * `healthy` - Healthy
          *     * `under_treatment` - Under Treatment
@@ -1313,6 +2412,16 @@ export interface components {
          * @enum {string}
          */
         HealthStatusEnum: "healthy" | "under_treatment" | "sick" | "quarantined" | "pregnant" | "monitoring";
+        HealthSummary: {
+            status_counts: {
+                [key: string]: number;
+            };
+            ongoing_treatments: number;
+            under_withdrawal: number;
+            vaccinations_due_30_days: number;
+            overdue_health_activities: number;
+            observations_7_days: number;
+        };
         /**
          * @description * `1-20` - 1–20 animals
          *     * `21-50` - 21–50 animals
@@ -1322,6 +2431,16 @@ export interface components {
          * @enum {string}
          */
         HerdSizeBandEnum: "1-20" | "21-50" | "51-100" | "101-500" | "500+";
+        History: {
+            /** Format: uuid */
+            readonly id: string;
+            from_status?: components["schemas"]["ActivityStatusEnum"] | components["schemas"]["BlankEnum"];
+            to_status: components["schemas"]["ActivityStatusEnum"];
+            note?: string;
+            readonly by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
         Invitation: {
             /** Format: uuid */
             readonly id: string;
@@ -1390,7 +2509,7 @@ export interface components {
             /** Format: uuid */
             readonly id: string;
             name: string;
-            type?: components["schemas"]["TypeEnum"];
+            type?: components["schemas"]["LocationTypeEnum"];
             capacity?: number | null;
             description?: string;
             /** @default 0 */
@@ -1399,10 +2518,19 @@ export interface components {
         /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
         LocationRequest: {
             name: string;
-            type?: components["schemas"]["TypeEnum"];
+            type?: components["schemas"]["LocationTypeEnum"];
             capacity?: number | null;
             description?: string;
         };
+        /**
+         * @description * `paddock` - Paddock
+         *     * `pen` - Pen
+         *     * `isolation` - Isolation
+         *     * `quarantine` - Quarantine
+         *     * `other` - Other
+         * @enum {string}
+         */
+        LocationTypeEnum: "paddock" | "pen" | "isolation" | "quarantine" | "other";
         LoginRequest: {
             /** @description Username, email or phone number */
             identifier: string;
@@ -1434,6 +2562,38 @@ export interface components {
             /** Format: date-time */
             readonly last_login: string | null;
         };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        Medicine: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            type?: components["schemas"]["MedicineTypeEnum"];
+            manufacturer?: string;
+            default_dose?: string;
+            route?: components["schemas"]["RouteEnum"];
+            /** @description Meat/milk withdrawal period */
+            withdrawal_days?: number;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        MedicineRequest: {
+            name: string;
+            type?: components["schemas"]["MedicineTypeEnum"];
+            manufacturer?: string;
+            default_dose?: string;
+            route?: components["schemas"]["RouteEnum"];
+            /** @description Meat/milk withdrawal period */
+            withdrawal_days?: number;
+        };
+        /**
+         * @description * `antibiotic` - Antibiotic
+         *     * `anti_inflammatory` - Anti-inflammatory
+         *     * `dewormer` - Dewormer
+         *     * `acaricide` - Acaricide
+         *     * `vitamin` - Vitamin / mineral
+         *     * `other` - Other
+         * @enum {string}
+         */
+        MedicineTypeEnum: "antibiotic" | "anti_inflammatory" | "dewormer" | "acaricide" | "vitamin" | "other";
         Member: {
             /** Format: uuid */
             readonly id: string;
@@ -1485,6 +2645,15 @@ export interface components {
          * @enum {string}
          */
         MembershipStatusEnum: "active" | "inactive";
+        /**
+         * @description * `dipping` - Dipping
+         *     * `spraying` - Spraying
+         *     * `pour_on` - Pour-on
+         *     * `injection` - Injection
+         *     * `environment` - Pen / pasture treatment
+         * @enum {string}
+         */
+        MethodEnum: "dipping" | "spraying" | "pour_on" | "injection" | "environment";
         /** @description One entry in the sidebar farm switcher, with the role table for that farm. */
         MyFarm: {
             /** Format: uuid */
@@ -1508,6 +2677,32 @@ export interface components {
         };
         NextId: {
             animal_id: string;
+        };
+        Note: {
+            /** Format: uuid */
+            readonly id: string;
+            text: string;
+            readonly author: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        NoteRequest: {
+            text: string;
+        };
+        PaginatedActivityList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Activity"][];
         };
         PaginatedAnimalListList: {
             /** @example 140 */
@@ -1554,6 +2749,66 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["AuditLog"][];
         };
+        PaginatedDewormingList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Deworming"][];
+        };
+        PaginatedHealthInspectionList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["HealthInspection"][];
+        };
+        PaginatedHealthObservationList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["HealthObservation"][];
+        };
+        PaginatedHistoryList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["History"][];
+        };
         PaginatedInvitationList: {
             /** @example 140 */
             count: number;
@@ -1584,6 +2839,36 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Member"][];
         };
+        PaginatedNoteList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Note"][];
+        };
+        PaginatedParasiteControlList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["ParasiteControl"][];
+        };
         PaginatedTimelineEventList: {
             /** @example 140 */
             count: number;
@@ -1599,6 +2884,51 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["TimelineEvent"][];
         };
+        PaginatedTreatmentList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Treatment"][];
+        };
+        PaginatedVaccinationList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Vaccination"][];
+        };
+        PaginatedVetVisitList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["VetVisit"][];
+        };
         PaginatedWeightRecordList: {
             /** @example 140 */
             count: number;
@@ -1613,6 +2943,86 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["WeightRecord"][];
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        ParasiteControl: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            method: components["schemas"]["MethodEnum"];
+            /** @description Ticks, mites, lice, flies… */
+            target: string;
+            /** Format: uuid */
+            product?: string | null;
+            product_name?: string;
+            readonly product_label: string;
+            animals?: string[];
+            readonly animal_labels: string[];
+            /** Format: uuid */
+            group?: string | null;
+            administered_by?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        ParasiteControlRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            method: components["schemas"]["MethodEnum"];
+            /** @description Ticks, mites, lice, flies… */
+            target: string;
+            /** Format: uuid */
+            product?: string | null;
+            product_name?: string;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            administered_by?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedActivityWriteRequest: {
+            title?: string;
+            /** Format: uuid */
+            category?: string | null;
+            /** Format: date */
+            date?: string;
+            /** Format: time */
+            start_time?: string | null;
+            /** Format: time */
+            end_time?: string | null;
+            all_day?: boolean;
+            /** Format: uuid */
+            assigned_to?: string | null;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            description?: string;
+            priority?: components["schemas"]["PriorityEnum"];
+            reminder_days?: number[];
+            recurrence_rule?: string;
+            /**
+             * @description Shortcut for recurrence_rule
+             *
+             *     * `` - Does not repeat
+             *     * `weekly` - Weekly
+             *     * `monthly` - Monthly
+             *     * `quarterly` - Quarterly
+             *     * `yearly` - Yearly
+             */
+            repeat?: components["schemas"]["RepeatEnum"] | components["schemas"]["BlankEnum"];
+            /** Format: date */
+            repeat_until?: string | null;
+            scope?: components["schemas"]["ScopeEnum"];
         };
         /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
         PatchedAnimalGroupRequest: {
@@ -1654,6 +3064,30 @@ export interface components {
             previous_history?: string;
             remarks?: string;
         };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedCategoryRequest: {
+            name?: string;
+            colour?: string;
+            icon?: string;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedDewormingRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            /** Format: uuid */
+            product?: string | null;
+            product_name?: string;
+            dosage?: string;
+            administered_by?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+            status?: components["schemas"]["DoneStatusEnum"];
+        };
         PatchedFarmRequest: {
             name?: string;
             location?: string;
@@ -1675,10 +3109,42 @@ export interface components {
             /** @description Month the financial year starts (1 = January). */
             financial_year_start?: number;
         };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedHealthInspectionRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            inspector?: string;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            animals_inspected?: number | null;
+            findings?: string;
+            /** @description 1 (poor) to 10 (excellent) */
+            score?: number | null;
+            result?: components["schemas"]["ResultEnum"];
+            /** Format: date */
+            next_inspection_date?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedHealthObservationRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal?: string;
+            observed_by?: string;
+            symptoms?: string;
+            /** Format: decimal */
+            temperature_c?: string | null;
+            severity?: components["schemas"]["SeverityEnum"];
+            suspected_disease?: string;
+            action_taken?: string;
+        };
         /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
         PatchedLocationRequest: {
             name?: string;
-            type?: components["schemas"]["TypeEnum"];
+            type?: components["schemas"]["LocationTypeEnum"];
             capacity?: number | null;
             description?: string;
         };
@@ -1690,9 +3156,115 @@ export interface components {
             phone?: string;
             language?: components["schemas"]["LanguageEnum"];
         };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedMedicineRequest: {
+            name?: string;
+            type?: components["schemas"]["MedicineTypeEnum"];
+            manufacturer?: string;
+            default_dose?: string;
+            route?: components["schemas"]["RouteEnum"];
+            /** @description Meat/milk withdrawal period */
+            withdrawal_days?: number;
+        };
         PatchedMemberUpdateRequest: {
             role?: components["schemas"]["RoleEnum"];
             job_title?: string;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedParasiteControlRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            method?: components["schemas"]["MethodEnum"];
+            /** @description Ticks, mites, lice, flies… */
+            target?: string;
+            /** Format: uuid */
+            product?: string | null;
+            product_name?: string;
+            animals?: string[];
+            /** Format: uuid */
+            group?: string | null;
+            administered_by?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedTreatmentRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal?: string;
+            diagnosis?: string;
+            symptoms?: string;
+            /** @description What was done */
+            treatment?: string;
+            /** Format: uuid */
+            medication?: string | null;
+            medication_name?: string;
+            dosage?: string;
+            route?: components["schemas"]["RouteEnum"] | components["schemas"]["BlankEnum"];
+            responsible_person?: string;
+            vet_officer?: string;
+            /** Format: date */
+            follow_up_date?: string | null;
+            status?: components["schemas"]["TreatmentStatusEnum"];
+            /** Format: date */
+            resolved_date?: string | null;
+            /**
+             * Format: date
+             * @description Do not sell or milk until this date
+             */
+            withdrawal_until?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedVaccinationRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            /** Format: uuid */
+            vaccine?: string | null;
+            /** @description When the vaccine is not in the list */
+            vaccine_name?: string;
+            disease_category?: components["schemas"]["DiseaseCategoryEnum"];
+            batch_number?: string;
+            dosage?: string;
+            route?: components["schemas"]["RouteEnum"] | components["schemas"]["BlankEnum"];
+            administered_by?: string;
+            vet_officer?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+            status?: components["schemas"]["DoneStatusEnum"];
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedVaccineRequest: {
+            name?: string;
+            disease_category?: components["schemas"]["DiseaseCategoryEnum"];
+            manufacturer?: string;
+            default_dose?: string;
+            route?: components["schemas"]["RouteEnum"];
+            withdrawal_days?: number;
+            /** @description Suggests the next due date */
+            booster_interval_days?: number | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        PatchedVetVisitRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            vet_name?: string;
+            reason?: string;
+            animals?: string[];
+            findings?: string;
+            recommendations?: string;
+            /** Format: date */
+            next_visit_date?: string | null;
+            /** @description In cents of the farm currency */
+            cost_cents?: number | null;
         };
         /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
         PatchedWeightRecordRequest: {
@@ -1714,6 +3286,22 @@ export interface components {
             /** @default false */
             is_primary: boolean;
         };
+        /**
+         * @description * `high` - High
+         *     * `medium` - Medium
+         *     * `low` - Low
+         * @enum {string}
+         */
+        PriorityEnum: "high" | "medium" | "low";
+        /**
+         * @description * `` - Does not repeat
+         *     * `weekly` - Weekly
+         *     * `monthly` - Monthly
+         *     * `quarterly` - Quarterly
+         *     * `yearly` - Yearly
+         * @enum {string}
+         */
+        RepeatEnum: "weekly" | "monthly" | "quarterly" | "yearly";
         ResetMemberPasswordRequest: {
             channels: components["schemas"]["ChannelsEnum"][];
         };
@@ -1723,6 +3311,18 @@ export interface components {
             identifier?: string;
             code?: string;
         };
+        ResolveRequest: {
+            /** Format: date */
+            resolved_date?: string;
+            notes?: string;
+        };
+        /**
+         * @description * `good` - Good
+         *     * `needs_attention` - Needs attention
+         *     * `poor` - Poor
+         * @enum {string}
+         */
+        ResultEnum: "good" | "needs_attention" | "poor";
         /**
          * @description * `administrator` - Administrator
          *     * `farm_manager` - Farm Manager
@@ -1730,6 +3330,29 @@ export interface components {
          * @enum {string}
          */
         RoleEnum: "administrator" | "farm_manager" | "livestock_attendant";
+        /**
+         * @description * `sc` - Subcutaneous (SC)
+         *     * `im` - Intramuscular (IM)
+         *     * `oral` - Oral
+         *     * `intranasal` - Intranasal
+         *     * `topical` - Topical / pour-on
+         *     * `other` - Other
+         * @enum {string}
+         */
+        RouteEnum: "sc" | "im" | "oral" | "intranasal" | "topical" | "other";
+        /**
+         * @description * `this` - This one
+         *     * `following` - This and following
+         * @enum {string}
+         */
+        ScopeEnum: "this" | "following";
+        /**
+         * @description * `mild` - Mild
+         *     * `moderate` - Moderate
+         *     * `severe` - Severe
+         * @enum {string}
+         */
+        SeverityEnum: "mild" | "moderate" | "severe";
         /**
          * @description * `female` - Female
          *     * `male` - Male
@@ -1751,6 +3374,17 @@ export interface components {
             alert_channels?: components["schemas"]["AlertChannelsEnum"][];
         };
         /**
+         * @description * `manual` - Manual
+         *     * `vaccination` - Vaccination
+         *     * `deworming` - Deworming
+         *     * `treatment` - Treatment
+         *     * `health` - Health record
+         *     * `breeding` - Breeding
+         *     * `template` - Health calendar template
+         * @enum {string}
+         */
+        SourceEnum: "manual" | "vaccination" | "deworming" | "treatment" | "health" | "breeding" | "template";
+        /**
          * @description * `goat` - Goat
          *     * `sheep` - Sheep
          *     * `dairy_cattle` - Dairy cattle
@@ -1768,6 +3402,13 @@ export interface components {
             pregnant: number;
             inactive: number;
         };
+        Template: {
+            key: string;
+            name: string;
+            description: string;
+            count: number;
+            applied: number;
+        };
         TimelineEvent: {
             /** Format: date-time */
             at: string;
@@ -1779,18 +3420,197 @@ export interface components {
         TokenRequest: {
             token: string;
         };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        Treatment: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: uuid */
+            animal: string;
+            diagnosis: string;
+            symptoms?: string;
+            /** @description What was done */
+            treatment?: string;
+            /** Format: uuid */
+            medication?: string | null;
+            medication_name?: string;
+            readonly medication_label: string;
+            dosage?: string;
+            route?: components["schemas"]["RouteEnum"] | components["schemas"]["BlankEnum"];
+            responsible_person?: string;
+            vet_officer?: string;
+            /** Format: date */
+            follow_up_date?: string | null;
+            status?: components["schemas"]["TreatmentStatusEnum"];
+            /** Format: date */
+            resolved_date?: string | null;
+            /**
+             * Format: date
+             * @description Do not sell or milk until this date
+             */
+            withdrawal_until?: string | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        TreatmentRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal: string;
+            diagnosis: string;
+            symptoms?: string;
+            /** @description What was done */
+            treatment?: string;
+            /** Format: uuid */
+            medication?: string | null;
+            medication_name?: string;
+            dosage?: string;
+            route?: components["schemas"]["RouteEnum"] | components["schemas"]["BlankEnum"];
+            responsible_person?: string;
+            vet_officer?: string;
+            /** Format: date */
+            follow_up_date?: string | null;
+            status?: components["schemas"]["TreatmentStatusEnum"];
+            /** Format: date */
+            resolved_date?: string | null;
+            /**
+             * Format: date
+             * @description Do not sell or milk until this date
+             */
+            withdrawal_until?: string | null;
+        };
         /**
-         * @description * `paddock` - Paddock
-         *     * `pen` - Pen
-         *     * `isolation` - Isolation
-         *     * `quarantine` - Quarantine
-         *     * `other` - Other
+         * @description * `ongoing` - Ongoing
+         *     * `resolved` - Resolved
          * @enum {string}
          */
-        TypeEnum: "paddock" | "pen" | "isolation" | "quarantine" | "other";
+        TreatmentStatusEnum: "ongoing" | "resolved";
         UploadRequest: {
             /** Format: binary */
             file: string;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        Vaccination: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: uuid */
+            animal?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            /** Format: uuid */
+            vaccine?: string | null;
+            /** @description When the vaccine is not in the list */
+            vaccine_name?: string;
+            readonly vaccine_label: string;
+            disease_category?: components["schemas"]["DiseaseCategoryEnum"];
+            batch_number?: string;
+            dosage?: string;
+            route?: components["schemas"]["RouteEnum"] | components["schemas"]["BlankEnum"];
+            administered_by?: string;
+            vet_officer?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+            status?: components["schemas"]["DoneStatusEnum"];
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        VaccinationRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            /** Format: uuid */
+            animal?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            /** Format: uuid */
+            vaccine?: string | null;
+            /** @description When the vaccine is not in the list */
+            vaccine_name?: string;
+            disease_category?: components["schemas"]["DiseaseCategoryEnum"];
+            batch_number?: string;
+            dosage?: string;
+            route?: components["schemas"]["RouteEnum"] | components["schemas"]["BlankEnum"];
+            administered_by?: string;
+            vet_officer?: string;
+            /** Format: date */
+            next_due_date?: string | null;
+            status?: components["schemas"]["DoneStatusEnum"];
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        Vaccine: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            disease_category: components["schemas"]["DiseaseCategoryEnum"];
+            manufacturer?: string;
+            default_dose?: string;
+            route?: components["schemas"]["RouteEnum"];
+            withdrawal_days?: number;
+            /** @description Suggests the next due date */
+            booster_interval_days?: number | null;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        VaccineRequest: {
+            name: string;
+            disease_category: components["schemas"]["DiseaseCategoryEnum"];
+            manufacturer?: string;
+            default_dose?: string;
+            route?: components["schemas"]["RouteEnum"];
+            withdrawal_days?: number;
+            /** @description Suggests the next due date */
+            booster_interval_days?: number | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        VetVisit: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            readonly animal_label: string | null;
+            readonly group_label: string | null;
+            readonly recorded_by: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            vet_name: string;
+            reason: string;
+            animals?: string[];
+            readonly animal_labels: string[];
+            findings?: string;
+            recommendations?: string;
+            /** Format: date */
+            next_visit_date?: string | null;
+            /** @description In cents of the farm currency */
+            cost_cents?: number | null;
+        };
+        /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
+        VetVisitRequest: {
+            /** Format: date */
+            date?: string;
+            notes?: string;
+            vet_name: string;
+            reason: string;
+            animals?: string[];
+            findings?: string;
+            recommendations?: string;
+            /** Format: date */
+            next_visit_date?: string | null;
+            /** @description In cents of the farm currency */
+            cost_cents?: number | null;
         };
         /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
         WeightRecord: {
@@ -1841,6 +3661,706 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    activities_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description User id, 'me' or 'none' */
+                assignee?: string;
+                /** @description Category id or key */
+                category?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                date_from?: string;
+                date_to?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                priority?: string;
+                /** @description A search term. */
+                search?: string;
+                source?: string;
+                /** @description Comma-separated */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedActivityList"];
+                };
+            };
+        };
+    };
+    activities_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ActivityWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ActivityWriteRequest"];
+                "multipart/form-data": components["schemas"]["ActivityWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ActivityWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ActivityWriteRequest"];
+                "multipart/form-data": components["schemas"]["ActivityWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_destroy: {
+        parameters: {
+            query?: {
+                scope?: "following" | "this";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    activities_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedActivityWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedActivityWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedActivityWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ActivityWrite"];
+                };
+            };
+        };
+    };
+    activities_assign_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssignRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AssignRequest"];
+                "multipart/form-data": components["schemas"]["AssignRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_cancel_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ActionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ActionRequest"];
+                "multipart/form-data": components["schemas"]["ActionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_complete_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ActionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ActionRequest"];
+                "multipart/form-data": components["schemas"]["ActionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_history_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description User id, 'me' or 'none' */
+                assignee?: string;
+                /** @description Category id or key */
+                category?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                date_from?: string;
+                date_to?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                priority?: string;
+                /** @description A search term. */
+                search?: string;
+                source?: string;
+                /** @description Comma-separated */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedHistoryList"];
+                };
+            };
+        };
+    };
+    activities_notes_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description User id, 'me' or 'none' */
+                assignee?: string;
+                /** @description Category id or key */
+                category?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                date_from?: string;
+                date_to?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                priority?: string;
+                /** @description A search term. */
+                search?: string;
+                source?: string;
+                /** @description Comma-separated */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedNoteList"];
+                };
+            };
+        };
+    };
+    activities_notes_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NoteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["NoteRequest"];
+                "multipart/form-data": components["schemas"]["NoteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Note"];
+                };
+            };
+        };
+    };
+    activities_reopen_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ActionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ActionRequest"];
+                "multipart/form-data": components["schemas"]["ActionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_start_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ActionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ActionRequest"];
+                "multipart/form-data": components["schemas"]["ActionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_calendar_retrieve: {
+        parameters: {
+            query?: {
+                assignee?: string;
+                category?: string;
+                /** @description YYYY-MM-DD; defaults to today */
+                date?: string;
+                status?: string;
+                view?: "agenda" | "day" | "month" | "week";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Calendar"];
+                };
+            };
+        };
+    };
+    activity_categories_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"][];
+                };
+            };
+        };
+    };
+    activity_categories_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CategoryRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CategoryRequest"];
+                "multipart/form-data": components["schemas"]["CategoryRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"];
+                };
+            };
+        };
+    };
+    activity_categories_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity category. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"];
+                };
+            };
+        };
+    };
+    activity_categories_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity category. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CategoryRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CategoryRequest"];
+                "multipart/form-data": components["schemas"]["CategoryRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"];
+                };
+            };
+        };
+    };
+    activity_categories_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity category. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    activity_categories_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this activity category. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedCategoryRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedCategoryRequest"];
+                "multipart/form-data": components["schemas"]["PatchedCategoryRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Category"];
+                };
+            };
+        };
+    };
+    activity_templates_list: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Template"][];
+                };
+            };
+        };
+    };
+    activity_templates_apply_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApplyResult"];
+                };
+            };
+        };
+    };
     animal_groups_list: {
         parameters: {
             query?: {
@@ -2944,6 +5464,187 @@ export interface operations {
             };
         };
     };
+    dewormings_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                group?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `completed` - Completed
+                 *     * `missed` - Missed
+                 */
+                status?: "completed" | "missed";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedDewormingList"];
+                };
+            };
+        };
+    };
+    dewormings_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DewormingRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["DewormingRequest"];
+                "multipart/form-data": components["schemas"]["DewormingRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Deworming"];
+                };
+            };
+        };
+    };
+    dewormings_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this deworming. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Deworming"];
+                };
+            };
+        };
+    };
+    dewormings_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this deworming. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DewormingRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["DewormingRequest"];
+                "multipart/form-data": components["schemas"]["DewormingRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Deworming"];
+                };
+            };
+        };
+    };
+    dewormings_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this deworming. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    dewormings_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this deworming. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedDewormingRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedDewormingRequest"];
+                "multipart/form-data": components["schemas"]["PatchedDewormingRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Deworming"];
+                };
+            };
+        };
+    };
     farm_retrieve: {
         parameters: {
             query?: never;
@@ -3016,6 +5717,209 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Farm"];
+                };
+            };
+        };
+    };
+    health_summary_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthSummary"];
+                };
+            };
+        };
+    };
+    inspections_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                group?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /**
+                 * @description * `good` - Good
+                 *     * `needs_attention` - Needs attention
+                 *     * `poor` - Poor
+                 */
+                result?: "good" | "needs_attention" | "poor";
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedHealthInspectionList"];
+                };
+            };
+        };
+    };
+    inspections_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthInspectionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["HealthInspectionRequest"];
+                "multipart/form-data": components["schemas"]["HealthInspectionRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthInspection"];
+                };
+            };
+        };
+    };
+    inspections_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health inspection. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthInspection"];
+                };
+            };
+        };
+    };
+    inspections_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health inspection. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthInspectionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["HealthInspectionRequest"];
+                "multipart/form-data": components["schemas"]["HealthInspectionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthInspection"];
+                };
+            };
+        };
+    };
+    inspections_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health inspection. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    inspections_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health inspection. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedHealthInspectionRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedHealthInspectionRequest"];
+                "multipart/form-data": components["schemas"]["PatchedHealthInspectionRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthInspection"];
                 };
             };
         };
@@ -3501,6 +6405,181 @@ export interface operations {
             };
         };
     };
+    medicines_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `antibiotic` - Antibiotic
+                 *     * `anti_inflammatory` - Anti-inflammatory
+                 *     * `dewormer` - Dewormer
+                 *     * `acaricide` - Acaricide
+                 *     * `vitamin` - Vitamin / mineral
+                 *     * `other` - Other
+                 */
+                type?: "acaricide" | "anti_inflammatory" | "antibiotic" | "dewormer" | "other" | "vitamin";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Medicine"][];
+                };
+            };
+        };
+    };
+    medicines_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MedicineRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MedicineRequest"];
+                "multipart/form-data": components["schemas"]["MedicineRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Medicine"];
+                };
+            };
+        };
+    };
+    medicines_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this medicine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Medicine"];
+                };
+            };
+        };
+    };
+    medicines_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this medicine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MedicineRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MedicineRequest"];
+                "multipart/form-data": components["schemas"]["MedicineRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Medicine"];
+                };
+            };
+        };
+    };
+    medicines_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this medicine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    medicines_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this medicine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedMedicineRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedMedicineRequest"];
+                "multipart/form-data": components["schemas"]["PatchedMedicineRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Medicine"];
+                };
+            };
+        };
+    };
     members_list: {
         parameters: {
             query?: {
@@ -3735,6 +6814,1114 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    observations_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `mild` - Mild
+                 *     * `moderate` - Moderate
+                 *     * `severe` - Severe
+                 */
+                severity?: "mild" | "moderate" | "severe";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedHealthObservationList"];
+                };
+            };
+        };
+    };
+    observations_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthObservationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["HealthObservationRequest"];
+                "multipart/form-data": components["schemas"]["HealthObservationRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthObservation"];
+                };
+            };
+        };
+    };
+    observations_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health observation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthObservation"];
+                };
+            };
+        };
+    };
+    observations_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health observation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HealthObservationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["HealthObservationRequest"];
+                "multipart/form-data": components["schemas"]["HealthObservationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthObservation"];
+                };
+            };
+        };
+    };
+    observations_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health observation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    observations_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this health observation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedHealthObservationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedHealthObservationRequest"];
+                "multipart/form-data": components["schemas"]["PatchedHealthObservationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HealthObservation"];
+                };
+            };
+        };
+    };
+    parasite_control_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                group?: string;
+                /**
+                 * @description * `dipping` - Dipping
+                 *     * `spraying` - Spraying
+                 *     * `pour_on` - Pour-on
+                 *     * `injection` - Injection
+                 *     * `environment` - Pen / pasture treatment
+                 */
+                method?: "dipping" | "environment" | "injection" | "pour_on" | "spraying";
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedParasiteControlList"];
+                };
+            };
+        };
+    };
+    parasite_control_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ParasiteControlRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ParasiteControlRequest"];
+                "multipart/form-data": components["schemas"]["ParasiteControlRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ParasiteControl"];
+                };
+            };
+        };
+    };
+    parasite_control_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this parasite control. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ParasiteControl"];
+                };
+            };
+        };
+    };
+    parasite_control_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this parasite control. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ParasiteControlRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ParasiteControlRequest"];
+                "multipart/form-data": components["schemas"]["ParasiteControlRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ParasiteControl"];
+                };
+            };
+        };
+    };
+    parasite_control_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this parasite control. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    parasite_control_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this parasite control. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedParasiteControlRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedParasiteControlRequest"];
+                "multipart/form-data": components["schemas"]["PatchedParasiteControlRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ParasiteControl"];
+                };
+            };
+        };
+    };
+    treatments_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `ongoing` - Ongoing
+                 *     * `resolved` - Resolved
+                 */
+                status?: "ongoing" | "resolved";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedTreatmentList"];
+                };
+            };
+        };
+    };
+    treatments_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TreatmentRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["TreatmentRequest"];
+                "multipart/form-data": components["schemas"]["TreatmentRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Treatment"];
+                };
+            };
+        };
+    };
+    treatments_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this treatment. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Treatment"];
+                };
+            };
+        };
+    };
+    treatments_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this treatment. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TreatmentRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["TreatmentRequest"];
+                "multipart/form-data": components["schemas"]["TreatmentRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Treatment"];
+                };
+            };
+        };
+    };
+    treatments_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this treatment. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    treatments_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this treatment. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedTreatmentRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedTreatmentRequest"];
+                "multipart/form-data": components["schemas"]["PatchedTreatmentRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Treatment"];
+                };
+            };
+        };
+    };
+    treatments_resolve_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this treatment. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ResolveRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ResolveRequest"];
+                "multipart/form-data": components["schemas"]["ResolveRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Treatment"];
+                };
+            };
+        };
+    };
+    vaccinations_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                /**
+                 * @description * `clostridial` - Clostridial
+                 *     * `ppr` - PPR
+                 *     * `goat_pox` - Goat Pox
+                 *     * `brucellosis` - Brucellosis
+                 *     * `anthrax` - Anthrax
+                 *     * `ccpp` - CCPP
+                 *     * `fmd` - FMD
+                 *     * `other` - Other
+                 */
+                disease_category?: "anthrax" | "brucellosis" | "ccpp" | "clostridial" | "fmd" | "goat_pox" | "other" | "ppr";
+                group?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `completed` - Completed
+                 *     * `missed` - Missed
+                 */
+                status?: "completed" | "missed";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedVaccinationList"];
+                };
+            };
+        };
+    };
+    vaccinations_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["VaccinationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VaccinationRequest"];
+                "multipart/form-data": components["schemas"]["VaccinationRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccination"];
+                };
+            };
+        };
+    };
+    vaccinations_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccination. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccination"];
+                };
+            };
+        };
+    };
+    vaccinations_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccination. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["VaccinationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VaccinationRequest"];
+                "multipart/form-data": components["schemas"]["VaccinationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccination"];
+                };
+            };
+        };
+    };
+    vaccinations_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccination. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    vaccinations_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccination. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedVaccinationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedVaccinationRequest"];
+                "multipart/form-data": components["schemas"]["PatchedVaccinationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccination"];
+                };
+            };
+        };
+    };
+    vaccines_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccine"][];
+                };
+            };
+        };
+    };
+    vaccines_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VaccineRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VaccineRequest"];
+                "multipart/form-data": components["schemas"]["VaccineRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccine"];
+                };
+            };
+        };
+    };
+    vaccines_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccine"];
+                };
+            };
+        };
+    };
+    vaccines_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VaccineRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VaccineRequest"];
+                "multipart/form-data": components["schemas"]["VaccineRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccine"];
+                };
+            };
+        };
+    };
+    vaccines_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    vaccines_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vaccine. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedVaccineRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedVaccineRequest"];
+                "multipart/form-data": components["schemas"]["PatchedVaccineRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Vaccine"];
+                };
+            };
+        };
+    };
+    vet_visits_list: {
+        parameters: {
+            query?: {
+                animals?: string[];
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description from */
+                date_from?: string;
+                /** @description to */
+                date_to?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedVetVisitList"];
+                };
+            };
+        };
+    };
+    vet_visits_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VetVisitRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VetVisitRequest"];
+                "multipart/form-data": components["schemas"]["VetVisitRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VetVisit"];
+                };
+            };
+        };
+    };
+    vet_visits_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vet visit. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VetVisit"];
+                };
+            };
+        };
+    };
+    vet_visits_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vet visit. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VetVisitRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["VetVisitRequest"];
+                "multipart/form-data": components["schemas"]["VetVisitRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VetVisit"];
+                };
+            };
+        };
+    };
+    vet_visits_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vet visit. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    vet_visits_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this vet visit. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedVetVisitRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedVetVisitRequest"];
+                "multipart/form-data": components["schemas"]["PatchedVetVisitRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VetVisit"];
                 };
             };
         };

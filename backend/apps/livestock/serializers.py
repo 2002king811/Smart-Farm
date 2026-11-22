@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 from django.utils import timezone
@@ -114,6 +115,9 @@ class AnimalDetailSerializer(AnimalListSerializer):
     sire = AnimalRefSerializer(read_only=True, allow_null=True)
     offspring_count = serializers.SerializerMethodField()
     created_by_name = serializers.SerializerMethodField()
+    withdrawal_until = serializers.SerializerMethodField(
+        help_text="Do not sell or milk until this date (from treatments and vaccinations)"
+    )
 
     class Meta(AnimalListSerializer.Meta):
         fields = (
@@ -134,7 +138,13 @@ class AnimalDetailSerializer(AnimalListSerializer):
             "created_at",
             "created_by_name",
             "updated_at",
+            "withdrawal_until",
         )
+
+    def get_withdrawal_until(self, obj: Animal) -> date | None:
+        from apps.health.services import withdrawal_until
+
+        return withdrawal_until(obj)
 
     def get_offspring_count(self, obj: Animal) -> int:
         related = obj.offspring_as_dam if obj.sex == Sex.FEMALE else obj.offspring_as_sire
