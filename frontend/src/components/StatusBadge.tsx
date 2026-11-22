@@ -42,6 +42,10 @@ export const STATUS_MAP: Record<string, StatusDef> = {
   active: { label: 'Active', tone: 'green' },
   inactive: { label: 'Inactive', tone: 'grey' },
   suspended: { label: 'Suspended', tone: 'red' },
+  // Invitations
+  accepted: { label: 'Accepted', tone: 'green' },
+  revoked: { label: 'Revoked', tone: 'grey' },
+  expired: { label: 'Expired', tone: 'grey' },
   // Message delivery
   queued: { label: 'Queued', tone: 'grey' },
   sent: { label: 'Sent', tone: 'blue' },

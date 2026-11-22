@@ -789,3 +789,14 @@ def test_new_farmer_invites_manager_and_attendant_who_see_only_their_role():  # 
     assert "users" not in perms["farm_manager"] and "reports" in perms["farm_manager"]
     assert "reports" not in perms["livestock_attendant"]
     assert admin.get("/api/v1/members").json()["count"] == 3
+
+
+def test_message_failure_never_breaks_the_request(monkeypatch):  # type: ignore[no-untyped-def]
+    def broken(*args, **kwargs):  # type: ignore[no-untyped-def]
+        raise ConnectionRefusedError("mail server down")
+
+    monkeypatch.setattr("apps.notifications.messaging.send_mail", broken)
+    res = signup(APIClient())
+    assert res.status_code == 201
+    assert User.objects.filter(email="daniel@ypa.co.ke").exists()
+    assert not sent("email")  # nothing recorded as sent

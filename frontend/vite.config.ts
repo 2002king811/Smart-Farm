@@ -14,6 +14,7 @@ export default defineConfig({
     allowedHosts: ['.app.github.dev'],
     proxy: {
       '/api': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8010', changeOrigin: true },
+      '/media': { target: process.env.VITE_PROXY_TARGET ?? 'http://localhost:8010', changeOrigin: true },
       '/ws': { target: process.env.VITE_WS_PROXY_TARGET ?? 'http://localhost:8011', ws: true },
     },
   },
@@ -33,5 +34,6 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     css: false,
+    exclude: ['e2e/**', 'node_modules/**'],
   },
 });

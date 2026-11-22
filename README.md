@@ -9,8 +9,8 @@ The stack is Django 5.2 + Django REST Framework + PostgreSQL 16 + Celery/Redis +
 | # | Phase | Status |
 |---|-------|--------|
 | 1 | Foundation: repository, Docker Compose, settings, CI, base models, tenancy, audit log, design tokens, app shell | **Done** |
-| 2 | Accounts: sign-up, login, password reset, verification, invitations, roles, User Management, Settings | Next |
-| 3 | Livestock | |
+| 2 | Accounts: sign-up, login, password reset, verification, invitations, roles, User Management, Settings | **Done** |
+| 3 | Livestock | Next |
 | 4 | Health and calendar | |
 | 5 | Breeding and nutrition | |
 | 6 | Notifications (in-app, email, SMS, WhatsApp) | |
@@ -88,7 +88,7 @@ To create a platform super admin:
 docker compose exec api python manage.py createsuperuser
 ```
 
-Phase 1 has no sign-in yet (it arrives in phase 2). In development the web app shows a **preview** switch, so you can see the app shell as an Administrator, a Farm Manager or a Livestock Attendant. It shows no demo data.
+Open http://localhost:5180 and choose **Create an account for your farm**. While developing, invitation links and SMS codes appear at http://localhost:8010/api/dev/outbox.
 
 ### On Windows without Docker (simplest)
 
@@ -174,6 +174,28 @@ cd frontend && npm run api:generate
 ```bash
 cd backend && python manage.py export_permissions
 ```
+
+## Accounts and sessions (phase 2)
+
+- **Sign-up** (`POST /api/v1/auth/signup`, 3 steps in the UI) creates the user, the farm and an Administrator membership in one transaction. It then sends an email confirmation link and an SMS code. The app can be used straight away, but SMS and WhatsApp sending stay off until the phone is confirmed.
+- **Login** works with a username, email or phone number. After 5 wrong passwords the account is locked for 15 minutes, and login and code endpoints are rate-limited per IP address and per account.
+- **Sessions:** the access token lasts 15 minutes and is kept in memory only. The refresh token (1 day, or 30 days with "Remember me") is an httpOnly cookie, rotated on each use, and checked against a CSRF cookie.
+- **Password reset** works by email link or 6-digit SMS code. Both expire after 15 minutes, codes allow 5 tries, and only hashes are stored. A reset signs the user out everywhere.
+- **Members and invitations** (Administrators only): invite by link, or create an account with a temporary password that must be changed at first login. Admins can change roles, reset passwords, and deactivate or activate members. Deactivating cuts farm access immediately and keeps all records. A farm always keeps at least one active Administrator.
+- **Messages** (invitations, codes, links): email goes through Django's mail backend (Mailpit locally). SMS and WhatsApp use the console adapter until phase 6. In development, `GET /api/dev/outbox` lists recent messages so you can open links and read codes. It only exists when `DJANGO_DEBUG=true` and `MESSAGING_ADAPTER=console`.
+
+## End-to-end tests
+
+Start the API with a throwaway database, then run Playwright:
+
+```bash
+cd backend && DATABASE_URL=postgres://postgres:postgres@localhost:5432/smartfarm_e2e USE_REDIS=false DJANGO_DEBUG=true python manage.py migrate && DATABASE_URL=postgres://postgres:postgres@localhost:5432/smartfarm_e2e USE_REDIS=false DJANGO_DEBUG=true python manage.py runserver 8010
+```
+
+```bash
+cd frontend && npm run e2e
+```
+
 
 ## How multi-farm tenancy works
 

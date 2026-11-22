@@ -1,7 +1,16 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
-import { api, ApiError, setActiveFarmId, type Schemas } from '@/api/client';
+import {
+  api,
+  hasSessionCookie,
+  refreshSession,
+  setAccessToken,
+  setActiveFarmId,
+  setSessionEndedHandler,
+  type Schemas,
+  type Session,
+} from '@/api/client';
 import type { Role } from '@/routes/permissions';
 
 export type Me = Schemas['Me'];
@@ -10,14 +19,18 @@ export type MyFarm = Schemas['MyFarm'];
 const FARM_KEY = 'sf.activeFarmId';
 
 interface SessionValue {
-  status: 'loading' | 'anonymous' | 'authenticated' | 'preview';
+  status: 'loading' | 'anonymous' | 'authenticated';
   user: Me | null;
   farms: MyFarm[];
+  farmsLoading: boolean;
   activeFarm: MyFarm | null;
   role: Role | undefined;
+  /** Store a session returned by login, sign-up, invitation accept or password change. */
+  startSession: (session: Session) => void;
+  setUser: (user: Me) => void;
+  logout: () => Promise<void>;
   switchFarm: (farmId: string) => void;
-  /** Development only: view the shell as a role before sign-in exists (removed in phase 2). */
-  startPreview: (role: Role) => void;
+  refetchFarms: () => void;
 }
 
 const SessionContext = createContext<SessionValue | null>(null);
@@ -32,27 +45,70 @@ function readStoredFarm(): string | null {
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState<SessionValue['status']>(hasSessionCookie() ? 'loading' : 'anonymous');
+  const [user, setUser] = useState<Me | null>(null);
   const [farmId, setFarmId] = useState<string | null>(readStoredFarm);
-  const [previewRole, setPreviewRole] = useState<Role | null>(null);
 
-  const me = useQuery({
-    queryKey: ['me'],
-    queryFn: () => api<Me>('/me'),
-    retry: (count, err) => !(err instanceof ApiError && err.status === 401) && count < 2,
-    enabled: previewRole === null,
-  });
-  const farms = useQuery({
-    queryKey: ['me', 'farms'],
-    queryFn: () => api<MyFarm[]>('/me/farms'),
-    enabled: me.isSuccess,
-  });
+  const endSession = useCallback(() => {
+    setAccessToken(null);
+    setActiveFarmId(null);
+    setUser(null);
+    setStatus('anonymous');
+    queryClient.clear();
+  }, [queryClient]);
 
-  const farmList = useMemo(() => farms.data ?? [], [farms.data]);
-  const activeFarm = farmList.find((m) => m.farm.id === farmId) ?? farmList[0] ?? null;
+  // Resume a session after a reload, using the refresh cookie.
+  useEffect(() => {
+    if (status !== 'loading') return;
+    let cancelled = false;
+    void refreshSession().then((session) => {
+      if (cancelled) return;
+      if (session) {
+        setUser(session.user);
+        setStatus('authenticated');
+      } else {
+        setStatus('anonymous');
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [status]);
 
   useEffect(() => {
-    setActiveFarmId(activeFarm?.farm.id ?? null);
-  }, [activeFarm]);
+    setSessionEndedHandler(endSession);
+    return () => setSessionEndedHandler(null);
+  }, [endSession]);
+
+  const farmsQuery = useQuery({
+    queryKey: ['me', 'farms'],
+    queryFn: () => api<MyFarm[]>('/me/farms'),
+    enabled: status === 'authenticated' && !user?.must_change_password,
+  });
+
+  const farms = useMemo(() => farmsQuery.data ?? [], [farmsQuery.data]);
+  const activeFarm = farms.find((m) => m.farm.id === farmId) ?? farms[0] ?? null;
+
+  // Set synchronously during render so the first farm-scoped request already carries it.
+  setActiveFarmId(activeFarm?.farm.id ?? null);
+
+  const startSession = useCallback(
+    (session: Session) => {
+      setAccessToken(session.access);
+      setUser(session.user);
+      setStatus('authenticated');
+      void queryClient.invalidateQueries({ queryKey: ['me', 'farms'] });
+    },
+    [queryClient],
+  );
+
+  const logout = useCallback(async () => {
+    try {
+      await api('/auth/logout', { method: 'POST', noRefresh: true });
+    } finally {
+      endSession();
+    }
+  }, [endSession]);
 
   const switchFarm = useCallback(
     (id: string) => {
@@ -69,34 +125,22 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [queryClient],
   );
 
-  const value = useMemo<SessionValue>(() => {
-    if (previewRole) {
-      return {
-        status: 'preview',
-        user: null,
-        farms: [],
-        activeFarm: null,
-        role: previewRole,
-        switchFarm,
-        startPreview: setPreviewRole,
-      };
-    }
-    const status =
-      me.isPending || (me.isSuccess && farms.isPending)
-        ? 'loading'
-        : me.isSuccess
-          ? 'authenticated'
-          : 'anonymous';
-    return {
+  const value = useMemo<SessionValue>(
+    () => ({
       status,
-      user: me.data ?? null,
-      farms: farmList,
+      user,
+      farms,
+      farmsLoading: farmsQuery.isPending && status === 'authenticated' && !user?.must_change_password,
       activeFarm,
       role: activeFarm?.role as Role | undefined,
+      startSession,
+      setUser,
+      logout,
       switchFarm,
-      startPreview: setPreviewRole,
-    };
-  }, [previewRole, me.isPending, me.isSuccess, me.data, farms.isPending, farmList, activeFarm, switchFarm]);
+      refetchFarms: () => void farmsQuery.refetch(),
+    }),
+    [status, user, farms, farmsQuery, activeFarm, startSession, logout, switchFarm],
+  );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }

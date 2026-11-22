@@ -154,3 +154,28 @@ def test_websocket_health():  # type: ignore[no-untyped-def]
         return message
 
     assert async_to_sync(run)() == {"status": "ok"}
+
+
+def test_dev_outbox_only_in_debug(client, settings):  # type: ignore[no-untyped-def]
+    from importlib import reload
+
+    from django.urls import clear_url_caches
+
+    import config.urls
+    import tests.urls
+    from apps.notifications import messaging
+
+    assert client.get("/api/dev/outbox").status_code == 404
+    settings.DEBUG = True
+    try:
+        reload(config.urls)
+        reload(tests.urls)
+        clear_url_caches()
+        messaging.SENT.append(messaging.SentMessage("sms", "+254700000000", "123456 is your code"))
+        res = client.get("/api/dev/outbox")
+        assert res.json()["messages"][0]["body"] == "123456 is your code"
+    finally:
+        settings.DEBUG = False
+        reload(config.urls)
+        reload(tests.urls)
+        clear_url_caches()

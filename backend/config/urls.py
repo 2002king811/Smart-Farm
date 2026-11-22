@@ -17,6 +17,11 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
 ]
 
+if settings.DEBUG and settings.MESSAGING_ADAPTER == "console":
+    from apps.notifications.dev_views import outbox
+
+    urlpatterns.insert(0, path("api/dev/outbox", outbox, name="dev-outbox"))
+
 if settings.DEBUG and not settings.USE_S3:
     from django.conf.urls.static import static
 

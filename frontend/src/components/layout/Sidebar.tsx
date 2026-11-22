@@ -17,7 +17,7 @@ interface Props {
 export function Sidebar({ open, onClose }: Props) {
   const { t } = useTranslation();
   const { role } = useSession();
-  const items = SIDEBAR_ITEMS.filter((item) => can(role, item.module));
+  const items = SIDEBAR_ITEMS.filter((item) => item.module === 'settings' || can(role, item.module));
 
   return (
     <aside className={`${styles.sidebar} ${open ? styles.open : ''}`} id="app-sidebar">

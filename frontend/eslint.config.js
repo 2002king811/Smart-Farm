@@ -6,7 +6,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', 'src/api/schema.d.ts', 'coverage'] },
+  { ignores: ['dist', 'src/api/schema.d.ts', 'coverage', 'test-results', 'playwright-report'] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended, jsxA11y.flatConfigs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -18,7 +18,17 @@ export default tseslint.config(
         'warn',
         {
           allowConstantExport: true,
-          allowExportNames: ['useSession', 'useToast', 'makeQueryClient', 'statusDef', 'STATUS_MAP'],
+          allowExportNames: [
+            'useSession',
+            'useToast',
+            'makeQueryClient',
+            'statusDef',
+            'STATUS_MAP',
+            'applyServerErrors',
+            'passwordStrength',
+            'LIVESTOCK',
+            'HERD_SIZES',
+          ],
         },
       ],
     },

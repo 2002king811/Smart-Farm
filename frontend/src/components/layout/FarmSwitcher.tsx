@@ -2,24 +2,14 @@ import { ChevronsUpDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { useSession } from '@/features/session/SessionContext';
-import { ROLE_LABELS } from '@/routes/permissions';
 
 import styles from './FarmSwitcher.module.css';
 
 /** Lists the user's farm memberships; switching sets X-Farm-ID and clears cached farm data. */
 export function FarmSwitcher() {
   const { t } = useTranslation();
-  const { farms, activeFarm, switchFarm, role, status } = useSession();
+  const { farms, activeFarm, switchFarm } = useSession();
 
-  if (status === 'preview') {
-    return (
-      <div className={styles.switcher}>
-        <span className={styles.label}>{t('farm.current')}</span>
-        <span className={styles.farm}>Preview</span>
-        <span className={styles.role}>{role ? ROLE_LABELS[role] : ''}</span>
-      </div>
-    );
-  }
   if (!activeFarm) return null;
 
   return (

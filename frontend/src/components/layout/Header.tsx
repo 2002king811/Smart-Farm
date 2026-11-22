@@ -6,6 +6,7 @@ import { useSession } from '@/features/session/SessionContext';
 import { LANGUAGES } from '@/i18n';
 
 import styles from './Header.module.css';
+import { UserMenu } from './UserMenu';
 
 interface Props {
   title: string;
@@ -16,8 +17,7 @@ interface Props {
 
 export function Header({ title, onMenu, menuOpen = false, compact = false }: Props) {
   const { t, i18n } = useTranslation();
-  const { user, activeFarm, status } = useSession();
-  const initials = user ? `${user.first_name[0] ?? ''}${user.last_name[0] ?? ''}`.toUpperCase() || '?' : '•';
+  const { activeFarm } = useSession();
 
   return (
     <header className={`${styles.header} ${compact ? styles.compact : ''}`}>
@@ -35,11 +35,7 @@ export function Header({ title, onMenu, menuOpen = false, compact = false }: Pro
       )}
       <div className={styles.titles}>
         <h1 className={styles.title}>{title}</h1>
-        {compact && (
-          <span className={styles.farm}>
-            {activeFarm?.farm.name ?? (status === 'preview' ? 'Preview' : '')}
-          </span>
-        )}
+        {compact && <span className={styles.farm}>{activeFarm?.farm.name ?? ''}</span>}
       </div>
       {!compact && (
         <form className={styles.search} role="search" onSubmit={(e) => e.preventDefault()}>
@@ -73,9 +69,7 @@ export function Header({ title, onMenu, menuOpen = false, compact = false }: Pro
         <Link to="/notifications" className={styles.iconButton} aria-label={t('header.notifications')}>
           <Bell size={22} aria-hidden="true" />
         </Link>
-        <span className={styles.avatar} title={user?.full_name ?? t('header.account')} aria-hidden="true">
-          {initials}
-        </span>
+        <UserMenu />
       </div>
     </header>
   );

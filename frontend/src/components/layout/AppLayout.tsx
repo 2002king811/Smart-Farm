@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { useSession } from '@/features/session/SessionContext';
+import { VerificationBanner } from '@/features/session/VerificationBanner';
 import { MOBILE_ITEMS, SIDEBAR_ITEMS } from '@/routes/nav';
 
 import styles from './AppLayout.module.css';
@@ -42,6 +43,7 @@ export function DesktopLayout() {
       <div className={styles.main}>
         <Header title={title} onMenu={() => setMenuOpen(true)} menuOpen={menuOpen} />
         <main id="main" className={styles.content} tabIndex={-1}>
+          <VerificationBanner />
           <Outlet />
         </main>
       </div>
@@ -60,6 +62,7 @@ export function MobileLayout() {
       </a>
       <Header title={title} compact />
       <main id="main" className={styles.mobileContent} tabIndex={-1}>
+        <VerificationBanner />
         <Outlet />
       </main>
       <MobileNav />
