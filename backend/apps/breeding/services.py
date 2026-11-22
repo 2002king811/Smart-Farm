@@ -294,6 +294,7 @@ def record_death(mortality: Mortality) -> None:
         months = animal.age_in_months(mortality.date)
         if months is not None:
             Mortality.objects.filter(pk=mortality.pk).update(age_at_death_months=months)
+            mortality.age_at_death_months = months
     animal.is_active = False
     animal.exit_reason, animal.exit_date = ExitReason.DIED, mortality.date
     animal.exit_notes = (mortality.cause or mortality.get_cause_category_display())[:200]
@@ -355,12 +356,13 @@ def kid_growth(animal: Animal) -> dict[str, Any]:
             * 1000
             / (latest["date"] - birth["date"]).days
         )
+    kg = lambda v: f"{v:.2f}" if v is not None else None  # noqa: E731
     return {
-        "birth_weight_kg": birth["weight_kg"] if birth else None,
-        "latest_weight_kg": latest["weight_kg"] if latest else None,
+        "birth_weight_kg": kg(birth["weight_kg"]) if birth else None,
+        "latest_weight_kg": kg(latest["weight_kg"]) if latest else None,
         "latest_weight_date": latest["date"] if latest else None,
         "average_daily_gain_g": adg,
-        "weights": [{"date": w["date"], "weight_kg": w["weight_kg"]} for w in weights],
+        "weights": [{"date": w["date"], "weight_kg": kg(w["weight_kg"])} for w in weights],
     }
 
 

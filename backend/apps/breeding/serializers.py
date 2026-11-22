@@ -241,6 +241,8 @@ class MortalitySerializer(HealthRecordSerializer):
             "disposal",
         )
         read_only_fields = ("id", "age_at_death_months", "created_at")
+        # Our own check below gives a clearer message than the one-to-one uniqueness check.
+        extra_kwargs: dict[str, Any] = {"animal": {"validators": []}}
 
     def validate_animal(self, animal: Animal) -> Animal:
         if self.instance is None and not animal.is_active:
