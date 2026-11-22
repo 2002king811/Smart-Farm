@@ -136,6 +136,7 @@ class ActivityViewSet(FarmScopedViewSet):
                 activity.farm_id,
                 activity_id=str(activity.pk),
                 recipient_id=str(activity.assigned_to_id),
+                actor_id=str(request.user.pk),
             )
         return self._out(activity, status.HTTP_201_CREATED)
 
@@ -173,6 +174,7 @@ class ActivityViewSet(FarmScopedViewSet):
                 activity.farm_id,
                 activity_id=str(activity.pk),
                 recipient_id=str(activity.assigned_to_id),
+                actor_id=str(request.user.pk),
             )
         return self._out(activity)
 
@@ -223,6 +225,7 @@ class ActivityViewSet(FarmScopedViewSet):
                 activity.farm_id,
                 activity_id=str(activity.pk),
                 recipient_id=str(activity.assigned_to_id),
+                actor_id=str(request.user.pk),
             )
         return self._out(activity)
 
@@ -324,7 +327,8 @@ class CalendarView(FarmScopedAPIView):
         view = params.get("view") or request.farm.default_calendar_view  # type: ignore[attr-defined]
         if view not in ("month", "week", "day", "agenda"):
             raise ValidationError({"view": ["Use month, week, day or agenda."]})
-        day = _from_param(params.get("date")) if params.get("date") else services.farm_today(request.farm)  # type: ignore[attr-defined]
+        farm: Any = request.farm  # type: ignore[attr-defined]
+        day = _from_param(params.get("date")) if params.get("date") else services.farm_today(farm)
         start, end = calendar_range(view, day)
         qs = _with_relations(Activity.objects.filter(date__range=(start, end)))
         qs = ActivityFilter(params, queryset=qs, request=request).qs

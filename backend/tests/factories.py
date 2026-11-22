@@ -21,6 +21,12 @@ from apps.health.models import (
     VetVisit,
 )
 from apps.livestock.models import Animal, AnimalGroup, AnimalPhoto, Location, WeightRecord
+from apps.notifications.models import (
+    Notification,
+    NotificationPreference,
+    NotificationSettings,
+    OutboundMessage,
+)
 from apps.nutrition.models import (
     FeedingRecord,
     FeedItem,
@@ -362,8 +368,52 @@ class WaterHygieneCheckFactory(factory.django.DjangoModelFactory):
     farm = factory.SubFactory(FarmFactory)
 
 
+class NotificationFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Notification
+
+    farm = factory.SubFactory(FarmFactory)
+    recipient = factory.SubFactory(UserFactory)
+    event_type = "test"
+    title = "Test message"
+    message = "Hello"
+
+
+class OutboundMessageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OutboundMessage
+
+    farm = factory.SubFactory(FarmFactory)
+    notification = factory.SubFactory(NotificationFactory, farm=factory.SelfAttribute("..farm"))
+    channel = "sms"
+    to = "+256772000001"
+    template = "test"
+
+
+class NotificationPreferenceFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = NotificationPreference
+
+    farm = factory.SubFactory(FarmFactory)
+    user = factory.SubFactory(UserFactory)
+    event_type = "activity.overdue"
+    channel = "sms"
+    enabled = False
+
+
+class NotificationSettingsFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = NotificationSettings
+
+    farm = factory.SubFactory(FarmFactory)
+    user = factory.SubFactory(UserFactory)
+
+
 # Endpoints whose list shows only some rows of a model need a matching factory.
 FACTORY_FOR_ROUTE = {"kids": KidFactory}
+# Endpoints that list only the signed-in person's rows: {route: field}. The isolation test
+# points this field at its user, on both farms.
+OWNER_FIELD_FOR_ROUTE = {"notifications": "recipient"}
 
 # Farm-scoped endpoints whose model is not a FarmOwnedModel.
 FACTORY_FOR_ENDPOINT_MODEL = {
@@ -404,4 +454,8 @@ FACTORY_FOR_MODEL = {
     NutritionAssessment: NutritionAssessmentFactory,
     Supplementation: SupplementationFactory,
     WaterHygieneCheck: WaterHygieneCheckFactory,
+    Notification: NotificationFactory,
+    OutboundMessage: OutboundMessageFactory,
+    NotificationPreference: NotificationPreferenceFactory,
+    NotificationSettings: NotificationSettingsFactory,
 }

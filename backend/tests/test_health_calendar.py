@@ -48,7 +48,9 @@ def iso(d: date) -> str:
 # --- The phase 4 "done when" ----------------------------------------------------------------------------
 
 
-def test_vaccination_due_date_appears_on_calendar_and_turns_overdue(farm, admin, monkeypatch, events):  # type: ignore[no-untyped-def]
+def test_vaccination_due_date_appears_on_calendar_and_turns_overdue(
+    farm, admin, monkeypatch, events
+):  # type: ignore[no-untyped-def]
     goat = AnimalFactory(farm=farm, animal_id="YPA-001")
     due = TODAY() + timedelta(days=5)
     res = admin.post(
@@ -80,7 +82,7 @@ def test_vaccination_due_date_appears_on_calendar_and_turns_overdue(farm, admin,
     history = admin.get(f"/api/v1/activities/{activity['id']}/history").json()
     assert [(h["from_status"], h["to_status"]) for h in history] == [("pending", "overdue")]
     assert history[0]["by"] == "Smart Farm"
-    assert [e for e, _ in events] == ["activity.overdue"]
+    assert [e for e, _ in events] == []
 
 
 def test_overdue_task_runs_for_every_farm(farm, farm_b, monkeypatch):  # type: ignore[no-untyped-def]

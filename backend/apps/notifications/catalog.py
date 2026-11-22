@@ -70,29 +70,53 @@ WHATSAPP_TEMPLATES: dict[str, str] = {
     EventType.USAGE_WARNING: "smartfarm_usage_warning",
     EventType.TEST: "smartfarm_test",
 }
-QUICK_REPLY_EVENTS = {EventType.UPCOMING, EventType.DUE_TODAY, EventType.OVERDUE, EventType.TASK_ASSIGNED,
-                      EventType.VACCINATION_REMINDER, EventType.DEWORMING_REMINDER}
+QUICK_REPLY_EVENTS = {
+    EventType.UPCOMING,
+    EventType.DUE_TODAY,
+    EventType.OVERDUE,
+    EventType.TASK_ASSIGNED,
+    EventType.VACCINATION_REMINDER,
+    EventType.DEWORMING_REMINDER,
+}
 
 # Titles in English and Kiswahili; {title}, {date}, {who}, {farm} are filled in.
 TITLES: dict[str, dict[str, str]] = {
     EventType.UPCOMING: {"en": "Coming up: {title}", "sw": "Inakuja: {title}"},
     EventType.DUE_TODAY: {"en": "Due today: {title}", "sw": "Leo: {title}"},
     EventType.OVERDUE: {"en": "Overdue: {title}", "sw": "Imechelewa: {title}"},
-    EventType.VACCINATION_REMINDER: {"en": "Vaccination due: {title}", "sw": "Chanjo inakaribia: {title}"},
-    EventType.DEWORMING_REMINDER: {"en": "Deworming due: {title}", "sw": "Dawa ya minyoo inakaribia: {title}"},
+    EventType.VACCINATION_REMINDER: {
+        "en": "Vaccination due: {title}",
+        "sw": "Chanjo inakaribia: {title}",
+    },
+    EventType.DEWORMING_REMINDER: {
+        "en": "Deworming due: {title}",
+        "sw": "Dawa ya minyoo inakaribia: {title}",
+    },
     EventType.TASK_ASSIGNED: {"en": "New task: {title}", "sw": "Kazi mpya: {title}"},
     EventType.ACTIVITY_COMPLETED: {"en": "Completed: {title}", "sw": "Imekamilika: {title}"},
 }
 MESSAGES: dict[str, dict[str, str]] = {
     EventType.UPCOMING: {"en": "{title} is planned for {date}.", "sw": "{title} imepangwa {date}."},
     EventType.DUE_TODAY: {"en": "{title} is due today.", "sw": "{title} inatakiwa kufanyika leo."},
-    EventType.OVERDUE: {"en": "{title} was due on {date} and is not done yet.", "sw": "{title} ilitakiwa {date} na bado haijafanyika."},
+    EventType.OVERDUE: {
+        "en": "{title} was due on {date} and is not done yet.",
+        "sw": "{title} ilitakiwa {date} na bado haijafanyika.",
+    },
     EventType.VACCINATION_REMINDER: {"en": "{title} on {date}.", "sw": "{title} tarehe {date}."},
     EventType.DEWORMING_REMINDER: {"en": "{title} on {date}.", "sw": "{title} tarehe {date}."},
-    EventType.TASK_ASSIGNED: {"en": "{who} assigned you {title} for {date}.", "sw": "{who} amekupa kazi {title} ya {date}."},
-    EventType.ACTIVITY_COMPLETED: {"en": "{who} completed {title}.", "sw": "{who} amekamilisha {title}."},
+    EventType.TASK_ASSIGNED: {
+        "en": "{who} assigned you {title} for {date}.",
+        "sw": "{who} amekupa kazi {title} ya {date}.",
+    },
+    EventType.ACTIVITY_COMPLETED: {
+        "en": "{who} completed {title}.",
+        "sw": "{who} amekamilisha {title}.",
+    },
 }
-QUICK_REPLY_HINT = {"en": "Reply 1 to mark done, 2 to reschedule to tomorrow.", "sw": "Jibu 1 kukamilisha, 2 kuahirisha hadi kesho."}
+QUICK_REPLY_HINT = {
+    "en": "Reply 1 to mark done, 2 to reschedule to tomorrow.",
+    "sw": "Jibu 1 kukamilisha, 2 kuahirisha hadi kesho.",
+}
 
 
 @dataclass
@@ -104,7 +128,11 @@ class Rendered:
 
 def render_activity(event_type: str, activity: Any, lang: str, who: str = "") -> Rendered:
     lang = lang if lang in ("en", "sw") else "en"
-    values = {"title": activity.title, "date": f"{activity.date:%d %b %Y}", "who": who or "Smart Farm"}
+    values = {
+        "title": activity.title,
+        "date": f"{activity.date:%d %b %Y}",
+        "who": who or "Smart Farm",
+    }
     return Rendered(
         TITLES[event_type][lang].format(**values),
         MESSAGES[event_type][lang].format(**values),

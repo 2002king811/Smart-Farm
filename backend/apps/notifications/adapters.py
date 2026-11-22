@@ -67,7 +67,13 @@ class ConsoleAdapter(Adapter):
     def send(self, message: Message) -> SendResult:
         from .messaging import SENT, SentMessage
 
-        logger.info("[console %s] to=%s template=%s %s", self.channel, message.to, message.template, message.text)
+        logger.info(
+            "[console %s] to=%s template=%s %s",
+            self.channel,
+            message.to,
+            message.template,
+            message.text,
+        )
         SENT.append(SentMessage(self.channel, message.to, message.text, message.subject))
         return SendResult(provider_id=f"console-{uuid.uuid4().hex[:12]}")
 
@@ -79,7 +85,10 @@ class EmailAdapter(Adapter):
         from .messaging import SENT, SentMessage
 
         message_id = f"<{uuid.uuid4().hex}@smartfarm>"
-        html = render_to_string("notifications/email.html", {**message.params, "text": message.text, "subject": message.subject})
+        html = render_to_string(
+            "notifications/email.html",
+            {**message.params, "text": message.text, "subject": message.subject},
+        )
         email = EmailMultiAlternatives(
             subject=message.subject or "Smart Farm",
             body=message.text,
@@ -90,7 +99,7 @@ class EmailAdapter(Adapter):
         email.attach_alternative(html, "text/html")
         try:
             email.send()
-        except Exception as exc:  # noqa: BLE001 - SMTP errors vary by backend
+        except Exception as exc:
             raise ProviderError(f"Email could not be sent: {exc}") from exc
         SENT.append(SentMessage("email", message.to, message.text, message.subject))
         return SendResult(provider_id=message_id)
@@ -101,18 +110,30 @@ class AfricasTalkingAdapter(Adapter):
 
     @property
     def url(self) -> str:
-        host = "api.sandbox.africastalking.com" if settings.AFRICASTALKING_USERNAME == "sandbox" else "api.africastalking.com"
+        host = (
+            "api.sandbox.africastalking.com"
+            if settings.AFRICASTALKING_USERNAME == "sandbox"
+            else "api.africastalking.com"
+        )
         return f"https://{host}/version1/messaging"
 
     def send(self, message: Message) -> SendResult:
         if not settings.AFRICASTALKING_API_KEY:
-            raise ProviderError("Africa's Talking is not configured (AFRICASTALKING_API_KEY).", retry=False)
-        data = {"username": settings.AFRICASTALKING_USERNAME, "to": message.to, "message": message.text}
+            raise ProviderError(
+                "Africa's Talking is not configured (AFRICASTALKING_API_KEY).", retry=False
+            )
+        data = {
+            "username": settings.AFRICASTALKING_USERNAME,
+            "to": message.to,
+            "message": message.text,
+        }
         if settings.AFRICASTALKING_SENDER_ID and settings.AFRICASTALKING_USERNAME != "sandbox":
             data["from"] = settings.AFRICASTALKING_SENDER_ID
         try:
             res = requests.post(
-                self.url, data=data, timeout=TIMEOUT,
+                self.url,
+                data=data,
+                timeout=TIMEOUT,
                 headers={"apiKey": settings.AFRICASTALKING_API_KEY, "Accept": "application/json"},
             )
         except requests.RequestException as exc:
@@ -120,13 +141,19 @@ class AfricasTalkingAdapter(Adapter):
         if res.status_code >= 500:
             raise ProviderError(f"Africa's Talking error {res.status_code}")
         if res.status_code >= 400:
-            raise ProviderError(f"Africa's Talking refused the message: {res.text[:200]}", retry=False)
+            raise ProviderError(
+                f"Africa's Talking refused the message: {res.text[:200]}", retry=False
+            )
         recipients = (res.json().get("SMSMessageData") or {}).get("Recipients") or []
         if not recipients:
-            raise ProviderError(f"Africa's Talking did not accept the message: {res.text[:200]}", retry=False)
+            raise ProviderError(
+                f"Africa's Talking did not accept the message: {res.text[:200]}", retry=False
+            )
         r = recipients[0]
         if r.get("status") not in ("Success", "Sent", "Queued", "Buffered"):
-            raise ProviderError(f"SMS rejected: {r.get('status')}", retry=r.get("statusCode") in (500, 501, 502))
+            raise ProviderError(
+                f"SMS rejected: {r.get('status')}", retry=r.get("statusCode") in (500, 501, 502)
+            )
         return SendResult(provider_id=r.get("messageId", ""), cost=r.get("cost", ""))
 
 
@@ -136,30 +163,53 @@ class WhatsAppCloudAdapter(Adapter):
 
     def send(self, message: Message) -> SendResult:
         if not settings.WHATSAPP_ACCESS_TOKEN or not settings.WHATSAPP_PHONE_NUMBER_ID:
-            raise ProviderError("WhatsApp is not configured (WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID).", retry=False)
+            raise ProviderError(
+                "WhatsApp is not configured (WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID).",
+                retry=False,
+            )
         url = f"https://graph.facebook.com/{self.API_VERSION}/{settings.WHATSAPP_PHONE_NUMBER_ID}/messages"
-        body_params = [{"type": "text", "text": str(v)[:1000]} for v in message.params.get("body", [])]
+        body_params = [
+            {"type": "text", "text": str(v)[:1000]} for v in message.params.get("body", [])
+        ]
         components: list[dict[str, Any]] = []
         if body_params:
             components.append({"type": "body", "parameters": body_params})
         for index, payload in enumerate(message.params.get("buttons", [])):
-            components.append({"type": "button", "sub_type": "quick_reply", "index": str(index),
-                               "parameters": [{"type": "payload", "payload": payload}]})
-        data = {
+            components.append(
+                {
+                    "type": "button",
+                    "sub_type": "quick_reply",
+                    "index": str(index),
+                    "parameters": [{"type": "payload", "payload": payload}],
+                }
+            )
+        data: dict[str, Any] = {
             "messaging_product": "whatsapp",
             "to": message.to.lstrip("+"),
             "type": "template",
-            "template": {"name": message.template, "language": {"code": message.language}, "components": components},
+            "template": {
+                "name": message.template,
+                "language": {"code": message.language},
+                "components": components,
+            },
         }
         try:
-            res = requests.post(url, json=data, timeout=TIMEOUT,
-                                headers={"Authorization": f"Bearer {settings.WHATSAPP_ACCESS_TOKEN}"})
+            res = requests.post(
+                url,
+                json=data,
+                timeout=TIMEOUT,
+                headers={"Authorization": f"Bearer {settings.WHATSAPP_ACCESS_TOKEN}"},
+            )
         except requests.RequestException as exc:
             raise ProviderError(f"WhatsApp unreachable: {exc}") from exc
         if res.status_code >= 500 or res.status_code == 429:
             raise ProviderError(f"WhatsApp error {res.status_code}")
         if res.status_code >= 400:
-            error = (res.json().get("error") or {}).get("message", res.text[:200]) if res.content else res.text
+            error = (
+                (res.json().get("error") or {}).get("message", res.text[:200])
+                if res.content
+                else res.text
+            )
             raise ProviderError(f"WhatsApp refused the message: {error}", retry=False)
         messages = res.json().get("messages") or [{}]
         return SendResult(provider_id=messages[0].get("id", ""))

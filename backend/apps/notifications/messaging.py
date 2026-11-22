@@ -1,8 +1,8 @@
 """Outbound messages for account flows (invitations, login details, codes, reset links).
 
-Phase 6 replaces this with the full notification pipeline (outbox, provider adapters, delivery
-status). Until then SMS and WhatsApp use the console adapter: the message is logged, and kept
-in ``SENT`` so development tools and tests can read it. Email goes through Django's mail
+SMS and WhatsApp go through the same provider adapters as notifications (adapters.py); with the
+console adapter the message is logged, and kept in ``SENT`` so development tools and tests can
+read it. Email goes through Django's mail
 backend (Mailpit locally). Messages are sent after the database transaction commits, through
 Celery, so no request waits on a provider.
 """
@@ -33,10 +33,6 @@ class SentMessage:
 SENT: deque[SentMessage] = deque(maxlen=200)
 
 
-class MessagingNotConfigured(RuntimeError):
-    pass
-
-
 def queue(channel: str, to: str, body: str, subject: str = "") -> None:
     """Send after commit, in the background."""
     after_commit(lambda: deliver.delay(channel, to, body, subject))
@@ -49,12 +45,28 @@ def queue(channel: str, to: str, body: str, subject: str = "") -> None:
     max_retries=3,
 )
 def deliver(channel: str, to: str, body: str, subject: str = "") -> None:
+    from .adapters import Message, get_adapter
+
     if channel == "email":
         send_mail(subject or "Smart Farm", body, settings.DEFAULT_FROM_EMAIL, [to])
         SENT.append(SentMessage(channel, to, body, subject))
         return
-    if settings.MESSAGING_ADAPTER != "console":
-        # Real Africa's Talking / WhatsApp Cloud API adapters arrive in phase 6.
-        raise MessagingNotConfigured(f"No {channel} adapter configured yet")
-    logger.info("[console %s] to=%s %s", channel, to, body)
-    SENT.append(SentMessage(channel, to, body, subject))
+    adapter = get_adapter(channel)
+    if (
+        channel == "whatsapp"
+        and adapter.channel == "whatsapp"
+        and not isinstance(adapter, _console())
+    ):
+        # Outside a conversation WhatsApp only delivers approved templates.
+        message = Message(
+            to=to, template="smartfarm_account_message", params={"body": [body]}, text=body
+        )
+    else:
+        message = Message(to=to, template="account", text=body, subject=subject)
+    adapter.send(message)
+
+
+def _console() -> type:
+    from .adapters import ConsoleAdapter
+
+    return ConsoleAdapter

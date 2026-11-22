@@ -238,6 +238,16 @@ CELERY_BEAT_SCHEDULE = {
         "task": "calendar.extend_series",
         "schedule": crontab(minute=20, hour=1),
     },
+    # Reminders, due today, overdue and daily summaries, by each farm's local time.
+    "notifications-run-schedules": {
+        "task": "notifications.run_schedules",
+        "schedule": crontab(minute="*/15"),
+    },
+    # Messages held for quiet hours and retries that are due.
+    "notifications-release-due": {
+        "task": "notifications.release_due",
+        "schedule": crontab(minute="*"),
+    },
 }
 
 # USE_REDIS=false is a simple local mode for machines without Redis or Docker (e.g. Windows):
@@ -286,8 +296,12 @@ AFRICASTALKING_USERNAME = env("AFRICASTALKING_USERNAME", default="sandbox")
 AFRICASTALKING_API_KEY = env("AFRICASTALKING_API_KEY", default="")
 AFRICASTALKING_SENDER_ID = env("AFRICASTALKING_SENDER_ID", default="SMARTFARM")
 # Per channel: "console" logs messages; real providers are used only in staging/production.
-SMS_ADAPTER = env("SMS_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "africastalking")
-WHATSAPP_ADAPTER = env("WHATSAPP_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "whatsapp_cloud")
+SMS_ADAPTER = env(
+    "SMS_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "africastalking"
+)
+WHATSAPP_ADAPTER = env(
+    "WHATSAPP_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "whatsapp_cloud"
+)
 # Shared secret in the SMS and email webhook URLs (?token=…); WhatsApp uses its signature.
 WEBHOOK_TOKEN = env("WEBHOOK_TOKEN", default="")
 

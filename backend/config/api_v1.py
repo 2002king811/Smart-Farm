@@ -39,6 +39,13 @@ from apps.livestock.views import (
     LocationViewSet,
     WeightRecordViewSet,
 )
+from apps.notifications import webhooks
+from apps.notifications.views import (
+    ContactDetailView,
+    ContactsView,
+    NotificationViewSet,
+    PreferencesView,
+)
 from apps.nutrition.views import (
     FeedingRecordViewSet,
     FeedItemViewSet,
@@ -80,6 +87,7 @@ router.register(
 )
 router.register("supplementation", SupplementationViewSet, basename="supplementation")
 router.register("water-hygiene", WaterHygieneViewSet, basename="water-hygiene")
+router.register("notifications", NotificationViewSet, basename="notification")
 
 urlpatterns = [
     path("", include("apps.accounts.urls")),
@@ -94,5 +102,12 @@ urlpatterns = [
         TemplateApplyView.as_view(),
         name="activity-template-apply",
     ),
+    path("notification-preferences", PreferencesView.as_view(), name="notification-preferences"),
+    path("channel-contacts", ContactsView.as_view(), name="channel-contacts"),
+    path("channel-contacts/<str:channel>", ContactDetailView.as_view(), name="channel-contact"),
+    path("webhooks/whatsapp", webhooks.whatsapp, name="webhook-whatsapp"),
+    path("webhooks/sms/delivery", webhooks.sms_delivery, name="webhook-sms-delivery"),
+    path("webhooks/sms/inbound", webhooks.sms_inbound, name="webhook-sms-inbound"),
+    path("webhooks/email", webhooks.email_events, name="webhook-email"),
     path("", include(router.urls)),
 ]

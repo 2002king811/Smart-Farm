@@ -13,7 +13,12 @@ from django.urls import URLPattern, URLResolver, get_resolver
 from apps.accounts.models import Role
 from apps.core.models import FarmOwnedModel
 from apps.core.views import FarmContextMixin
-from tests.factories import FACTORY_FOR_ENDPOINT_MODEL, FACTORY_FOR_MODEL, FACTORY_FOR_ROUTE
+from tests.factories import (
+    FACTORY_FOR_ENDPOINT_MODEL,
+    FACTORY_FOR_MODEL,
+    FACTORY_FOR_ROUTE,
+    OWNER_FIELD_FOR_ROUTE,
+)
 
 ALL_FACTORIES = {**FACTORY_FOR_MODEL, **FACTORY_FOR_ENDPOINT_MODEL}
 
@@ -102,6 +107,13 @@ def test_every_farm_owned_model_has_a_factory() -> None:
 VIEWSETS = _farm_viewsets()
 
 
+def _own(route: str, user: Any, *rows: Any) -> None:
+    """For "only my rows" endpoints, make the rows the user's own (on both farms)."""
+    field = OWNER_FIELD_FOR_ROUTE.get(route)
+    for row in rows if field else ():
+        type(row)._base_manager.filter(pk=row.pk).update(**{field: user})
+
+
 def test_discovers_farm_viewsets() -> None:
     assert "audit-logs" in VIEWSETS
     assert "test-goats" in VIEWSETS
@@ -115,6 +127,7 @@ def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member
     mine = factory(farm=farm_a)
     theirs = factory(farm=farm_b)
     user = member(farm_a, Role.ADMINISTRATOR)
+    _own(route, user, mine, theirs)
     client = client_for(user, farm_a)
 
     # List: only my farm's rows, and the other farm's row never appears in any page.
@@ -160,6 +173,7 @@ def test_member_of_both_farms_sees_only_the_selected_one(route, farm_a, farm_b, 
     from apps.accounts.models import FarmMembership
 
     FarmMembership.objects.create(user=user, farm=farm_b, role=Role.ADMINISTRATOR)
+    _own(route, user, a, b)
 
     def ids(farm):  # type: ignore[no-untyped-def]
         body = client_for(user, farm).get(f"/api/v1/{route}?page_size=200").json()

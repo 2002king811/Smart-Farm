@@ -99,6 +99,7 @@ def set_status(activity: Activity, to: str, user: Any = None, note: str = "") ->
             activity.farm_id,
             activity_id=str(activity.pk),
             recipient_id=str(activity.created_by_id),
+            actor_id=str(user.pk) if user is not None else None,
         )
     return activity
 
@@ -131,12 +132,7 @@ def mark_overdue(farm: Any) -> int:
             set_status(
                 activity, ActivityStatus.OVERDUE, None, "Passed its date without being completed"
             )
-            emit(
-                "activity.overdue",
-                farm.pk,
-                activity_id=str(activity.pk),
-                recipient_id=str(activity.assigned_to_id) if activity.assigned_to_id else None,
-            )
+            # Reminders about it go out at 07:00 farm time (notifications.run_schedules).
             count += 1
     return count
 
