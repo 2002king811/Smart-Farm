@@ -30,6 +30,18 @@ export const STATUS_MAP: Record<string, StatusDef> = {
   high: { label: 'High', tone: 'red' },
   medium: { label: 'Medium', tone: 'amber' },
   low: { label: 'Low', tone: 'grey' },
+  // Breeding status
+  open: { label: 'Open', tone: 'grey' },
+  served: { label: 'Served', tone: 'blue' },
+  lactating: { label: 'Lactating', tone: 'purple' },
+  dry: { label: 'Dry', tone: 'grey' },
+  breeding_male: { label: 'Breeding male', tone: 'blue' },
+  castrated: { label: 'Castrated', tone: 'grey' },
+  too_young: { label: 'Too young', tone: 'grey' },
+  // Exits
+  sold: { label: 'Sold', tone: 'grey' },
+  died: { label: 'Died', tone: 'red' },
+  culled: { label: 'Culled', tone: 'grey' },
   // Treatments
   ongoing: { label: 'Ongoing', tone: 'amber' },
   resolved: { label: 'Resolved', tone: 'green' },
@@ -59,12 +71,13 @@ export function statusDef(status: string): StatusDef {
 }
 
 interface Props {
-  status: string;
+  status?: string | null;
   /** Overrides the label (e.g. a translated one); the colour still comes from the status. */
   label?: string;
 }
 
-export function StatusBadge({ status, label }: Props) {
+export function StatusBadge({ status: raw, label }: Props) {
+  const status = raw ?? '';
   const def = statusDef(status);
   return (
     <span className={`${styles.badge} ${styles[def.tone]}`} data-status={status} data-tone={def.tone}>

@@ -21,9 +21,11 @@ import { can, type Module } from './permissions';
 
 const UsersPage = lazy(() => import('@/features/users/UsersPage'));
 const SettingsPage = lazy(() => import('@/features/settings/SettingsPage'));
+const LivestockRoutes = lazy(() => import('@/features/livestock/LivestockRoutes'));
 
 /** Screens built so far; everything else shows its phase placeholder. */
 const BUILT: Partial<Record<Module, () => ReactNode>> = {
+  livestock: () => <LivestockRoutes />,
   users: () => <UsersPage />,
   settings: () => <SettingsPage />,
 };

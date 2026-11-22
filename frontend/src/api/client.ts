@@ -53,6 +53,10 @@ let refreshing: Promise<Session | null> | null = null;
 export function setAccessToken(token: string | null) {
   accessToken = token;
 }
+/** For file downloads that need the token in a plain fetch. */
+export function accessTokenForDownload() {
+  return accessToken ?? '';
+}
 export function hasAccessToken() {
   return accessToken !== null;
 }

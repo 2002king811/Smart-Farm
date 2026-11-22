@@ -126,7 +126,7 @@ function MembersTab() {
       ) : (
         <>
           <div className={page.tableWrap}>
-            <table className={page.table}>
+            <table className={`${page.table} ${page.compact}`}>
               <thead>
                 <tr>
                   <th scope="col">Name</th>
@@ -648,7 +648,7 @@ function InvitationsTab() {
         </div>
       ) : (
         <div className={page.tableWrap}>
-          <table className={page.table}>
+          <table className={`${page.table} ${page.compact}`}>
             <thead>
               <tr>
                 <th scope="col">Name</th>

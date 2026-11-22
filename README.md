@@ -10,8 +10,8 @@ The stack is Django 5.2 + Django REST Framework + PostgreSQL 16 + Celery/Redis +
 |---|-------|--------|
 | 1 | Foundation: repository, Docker Compose, settings, CI, base models, tenancy, audit log, design tokens, app shell | **Done** |
 | 2 | Accounts: sign-up, login, password reset, verification, invitations, roles, User Management, Settings | **Done** |
-| 3 | Livestock | Next |
-| 4 | Health and calendar | |
+| 3 | Livestock: register, registration form, animal profile, weights, photos | **Done** |
+| 4 | Health and calendar | Next |
 | 5 | Breeding and nutrition | |
 | 6 | Notifications (in-app, email, SMS, WhatsApp) | |
 | 7 | Dashboard and reports | |
@@ -183,6 +183,22 @@ cd backend && python manage.py export_permissions
 - **Password reset** works by email link or 6-digit SMS code. Both expire after 15 minutes, codes allow 5 tries, and only hashes are stored. A reset signs the user out everywhere.
 - **Members and invitations** (Administrators only): invite by link, or create an account with a temporary password that must be changed at first login. Admins can change roles, reset passwords, and deactivate or activate members. Deactivating cuts farm access immediately and keeps all records. A farm always keeps at least one active Administrator.
 - **Messages** (invitations, codes, links): email goes through Django's mail backend (Mailpit locally). SMS and WhatsApp use the console adapter until phase 6. In development, `GET /api/dev/outbox` lists recent messages so you can open links and read codes. It only exists when `DJANGO_DEBUG=true` and `MESSAGING_ADAPTER=console`.
+
+## Livestock (phase 3)
+
+- **Register** (`GET /api/v1/animals`):
+  - Search by ID, ear tag, name or breed.
+  - Filter with `sex`, `breed`, `age=kid|young|adult`, `status` (health status, comma-separated), `attention`, `location`, `group`, `breeding` and `active=true|false|all` (default: in the herd).
+  - Sort with `ordering`.
+- **Summary and export:** `GET /animals/summary` returns the stat-card counts. `GET /animals/export?format=csv|xlsx` exports the filtered register (managers and administrators).
+- **Animal IDs:** `GET /animals/next-id` suggests the next free ID from the farm prefix (e.g. `YPA-021`). Animal IDs and ear tags are unique per farm.
+- **Ages:** entering an estimated age stores an estimated birth date, so the age keeps counting. A kid is under 6 months.
+- **Weights:** `GET/POST /animals/{id}/weights` lists and records weights, showing the gain since the previous one. Managers can correct or delete one at `/weights/{id}`.
+- **Photos:** `GET/POST /animals/{id}/photos` (JPG, PNG or WebP, up to 10 MB). Each upload is stored at up to 1600 px with a 400 px thumbnail, and the EXIF data, including GPS location, is removed. The first photo becomes the profile photo.
+- **Leaving the herd:** `POST /animals/{id}/exit` records a sale, death or cull, and `/reactivate` undoes it. The animal's history is kept.
+- **Timeline:** `GET /animals/{id}/timeline` lists registration, weights, photos, status changes and moves. Later phases add health, breeding and feeding events through `TIMELINE_SOURCES`.
+- **Locations and groups:** `/locations` and `/animal-groups`, managed by managers and administrators. New farms start with default pens (including Isolation Pen and Quarantine Pen) and groups.
+- **Attendants** can view the register, register animals, add photos and record weights.
 
 ## End-to-end tests
 
