@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Baby, Camera, HeartPulse, PawPrint, Scale, ShieldAlert, Wheat } from 'lucide-react';
+import { Baby, Camera, PawPrint, Scale, ShieldAlert } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -19,6 +19,8 @@ import { useToast } from '@/components/Toast';
 import { useSession } from '@/features/session/SessionContext';
 import { recordType } from '@/features/health/config';
 import { RecordList } from '@/features/health/Records';
+import { ASSESSMENTS, SUPPLEMENTS } from '@/features/nutrition/config';
+import { MATING_STATUS } from '@/features/breeding/config';
 import { can } from '@/routes/permissions';
 
 import {
@@ -101,23 +103,16 @@ export default function ProfilePage() {
         {tab === 'breeding' && <BreedingTab animal={a} />}
         {tab === 'weights' && <WeightsTab animal={a} onWeigh={() => setWeighing(true)} />}
         {tab === 'feeding' && (
-          <Later icon={Wheat} what="Feeding, supplements and nutrition assessments" phase={5} />
+          <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+            <RecordList type={ASSESSMENTS} animalId={a.id} />
+            <RecordList type={SUPPLEMENTS} animalId={a.id} />
+          </div>
         )}
         {tab === 'photos' && <PhotosTab animal={a} />}
         {tab === 'timeline' && <TimelineTab animal={a} />}
       </div>
       <RecordWeightModal animal={a} open={weighing} onClose={() => setWeighing(false)} />
     </>
-  );
-}
-
-function Later({ icon, what, phase }: { icon: typeof HeartPulse; what: string; phase: number }) {
-  return (
-    <EmptyState
-      icon={icon}
-      title="Nothing recorded yet"
-      message={`${what} will appear here once that module is built (phase ${phase}).`}
-    />
   );
 }
 
@@ -307,18 +302,75 @@ function Overview({ animal: a }: { animal: Animal }) {
 }
 
 function BreedingTab({ animal: a }: { animal: Animal }) {
+  const { activeFarm } = useSession();
+  const fmt = activeFarm?.farm.date_format ?? 'DD MMM YYYY';
+  const param = a.sex === 'female' ? 'doe' : 'buck';
+  const matings = useQuery({
+    queryKey: ['breeding', 'matings', param, a.id],
+    queryFn: () =>
+      api<{ results: Record<string, unknown>[] }>('/matings', { query: { [param]: a.id, page_size: 50 } }),
+  });
+  const births = useQuery({
+    queryKey: ['breeding', 'births', a.id],
+    queryFn: () =>
+      api<{ results: { id: string; date: string; kids: { id: string; animal_id: string }[] }[] }>('/births', {
+        query: { dam: a.id },
+      }),
+    enabled: a.sex === 'female',
+  });
+  const rows = matings.data?.results ?? [];
   return (
     <section className={page.card}>
       <div className={page.cardBody}>
         <dl className={styles.facts}>
           <Fact label="Breeding status" value={<StatusBadge status={a.breeding_status} />} />
           <Fact label="Offspring on record" value={a.offspring_count} />
+          {births.data?.results.length ? (
+            <Fact
+              label="Kids"
+              value={births.data.results
+                .flatMap((b) => b.kids)
+                .map((k, i) => (
+                  <span key={k.id}>
+                    {i > 0 && ', '}
+                    <Link to={`/livestock/${k.id}`}>{k.animal_id}</Link>
+                  </span>
+                ))}
+            />
+          ) : null}
         </dl>
-        <EmptyState
-          icon={Baby}
-          title="No matings recorded yet"
-          message="Matings, pregnancy checks and births are added in phase 5."
-        />
+        {matings.isPending ? (
+          <LoadingState />
+        ) : rows.length === 0 ? (
+          <EmptyState
+            icon={Baby}
+            title="No matings recorded"
+            message="Record matings and births under Breeding & Kids."
+          />
+        ) : (
+          <table className={page.table}>
+            <thead>
+              <tr>
+                <th scope="col">Mated</th>
+                <th scope="col">{a.sex === 'female' ? 'With' : 'Doe'}</th>
+                <th scope="col">Status</th>
+                <th scope="col">Expected kidding</th>
+                <th scope="col">Kids</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((m) => (
+                <tr key={String(m.id)}>
+                  <td>{formatDate(m.date as string, fmt)}</td>
+                  <td>{String(a.sex === 'female' ? m.buck_label : m.doe_label)}</td>
+                  <td>{MATING_STATUS(m as never)}</td>
+                  <td>{formatDate(m.expected_kidding_date as string, fmt)}</td>
+                  <td>{m.kids_count === null ? '—' : String(m.kids_count)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </section>
   );

@@ -58,6 +58,10 @@ export const STATUS_MAP: Record<string, StatusDef> = {
   confirmed: { label: 'Confirmed', tone: 'green' },
   not_pregnant: { label: 'Not pregnant', tone: 'grey' },
   kidded: { label: 'Kidded', tone: 'green' },
+  // Feed
+  low_stock: { label: 'Low stock', tone: 'red' },
+  // Matings
+  aborted: { label: 'Aborted', tone: 'red' },
   // Users and farms
   active: { label: 'Active', tone: 'green' },
   inactive: { label: 'Inactive', tone: 'grey' },

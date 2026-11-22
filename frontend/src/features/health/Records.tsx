@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form';
 import { api, ApiError } from '@/api/client';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
-import { applyServerErrors, FormError, FormInput, FormSelect } from '@/components/forms';
+import { applyServerErrors, Checkbox, FormError, FormInput, FormSelect } from '@/components/forms';
 import { LoadingState } from '@/components/LoadingState';
 import { Modal } from '@/components/Modal';
 import page from '@/components/Page.module.css';
 import { useToast } from '@/components/Toast';
-import { useGroups, type AnimalRow } from '@/features/livestock/api';
+import { useGroups, useLocations, type AnimalRow } from '@/features/livestock/api';
 import styles from '@/features/livestock/Livestock.module.css';
 import { useSession } from '@/features/session/SessionContext';
 import { useCursorList } from '@/features/users/api';
@@ -36,6 +36,16 @@ interface Medicine {
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
+
+/** Saving a record can change animals, the calendar, stock and summaries: refresh them all. */
+const REFRESH = ['health', 'animals', 'activities', 'calendar', 'breeding', 'nutrition'];
+
+interface FeedItemOption {
+  id: string;
+  name: string;
+  unit: string;
+  stock_quantity: string;
+}
 
 function addDays(day: string, n: number) {
   const d = new Date(`${day}T12:00:00`);
@@ -66,6 +76,7 @@ export function RecordList({ type, animalId }: { type: RecordType; animalId?: st
   const list = useCursorList<Row>(['health', type.key], type.path, query);
   const [editing, setEditing] = useState<Row | 'new' | null>(null);
   const rows = list.data?.pages.flatMap((p) => p.results) ?? [];
+  const mod = type.module ?? 'health';
   const columns = type.columns.filter((c) => !(animalId && c.subject));
 
   const remove = async (row: Row) => {
@@ -73,9 +84,7 @@ export function RecordList({ type, animalId }: { type: RecordType; animalId?: st
       return;
     try {
       await api(`${type.path}/${row.id}`, { method: 'DELETE' });
-      await qc.invalidateQueries({ queryKey: ['health'] });
-      await qc.invalidateQueries({ queryKey: ['animals'] });
-      await qc.invalidateQueries({ queryKey: ['activities'] });
+      await Promise.all(REFRESH.map((k) => qc.invalidateQueries({ queryKey: [k] })));
       toast.success(`The ${type.singular} was deleted.`);
     } catch (err) {
       toast.error(err instanceof ApiError ? err.message : 'Could not delete.');
@@ -106,7 +115,7 @@ export function RecordList({ type, animalId }: { type: RecordType; animalId?: st
           </div>
         )}
         {animalId && <h3 style={{ alignSelf: 'center' }}>{type.title}</h3>}
-        {can(role, 'health', 'create') && (
+        {can(role, mod, type.createAction ?? 'create') && (
           <div style={{ flex: '0 0 auto' }}>
             <button type="button" className="btn btn-primary" onClick={() => setEditing('new')}>
               <Plus size={18} aria-hidden="true" /> Record {type.singular}
@@ -150,19 +159,17 @@ export function RecordList({ type, animalId }: { type: RecordType; animalId?: st
                     ))}
                     <td>
                       <div className={page.rowActions}>
-                        {type.key === 'treatments' &&
-                          r.status === 'ongoing' &&
-                          can(role, 'health', 'update') && (
-                            <button type="button" className={page.small} onClick={() => void resolve(r)}>
-                              Resolve
-                            </button>
-                          )}
-                        {can(role, 'health', 'update') && (
+                        {type.key === 'treatments' && r.status === 'ongoing' && can(role, mod, 'update') && (
+                          <button type="button" className={page.small} onClick={() => void resolve(r)}>
+                            Resolve
+                          </button>
+                        )}
+                        {can(role, mod, 'update') && (
                           <button type="button" className={page.small} onClick={() => setEditing(r)}>
                             Edit
                           </button>
                         )}
-                        {can(role, 'health', 'delete') && (
+                        {can(role, mod, 'delete') && (
                           <button
                             type="button"
                             className={`${page.small} ${page.danger}`}
@@ -200,13 +207,15 @@ export function RecordList({ type, animalId }: { type: RecordType; animalId?: st
   );
 }
 
-type Values = Record<string, string | string[]>;
+type Values = Record<string, string | string[] | boolean>;
 
 function initialValues(type: RecordType, row?: Row, animalId?: string): Values {
   const v: Values = {};
   for (const f of type.fields) {
     const raw = row?.[f.name];
-    if (f.type === 'animals') v[f.name] = (raw as string[] | undefined) ?? (animalId ? [animalId] : []);
+    if (f.type === 'checkbox')
+      v[f.name] = raw === undefined || raw === null ? f.initial !== 'false' : Boolean(raw);
+    else if (f.type === 'animals') v[f.name] = (raw as string[] | undefined) ?? (animalId ? [animalId] : []);
     else if (f.type === 'money') v[f.name] = raw ? String(Number(raw) / 100) : '';
     else if (raw !== undefined && raw !== null) v[f.name] = String(raw);
     else if (f.name === 'animal' && animalId) v[f.name] = animalId;
@@ -223,10 +232,11 @@ function toBody(type: RecordType, values: Values, creating: boolean) {
     // On a new record, leave empty fields out so the server's defaults apply (e.g. the
     // withdrawal date from the medicine); on an edit, empty means "clear it".
     if (creating && (v === '' || v === undefined)) continue;
-    if (f.type === 'animals') body[f.name] = v;
+    if (f.type === 'checkbox') body[f.name] = Boolean(v);
+    else if (f.type === 'animals') body[f.name] = v;
     else if (f.type === 'money') body[f.name] = v ? Math.round(Number(v) * 100) : null;
     else if (
-      ['animal', 'group', 'vaccine', 'medicine', 'date', 'number'].includes(f.type) ||
+      ['animal', 'group', 'vaccine', 'medicine', 'feed', 'location', 'date', 'number'].includes(f.type) ||
       (f.type === 'select' && f.name === 'score')
     )
       body[f.name] = v === '' ? null : v;
@@ -235,7 +245,20 @@ function toBody(type: RecordType, values: Values, creating: boolean) {
   return body;
 }
 
-export function RecordForm({
+export function RecordForm(props: { type: RecordType; row?: Row; animalId?: string; onClose: () => void }) {
+  // Dropdowns must have their options before the form sets a pre-selected value.
+  const animals = useAnimalOptions();
+  const needsAnimals = props.type.fields.some((f) => f.type === 'animal' || f.type === 'animals');
+  if (needsAnimals && animals.isPending)
+    return (
+      <Modal title={`Record ${props.type.singular}`} open onClose={props.onClose}>
+        <LoadingState />
+      </Modal>
+    );
+  return <RecordFormBody {...props} />;
+}
+
+function RecordFormBody({
   type,
   row,
   animalId,
@@ -267,6 +290,12 @@ export function RecordForm({
     enabled: needs('medicine'),
     staleTime: 300_000,
   });
+  const feedItems = useQuery({
+    queryKey: ['nutrition', 'feed-items'],
+    queryFn: () => api<FeedItemOption[]>('/feed-items'),
+    enabled: needs('feed'),
+  });
+  const locations = useLocations();
   const vaccineById = useMemo(() => new Map((vaccines.data ?? []).map((v) => [v.id, v])), [vaccines.data]);
 
   const onVaccine = (id: string) => {
@@ -294,9 +323,7 @@ export function RecordForm({
         method: row ? 'PATCH' : 'POST',
         body: toBody(type, values, !row),
       });
-      await Promise.all(
-        ['health', 'animals', 'activities'].map((k) => qc.invalidateQueries({ queryKey: [k] })),
-      );
+      await Promise.all(REFRESH.map((k) => qc.invalidateQueries({ queryKey: [k] })));
       toast.success(row ? `The ${type.singular} was updated.` : `The ${type.singular} was recorded.`);
       onClose();
     } catch (err) {
@@ -377,11 +404,13 @@ export function RecordForm({
         return (
           <FormSelect key={f.name} label={label} hint={f.hint} error={err} {...reg}>
             <option value="">{f.required ? 'Choose…' : 'None'}</option>
-            {animals.data?.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.animal_id} {a.name}
-              </option>
-            ))}
+            {animals.data
+              ?.filter((a) => !type.animalSex || a.sex === type.animalSex)
+              .map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.animal_id} {a.name}
+                </option>
+              ))}
           </FormSelect>
         );
       case 'group':
@@ -442,6 +471,30 @@ export function RecordForm({
               ))}
           </FormSelect>
         );
+      case 'feed':
+        return (
+          <FormSelect key={f.name} label={label} hint={f.hint} error={err} {...reg}>
+            <option value="">{f.required ? 'Choose…' : 'Not from stock'}</option>
+            {feedItems.data?.map((i) => (
+              <option key={i.id} value={i.id}>
+                {i.name} ({Number(i.stock_quantity)} {i.unit} in stock)
+              </option>
+            ))}
+          </FormSelect>
+        );
+      case 'location':
+        return (
+          <FormSelect key={f.name} label={label} error={err} {...reg}>
+            <option value="">None</option>
+            {locations.data?.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.name}
+              </option>
+            ))}
+          </FormSelect>
+        );
+      case 'checkbox':
+        return <Checkbox key={f.name} label={f.label} {...reg} />;
       default:
         return <FormInput key={f.name} label={label} hint={f.hint} error={err} {...reg} />;
     }

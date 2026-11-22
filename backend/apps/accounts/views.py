@@ -134,7 +134,9 @@ class LogoutView(PublicAuthView):
             from rest_framework_simplejwt.tokens import RefreshToken
 
             with contextlib.suppress(TokenError):
-                RefreshToken(raw).blacklist()  # type: ignore[arg-type]
+                token = RefreshToken(raw)  # type: ignore[arg-type]
+                token.blacklist()
+                services._end_grace([token["jti"]])
         response = Response(status=status.HTTP_204_NO_CONTENT)
         _clear_session_cookies(response)
         return response

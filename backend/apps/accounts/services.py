@@ -75,26 +75,61 @@ def issue_tokens(user: User, remember: bool = False) -> IssuedTokens:
     return IssuedTokens(str(refresh.access_token), str(refresh), int(lifetime.total_seconds()))
 
 
+# A refresh token replaced by rotation stays usable this long, so a page reload or a second
+# tab that sends the old cookie a moment later does not log the person out. Logout, password
+# changes and deactivation revoke tokens without this grace.
+ROTATION_GRACE_SECONDS = 60
+
+
+def _rotated_key(jti: str) -> str:
+    return f"jwt-rotated:{jti}"
+
+
 def rotate_refresh(raw: str) -> tuple[User, IssuedTokens]:
     """Validate a refresh token, blacklist it and issue a new pair with the same lifetime rule."""
-    from rest_framework_simplejwt.exceptions import TokenError
+    from django.core.cache import cache
+    from rest_framework_simplejwt.exceptions import TokenBackendError, TokenError
+    from rest_framework_simplejwt.state import token_backend
 
+    ended = PermissionDenied("Your session has ended. Please log in again.")
     try:
         token = RefreshToken(raw)  # type: ignore[arg-type]  # also rejects blacklisted tokens
+        payload: dict[str, Any] = dict(token.payload)
+        fresh = True
     except TokenError as exc:
-        raise PermissionDenied("Your session has ended. Please log in again.") from exc
-    user = User.objects.filter(pk=token["user_id"], is_active=True).first()
+        # Blacklisted only because it was just rotated? Accept it once more within the grace.
+        try:
+            # Checks the signature and expiry, without the blacklist.
+            payload = token_backend.decode(raw, verify=True)  # type: ignore[arg-type]
+        except TokenBackendError:
+            raise ended from exc
+        if payload.get("token_type") != "refresh" or not cache.get(
+            _rotated_key(str(payload.get("jti")))
+        ):
+            raise ended from exc
+        fresh = False
+    user = User.objects.filter(pk=payload["user_id"], is_active=True).first()
     if user is None:
-        raise PermissionDenied("Your session has ended. Please log in again.")
-    token.blacklist()
-    return user, issue_tokens(user, remember=bool(token.get("remember", False)))
+        raise ended
+    if fresh:
+        token.blacklist()
+        cache.set(_rotated_key(str(payload["jti"])), True, ROTATION_GRACE_SECONDS)
+    return user, issue_tokens(user, remember=bool(payload.get("remember", False)))
+
+
+def _end_grace(jtis: Any) -> None:
+    from django.core.cache import cache
+
+    cache.delete_many([_rotated_key(str(j)) for j in jtis])
 
 
 def revoke_refresh_tokens(user: User) -> None:
     """Log the user out everywhere. Access tokens die within 15 minutes; farm access is also
     re-checked on every request, so a deactivated member loses farm data immediately."""
-    for token in OutstandingToken.objects.filter(user=user, expires_at__gt=timezone.now()):
+    tokens = list(OutstandingToken.objects.filter(user=user, expires_at__gt=timezone.now()))
+    for token in tokens:
         BlacklistedToken.objects.get_or_create(token=token)
+    _end_grace(t.jti for t in tokens)
 
 
 # --- Login and lockout --------------------------------------------------------------------------

@@ -25,6 +25,8 @@ const LivestockRoutes = lazy(() => import('@/features/livestock/LivestockRoutes'
 const HealthPage = lazy(() => import('@/features/health/HealthPage'));
 const CalendarPage = lazy(() => import('@/features/calendar/CalendarPage'));
 const ActivitiesPage = lazy(() => import('@/features/calendar/ActivitiesPage'));
+const BreedingPage = lazy(() => import('@/features/breeding/BreedingPage'));
+const NutritionPage = lazy(() => import('@/features/nutrition/NutritionPage'));
 
 /** Screens built so far; everything else shows its phase placeholder. */
 const BUILT: Partial<Record<Module, () => ReactNode>> = {
@@ -32,6 +34,8 @@ const BUILT: Partial<Record<Module, () => ReactNode>> = {
   health: () => <HealthPage />,
   calendar: () => <CalendarPage />,
   activities: () => <ActivitiesPage />,
+  breeding: () => <BreedingPage />,
+  nutrition: () => <NutritionPage />,
   users: () => <UsersPage />,
   settings: () => <SettingsPage />,
 };

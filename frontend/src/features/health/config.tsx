@@ -15,7 +15,10 @@ export type FieldType =
   | 'animals'
   | 'vaccine'
   | 'medicine'
-  | 'money';
+  | 'money'
+  | 'feed'
+  | 'location'
+  | 'checkbox';
 
 export interface Field {
   name: string;
@@ -49,6 +52,11 @@ export interface RecordType {
   fields: Field[];
   /** Filter that ties the list to one animal (profile tabs). */
   animalParam?: string;
+  /** Permission module (default "health") and the action needed to add a record. */
+  module?: 'health' | 'breeding' | 'nutrition';
+  createAction?: string;
+  /** Animal picker limited to one sex (e.g. deaths: any; matings: does). */
+  animalSex?: 'female' | 'male';
 }
 
 export const DISEASES = [

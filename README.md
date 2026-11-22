@@ -12,8 +12,8 @@ The stack is Django 5.2 + Django REST Framework + PostgreSQL 16 + Celery/Redis +
 | 2 | Accounts: sign-up, login, password reset, verification, invitations, roles, User Management, Settings | **Done** |
 | 3 | Livestock: register, registration form, animal profile, weights, photos | **Done** |
 | 4 | Health and calendar: health records, activities, recurrence, 4 calendar views, 2027 template, overdue job | **Done** |
-| 5 | Breeding and nutrition | Next |
-| 6 | Notifications (in-app, email, SMS, WhatsApp) | |
+| 5 | Breeding and nutrition: matings, pregnancies, births creating kids, mortality, feed stock, feeding, assessments, supplements, water & hygiene | **Done** |
+| 6 | Notifications | Next |
 | 7 | Dashboard and reports | |
 | 8 | Mobile, offline and launch | |
 
@@ -219,6 +219,27 @@ cd backend && python manage.py export_permissions
 - **Overdue job:** the Celery task `calendar.mark_overdue` runs hourly at :05, so each farm switches past-due tasks to Overdue just after its own midnight. You can also run it by hand: `python manage.py mark_overdue [--farm slug] [--as-of YYYY-MM-DD]`.
 - **2027 health calendar:** `/activity-templates` lists the template, and `POST /activity-templates/health-calendar-2027/apply` adds the 23 planned activities. Applying it again skips what is already there.
 - **Activity categories:** Vaccination, Deworming, Parasite Control, Treatment, Vet Visit, Health Inspection, Breeding, and Feeding & Nutrition.
+
+## Breeding and nutrition (phase 5)
+
+- **Matings** (`/matings`, with `/scan` and `/abort`):
+  - The expected kidding date is the mating date + 150 days, and you can change it. Saving a mating adds a pregnancy-scan task 35 days later and an "Expected kidding" task, both on the calendar.
+  - A doe can have only one open mating at a time.
+  - A confirmed scan sets the doe to Pregnant. "Not pregnant" or an abortion returns her to Open.
+- **Pregnancies:** `/pregnancies` derives each pregnancy's progress, days pregnant, days remaining and trimester from the open matings.
+- **Births:** `POST /births` with a list of `kids` (sex, name, ear tag, birth weight, alive).
+  - Each live kid becomes an Animal with the next ID, its dam, sire, location and a first weight record. Stillborn kids are only counted.
+  - The birth closes the doe's open mating as Kidded, sets her to Lactating and completes the kidding task.
+  - Births can be corrected but not deleted, because the kids have their own records.
+- **Kids:** `/kids` lists animals under 6 months with their birth weight, latest weight and average daily gain. `/kids/{id}/growth` gives the full weight series.
+- **Deaths:** `/mortality` records a death. The animal leaves the herd (exit reason: died), any open mating is closed, and an urgent `health.alert` event is emitted. Deleting a death recorded by mistake brings the animal back.
+- **Feed items:** `/feed-items` (starter items are seeded per farm), plus `POST /feed-items/{id}/stock` for stock in (purchase), a stock count (adjustment) or waste.
+  - Stock is always the sum of the item's movements. `/feed-stock` lists every movement.
+  - Days left = stock ÷ average daily use over the last 14 days.
+  - Crossing the reorder level emits `feed.low_stock` once.
+- **Feeding:** `/feeding-records` takes the quantity out of stock and refuses more than is in store. Editing or deleting a record puts the stock right. Attendants can record feeding.
+- **Other nutrition records:** `/nutrition-assessments` (a next date adds a calendar task), `/supplementation` (can take from stock), `/water-hygiene` (scored out of 5), and `/nutrition/summary`.
+- **Sessions:** a refresh token replaced by rotation stays usable for 60 seconds, so a page reload or a second tab doesn't log people out. Logout, password changes and deactivation still end sessions at once.
 
 ## End-to-end tests
 

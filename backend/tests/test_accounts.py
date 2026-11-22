@@ -235,19 +235,26 @@ def test_refresh_rotates_and_needs_csrf(daniel):  # type: ignore[no-untyped-def]
     res = refresh(client)
     assert res.status_code == 200 and res.json()["access"]
     assert res.cookies["sf_refresh"]["max-age"] == 30 * 24 * 3600  # remember-me kept
-    # The old refresh token is now blacklisted.
+    # A tab or reload that still sends the old cookie a moment later is not logged out…
     replay = APIClient()
     replay.cookies["sf_refresh"] = old
     replay.cookies["sf_csrf"] = "x"
+    assert replay.post("/api/v1/auth/refresh", HTTP_X_CSRF_TOKEN="x").status_code == 200
+    # …but once the grace period is over, the old token is dead.
+    from django.core.cache import cache
+
+    cache.clear()
     assert replay.post("/api/v1/auth/refresh", HTTP_X_CSRF_TOKEN="x").status_code == 403
 
 
 def test_logout_revokes_refresh(daniel):  # type: ignore[no-untyped-def]
     client = APIClient()
     login(client, "daniel", "Green-Pasture-27")
+    refresh(client)
     token = client.cookies["sf_refresh"].value
     csrf = client.cookies["sf_csrf"].value
     assert client.post("/api/v1/auth/logout", HTTP_X_CSRF_TOKEN=csrf).status_code == 204
+    # No grace after logout, even for a token that was just rotated.
     again = APIClient()
     again.cookies["sf_refresh"] = token
     again.cookies["sf_csrf"] = "y"
