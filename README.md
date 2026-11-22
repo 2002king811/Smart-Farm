@@ -13,9 +13,9 @@ The stack is Django 5.2 + Django REST Framework + PostgreSQL 16 + Celery/Redis +
 | 3 | Livestock: register, registration form, animal profile, weights, photos | **Done** |
 | 4 | Health and calendar: health records, activities, recurrence, 4 calendar views, 2027 template, overdue job | **Done** |
 | 5 | Breeding and nutrition: matings, pregnancies, births creating kids, mortality, feed stock, feeding, assessments, supplements, water & hygiene | **Done** |
-| 6 | Notifications | Next |
-| 7 | Dashboard and reports | |
-| 8 | Mobile, offline and launch | |
+| 6 | Notifications: in-app, WhatsApp, SMS, email, reminders, quiet hours, webhooks, live bell | **Done** (real SMS/WhatsApp delivery still to be tried with test accounts) |
+| 7 | Dashboard and reports: real figures, 15 reports, PDF/Excel/CSV, scheduled reports, WhatsApp sharing, farm data export | **Done** |
+| 8 | Mobile, offline and launch | Next |
 
 ## Repository layout
 
@@ -290,6 +290,41 @@ Code emits one event (`apps/notifications/events.emit`); `apps/notifications/ser
 **Live updates.** The browser opens `/ws/notifications?token=<access token>`, so the bell updates at once. If the connection fails, it checks every 60 seconds instead.
 
 **API.** `/notifications` (`?unread=true`, `?urgent=true`), `/notifications/{id}/read`, `/notifications/read-all`, `/notifications/unread-count`, `/notifications/test`, `/notifications/usage` (administrators), `/notification-preferences` (GET/PUT the matrix and quiet hours), `/channel-contacts` and `PATCH /channel-contacts/{email|sms|whatsapp}` (opt in or out).
+
+## Dashboard and reports (phase 7)
+
+**One source of numbers.** `apps/reports/metrics.py` holds every count: herd figures, health work, births, deaths, matings and activities for a period. The dashboard and all 15 reports use it, so the same period always gives the same numbers. A test (`tests/test_reports.py::test_dashboard_numbers_match_reports`) checks this.
+
+**Dashboard** (`/dashboard/summary`, `/dashboard/charts?range=3m|6m|12m`, `/dashboard/upcoming`, `/dashboard/recent-health`):
+- Administrators and managers see:
+  - herd cards (total, females, males, kids, needing attention), tasks today and overdue;
+  - health status counts and this month's activities;
+  - trend charts (herd size, births and deaths, health work), the next 7 days and recent health events.
+- Attendants see their own tasks and alerts only.
+
+**Reports** (`/reports` lists them; `/reports/{type}?from=&to=&group=day|week|month&<filters>` previews one):
+Livestock Register, Animal Health History, Vaccination, Deworming, Treatment, Disease Surveillance, Birth, Mortality, Breeding, Monthly Farm Activities, Quarterly Health, Annual Health, Pending Activities, Overdue Activities and Staff Activity.
+- Each one is a builder class in `apps/reports/builders.py`. It returns summary cards, one chart and one or more tables.
+- The preview, PDF, Excel and CSV are all made from that same output.
+- Reports are for administrators and farm managers. Attendants don't see them.
+
+**Exports** (`/reports/{type}/export?format=pdf|xlsx|csv`):
+- **PDF** (ReportLab), A4, black-and-white printable. It has:
+  - the farm letterhead and logo, the title, the period, and "Generated … by …";
+  - summary cards, a vector chart and tables whose headers repeat on each page;
+  - signature lines for the farm manager and the veterinary officer;
+  - "Page x of y".
+- **Excel**: a Summary sheet, a Chart data sheet, and one sheet per table, with a frozen header row and real dates and numbers.
+- **CSV**: the summary followed by each table, in UTF-8 that Excel opens correctly.
+- **Large reports** (over 2,000 rows) answer `202`. They are built in the background (`ReportRun`). The requester is then told in-app and by email, with a download link valid for 24 hours (`/report-runs/{id}/download?token=…`).
+
+*Why ReportLab and not WeasyPrint:* WeasyPrint needs GTK/Pango system libraries that are hard to install on Windows. ReportLab is pure Python, so the same PDF works on every computer and server.
+
+**Scheduled reports** (`/report-schedules`, administrators): the Monthly Farm Activities report on the 1st of each month and the Quarterly Health Report on the 1st of each quarter. Each is emailed as an attachment to the chosen addresses (for example the owner and the vet) after 06:00 farm time (`reports.send_scheduled`, hourly).
+
+**Share on WhatsApp** (`POST /reports/{type}/share` with `phone`): sends a short summary and a 24-hour link to the PDF. It uses the approved template `smartfarm_report_share`, and delivery is tracked like other messages.
+
+**Export all farm data** (Settings → System, administrators; `GET /farm/export`): a ZIP with one CSV per table of the farm's data, plus the member list.
 
 ## End-to-end tests
 

@@ -894,6 +894,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/dashboard/charts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["dashboard_charts_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dashboard/recent-health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["dashboard_recent_health_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dashboard/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["dashboard_summary_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/dashboard/upcoming": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["dashboard_upcoming_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/dewormings": {
         parameters: {
             query?: never;
@@ -976,6 +1044,23 @@ export interface paths {
          *     scope every query in this request, including ones inside serializers and services.
          */
         patch: operations["farm_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/farm/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["farm_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/farm/logo": {
@@ -2185,6 +2270,149 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/report-runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Your exports on this farm (the background ones keep a file for 24 hours). */
+        get: operations["report_runs_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/report-runs/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Your exports on this farm (the background ones keep a file for 24 hours). */
+        get: operations["report_runs_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/report-schedules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Monthly activities / quarterly health report by email. Administrators only. */
+        get: operations["report_schedules_list"];
+        put?: never;
+        /** @description Monthly activities / quarterly health report by email. Administrators only. */
+        post: operations["report_schedules_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/report-schedules/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Monthly activities / quarterly health report by email. Administrators only. */
+        get: operations["report_schedules_retrieve"];
+        /** @description Monthly activities / quarterly health report by email. Administrators only. */
+        put: operations["report_schedules_update"];
+        post?: never;
+        /** @description Monthly activities / quarterly health report by email. Administrators only. */
+        delete: operations["report_schedules_destroy"];
+        options?: never;
+        head?: never;
+        /** @description Monthly activities / quarterly health report by email. Administrators only. */
+        patch: operations["report_schedules_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The 15 reports, with their filters and default period. */
+        get: operations["reports_catalog"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/{report_type}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        get: operations["reports_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/{report_type}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description The file straight away, or – over 2,000 rows – 202 with a run that finishes in the
+         *     background and notifies you (in-app and by email) with a link valid for 24 hours.
+         */
+        get: operations["reports_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/reports/{report_type}/share": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Send a short summary and a 24-hour link to the PDF by WhatsApp. */
+        post: operations["reports_share_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/supplementation": {
         parameters: {
             query?: never;
@@ -3373,6 +3601,13 @@ export interface components {
             /** @default email */
             channel: components["schemas"]["ForgotPasswordChannelEnum"];
         };
+        /**
+         * @description * `pdf` - PDF
+         *     * `xlsx` - Excel
+         *     * `csv` - CSV
+         * @enum {string}
+         */
+        FormatEnum: "pdf" | "xlsx" | "csv";
         /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
         HealthInspection: {
             /** Format: uuid */
@@ -3960,10 +4195,12 @@ export interface components {
          *     * `feed.low_stock` - Low feed stock
          *     * `daily.summary` - Daily summary
          *     * `usage.warning` - Message allowance warning
+         *     * `report.ready` - Report ready
+         *     * `report.shared` - Report shared
          *     * `test` - Test message
          * @enum {string}
          */
-        NotificationEventTypeEnum: "activity.upcoming" | "activity.due_today" | "activity.overdue" | "vaccination.reminder" | "deworming.reminder" | "health.alert" | "task.assigned" | "activity.completed" | "feed.low_stock" | "daily.summary" | "usage.warning" | "test";
+        NotificationEventTypeEnum: "activity.upcoming" | "activity.due_today" | "activity.overdue" | "vaccination.reminder" | "deworming.reminder" | "health.alert" | "task.assigned" | "activity.completed" | "feed.low_stock" | "daily.summary" | "usage.warning" | "report.ready" | "report.shared" | "test";
         NotificationSettings: {
             quiet_hours_enabled?: boolean;
             /** Format: time */
@@ -4335,6 +4572,21 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["ParasiteControl"][];
+        };
+        PaginatedReportRunList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["ReportRun"][];
         };
         PaginatedSupplementationList: {
             /** @example 140 */
@@ -4801,6 +5053,12 @@ export interface components {
             /** Format: date */
             next_due_date?: string | null;
         };
+        PatchedScheduleRequest: {
+            report_type?: components["schemas"]["ReportTypeEnum"];
+            recipients?: string[];
+            format?: components["schemas"]["FormatEnum"];
+            enabled?: boolean;
+        };
         /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
         PatchedSupplementationRequest: {
             /** Format: date */
@@ -4987,6 +5245,42 @@ export interface components {
          * @enum {string}
          */
         RepeatEnum: "weekly" | "monthly" | "quarterly" | "yearly";
+        ReportRun: {
+            /** Format: uuid */
+            readonly id: string;
+            report_type: string;
+            readonly title: string;
+            filters?: unknown;
+            /** Format: date */
+            date_from: string;
+            /** Format: date */
+            date_to: string;
+            format: components["schemas"]["FormatEnum"];
+            status?: components["schemas"]["ReportRunStatusEnum"];
+            row_count?: number;
+            error?: string;
+            /** @description download | schedule | share */
+            purpose?: string;
+            /** Format: date-time */
+            readonly created_at: string;
+            /** Format: date-time */
+            finished_at?: string | null;
+            readonly download_url: string | null;
+        };
+        /**
+         * @description * `queued` - Queued
+         *     * `running` - Running
+         *     * `done` - Done
+         *     * `failed` - Failed
+         * @enum {string}
+         */
+        ReportRunStatusEnum: "queued" | "running" | "done" | "failed";
+        /**
+         * @description * `monthly_activities` - Monthly Farm Activities (1st of each month)
+         *     * `quarterly_health` - Quarterly Health Report (1st of each quarter)
+         * @enum {string}
+         */
+        ReportTypeEnum: "monthly_activities" | "quarterly_health";
         ResetMemberPasswordRequest: {
             channels: components["schemas"]["DeliveryChannelEnum"][];
         };
@@ -5029,6 +5323,25 @@ export interface components {
          * @enum {string}
          */
         ScanResultEnum: "confirmed" | "not_pregnant";
+        Schedule: {
+            /** Format: uuid */
+            readonly id: string;
+            report_type: components["schemas"]["ReportTypeEnum"];
+            readonly report_label: string;
+            recipients?: string[];
+            format?: components["schemas"]["FormatEnum"];
+            enabled?: boolean;
+            /** @description Last period sent, e.g. 2026-10 or 2026-Q3 */
+            readonly last_period: string;
+            /** Format: date-time */
+            readonly last_sent_at: string | null;
+        };
+        ScheduleRequest: {
+            report_type: components["schemas"]["ReportTypeEnum"];
+            recipients?: string[];
+            format?: components["schemas"]["FormatEnum"];
+            enabled?: boolean;
+        };
         /**
          * @description * `this` - This one
          *     * `following` - This and following
@@ -5048,6 +5361,9 @@ export interface components {
          * @enum {string}
          */
         SexEnum: "female" | "male";
+        ShareRequest: {
+            phone: string;
+        };
         SignupRequest: {
             first_name: string;
             last_name: string;
@@ -7519,6 +7835,107 @@ export interface operations {
             };
         };
     };
+    dashboard_charts_retrieve: {
+        parameters: {
+            query?: {
+                range?: "12m" | "3m" | "6m";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    dashboard_recent_health_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    dashboard_summary_retrieve: {
+        parameters: {
+            query?: {
+                from?: string;
+                to?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    dashboard_upcoming_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
     dewormings_list: {
         parameters: {
             query?: {
@@ -7746,6 +8163,28 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Farm"];
+                };
+            };
+        };
+    };
+    farm_export_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/zip": string;
                 };
             };
         };
@@ -10657,6 +11096,357 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Pregnancy"][];
+                };
+            };
+        };
+    };
+    report_runs_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedReportRunList"];
+                };
+            };
+        };
+    };
+    report_runs_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this report run. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReportRun"];
+                };
+            };
+        };
+    };
+    report_schedules_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Schedule"][];
+                };
+            };
+        };
+    };
+    report_schedules_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScheduleRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ScheduleRequest"];
+                "multipart/form-data": components["schemas"]["ScheduleRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Schedule"];
+                };
+            };
+        };
+    };
+    report_schedules_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this report schedule. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Schedule"];
+                };
+            };
+        };
+    };
+    report_schedules_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this report schedule. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScheduleRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ScheduleRequest"];
+                "multipart/form-data": components["schemas"]["ScheduleRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Schedule"];
+                };
+            };
+        };
+    };
+    report_schedules_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this report schedule. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    report_schedules_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this report schedule. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedScheduleRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedScheduleRequest"];
+                "multipart/form-data": components["schemas"]["PatchedScheduleRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Schedule"];
+                };
+            };
+        };
+    };
+    reports_catalog: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    reports_retrieve: {
+        parameters: {
+            query?: {
+                from?: string;
+                group?: "day" | "month" | "week";
+                to?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                report_type: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    reports_export_retrieve: {
+        parameters: {
+            query?: {
+                format?: "csv" | "pdf" | "xlsx";
+                from?: string;
+                group?: "day" | "month" | "week";
+                to?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                report_type: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/octet-stream": string;
+                };
+            };
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    reports_share_create: {
+        parameters: {
+            query?: {
+                from?: string;
+                group?: "day" | "month" | "week";
+                to?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                report_type: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ShareRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ShareRequest"];
+                "multipart/form-data": components["schemas"]["ShareRequest"];
+            };
+        };
+        responses: {
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
         };

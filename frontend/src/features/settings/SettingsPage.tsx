@@ -24,6 +24,7 @@ import { useToast } from '@/components/Toast';
 import { CountrySelect, RegionField, useCountries } from '@/features/auth/countries';
 import { HERD_SIZES, LIVESTOCK } from '@/features/auth/SignupPage';
 import { optionalEmail, optionalPhone, password } from '@/features/auth/schemas';
+import { downloadFile } from '@/features/reports/api';
 import { useSession } from '@/features/session/SessionContext';
 import { VerifyPhoneModal } from '@/features/session/VerifyPhoneModal';
 import { can } from '@/routes/permissions';
@@ -357,7 +358,44 @@ function SystemSection() {
   const farm = useFarm();
   if (farm.isPending) return <LoadingState />;
   if (farm.isError) return <ErrorState message={farm.error.message} onRetry={() => void farm.refetch()} />;
-  return <SystemForm farm={farm.data} />;
+  return (
+    <>
+      <SystemForm farm={farm.data} />
+      <DataExportCard />
+    </>
+  );
+}
+
+function DataExportCard() {
+  const toast = useToast();
+  const [busy, setBusy] = useState(false);
+  const run = async () => {
+    setBusy(true);
+    try {
+      await downloadFile('/farm/export', {}, 'farm-data.zip');
+      toast.success('Farm data downloaded.');
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Export failed.');
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section className={page.card}>
+      <div className={page.cardBody}>
+        <h3>Export all farm data</h3>
+        <p className={page.note}>
+          A ZIP file with one spreadsheet (CSV) per kind of record: animals, health, breeding, feeding, tasks
+          and users. Keep it as a backup or to move your data elsewhere.
+        </p>
+      </div>
+      <div className={page.formActions}>
+        <button type="button" className="btn btn-secondary" onClick={() => void run()} disabled={busy}>
+          {busy ? 'Preparing…' : 'Export all farm data'}
+        </button>
+      </div>
+    </section>
+  );
 }
 
 function SystemForm({ farm }: { farm: Farm }) {

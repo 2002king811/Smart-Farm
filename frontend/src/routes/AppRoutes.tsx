@@ -21,6 +21,8 @@ import { can, type Module } from './permissions';
 
 const UsersPage = lazy(() => import('@/features/users/UsersPage'));
 const SettingsPage = lazy(() => import('@/features/settings/SettingsPage'));
+const DashboardPage = lazy(() => import('@/features/dashboard/DashboardPage'));
+const ReportsPage = lazy(() => import('@/features/reports/ReportsPage'));
 const NotificationsPage = lazy(() => import('@/features/notifications/NotificationsPage'));
 const LivestockRoutes = lazy(() => import('@/features/livestock/LivestockRoutes'));
 const HealthPage = lazy(() => import('@/features/health/HealthPage'));
@@ -31,6 +33,7 @@ const NutritionPage = lazy(() => import('@/features/nutrition/NutritionPage'));
 
 /** Screens built so far; everything else shows its phase placeholder. */
 const BUILT: Partial<Record<Module, () => ReactNode>> = {
+  dashboard: () => <DashboardPage />,
   livestock: () => <LivestockRoutes />,
   health: () => <HealthPage />,
   calendar: () => <CalendarPage />,
@@ -38,6 +41,7 @@ const BUILT: Partial<Record<Module, () => ReactNode>> = {
   breeding: () => <BreedingPage />,
   nutrition: () => <NutritionPage />,
   notifications: () => <NotificationsPage />,
+  reports: () => <ReportsPage />,
   users: () => <UsersPage />,
   settings: () => <SettingsPage />,
 };
