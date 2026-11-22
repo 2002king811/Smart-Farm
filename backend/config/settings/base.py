@@ -285,6 +285,12 @@ WHATSAPP_WEBHOOK_VERIFY_TOKEN = env("WHATSAPP_WEBHOOK_VERIFY_TOKEN", default="")
 AFRICASTALKING_USERNAME = env("AFRICASTALKING_USERNAME", default="sandbox")
 AFRICASTALKING_API_KEY = env("AFRICASTALKING_API_KEY", default="")
 AFRICASTALKING_SENDER_ID = env("AFRICASTALKING_SENDER_ID", default="SMARTFARM")
+# Per channel: "console" logs messages; real providers are used only in staging/production.
+SMS_ADAPTER = env("SMS_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "africastalking")
+WHATSAPP_ADAPTER = env("WHATSAPP_ADAPTER", default="console" if MESSAGING_ADAPTER == "console" else "whatsapp_cloud")
+# Shared secret in the SMS and email webhook URLs (?token=…); WhatsApp uses its signature.
+WEBHOOK_TOKEN = env("WEBHOOK_TOKEN", default="")
+
 
 FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5180")
 ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")

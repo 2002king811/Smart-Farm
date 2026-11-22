@@ -125,6 +125,10 @@ class Farm(models.Model):
         default=1, help_text="Month the financial year starts (1 = January)."
     )
     status = models.CharField(max_length=12, choices=FarmStatus.choices, default=FarmStatus.ACTIVE)
+    # Monthly message allowances (a warning goes to administrators at 80 %).
+    sms_monthly_allowance = models.PositiveIntegerField(default=500)
+    whatsapp_monthly_allowance = models.PositiveIntegerField(default=1000)
+    usage_warning_sent = models.JSONField(default=dict, blank=True, help_text="{channel: 'YYYY-MM'} last warned")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
