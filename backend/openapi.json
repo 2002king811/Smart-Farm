@@ -1107,6 +1107,46 @@
                 }
             }
         },
+        "/api/v1/activities/assignees": {
+            "get": {
+                "operationId": "activities_assignees_list",
+                "description": "Active members of the farm, for the \"Assign to\" list (names and roles only).",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "activities"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Assignee"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/activities/calendar": {
             "get": {
                 "operationId": "activities_calendar_retrieve",
@@ -10318,6 +10358,30 @@
                 },
                 "required": [
                     "assigned_to"
+                ]
+            },
+            "Assignee": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "role_label": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "role",
+                    "role_label"
                 ]
             },
             "AuditLog": {

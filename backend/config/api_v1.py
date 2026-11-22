@@ -6,6 +6,7 @@ from apps.accounts.views import InvitationViewSet, MemberViewSet
 from apps.audit.views import AuditLogViewSet
 from apps.calendar.views import (
     ActivityViewSet,
+    AssigneesView,
     CalendarView,
     CategoryViewSet,
     TemplateApplyView,
@@ -56,6 +57,7 @@ urlpatterns = [
     path("", include("apps.accounts.urls")),
     path("health/summary", HealthSummaryView.as_view(), name="health-summary"),
     path("activities/calendar", CalendarView.as_view(), name="activity-calendar"),
+    path("activities/assignees", AssigneesView.as_view(), name="activity-assignees"),
     path("activity-templates", TemplateListView.as_view(), name="activity-templates"),
     path(
         "activity-templates/<str:key>/apply",

@@ -11,8 +11,8 @@ The stack is Django 5.2 + Django REST Framework + PostgreSQL 16 + Celery/Redis +
 | 1 | Foundation: repository, Docker Compose, settings, CI, base models, tenancy, audit log, design tokens, app shell | **Done** |
 | 2 | Accounts: sign-up, login, password reset, verification, invitations, roles, User Management, Settings | **Done** |
 | 3 | Livestock: register, registration form, animal profile, weights, photos | **Done** |
-| 4 | Health and calendar | Next |
-| 5 | Breeding and nutrition | |
+| 4 | Health and calendar: health records, activities, recurrence, 4 calendar views, 2027 template, overdue job | **Done** |
+| 5 | Breeding and nutrition | Next |
 | 6 | Notifications (in-app, email, SMS, WhatsApp) | |
 | 7 | Dashboard and reports | |
 | 8 | Mobile, offline and launch | |
@@ -200,6 +200,26 @@ cd backend && python manage.py export_permissions
 - **Locations and groups:** `/locations` and `/animal-groups`, managed by managers and administrators. New farms start with default pens (including Isolation Pen and Quarantine Pen) and groups.
 - **Attendants** can view the register, register animals, add photos and record weights.
 
+## Health and calendar (phase 4)
+
+- **Health records:** `/vaccinations`, `/dewormings`, `/treatments` (with `/resolve`), `/vet-visits`, `/observations` (disease monitoring), `/inspections` and `/parasite-control`.
+  - Each list can be filtered by animal or group, a date range (`date_from`, `date_to`) and status. Attendants can record and edit, but not delete.
+  - `/vaccines` and `/medicines` are starter lists seeded for every farm. Managers maintain them.
+- **Next dates become calendar tasks:** any record with a next or follow-up date keeps exactly one open activity on the calendar, linked to the record. Changing the date moves it, clearing the date or deleting the record removes it, and a completed task stays as history.
+- **Treatments** set the animal to Under Treatment. Resolving its last open treatment returns it to Healthy, or to Pregnant if it is pregnant.
+- **Withdrawal periods:** a medicine's withdrawal days fill in `withdrawal_until`, and the profile shows "Do not sell or milk until…".
+- **Health alerts:** severe observations, and temperatures of 40.5 °C or more, emit a `health.alert` event. Phase 6 delivers it.
+- **Activities** (`/activities`):
+  - Filters: `from`, `to`, `category` (id or key), `assignee` (`me`, `none` or an id), `status` (comma-separated), `priority`, `animal`.
+  - Actions: `start`, `complete`, `cancel`, `reopen` and `assign`, plus `notes` and `history` lists.
+  - Attendants see and work only their own tasks; `/activities/calendar` shows them the whole farm, read-only.
+- **Repeating activities:** a `repeat` preset (weekly, monthly, quarterly, yearly) or a `recurrence_rule` (RRULE) creates occurrences 12 months ahead, and a daily job keeps the series extended.
+  - Edits apply with `scope=this` or `scope=following`. Changing how a series repeats from one occurrence ends the old series the day before.
+- **Calendar views:** `/activities/calendar?view=month|week|day|agenda&date=YYYY-MM-DD` (weeks start on Monday).
+- **Overdue job:** the Celery task `calendar.mark_overdue` runs hourly at :05, so each farm switches past-due tasks to Overdue just after its own midnight. You can also run it by hand: `python manage.py mark_overdue [--farm slug] [--as-of YYYY-MM-DD]`.
+- **2027 health calendar:** `/activity-templates` lists the template, and `POST /activity-templates/health-calendar-2027/apply` adds the 23 planned activities. Applying it again skips what is already there.
+- **Activity categories:** Vaccination, Deworming, Parasite Control, Treatment, Vet Visit, Health Inspection, Breeding, and Feeding & Nutrition.
+
 ## End-to-end tests
 
 Start the API with a throwaway database, then run Playwright:
@@ -209,8 +229,10 @@ cd backend && DATABASE_URL=postgres://postgres:postgres@localhost:5432/smartfarm
 ```
 
 ```bash
-cd frontend && npm run e2e
+cd frontend && DATABASE_URL=postgres://postgres:postgres@localhost:5432/smartfarm_e2e npm run e2e
 ```
+
+The health-calendar journey runs `manage.py mark_overdue` against the same database, so give the test run the same `DATABASE_URL` as the API.
 
 
 ## How multi-farm tenancy works

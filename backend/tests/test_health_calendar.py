@@ -709,3 +709,30 @@ def test_status_choices_cover_the_badges():  # type: ignore[no-untyped-def]
         "overdue",
         "cancelled",
     ]
+
+
+def test_assignees_list_for_managers(farm, member, client_for):  # type: ignore[no-untyped-def]
+    manager = member(farm, Role.FARM_MANAGER, user__first_name="Grace")
+    member(farm, Role.LIVESTOCK_ATTENDANT, user__first_name="Peter")
+    member(farm, Role.LIVESTOCK_ATTENDANT, user__first_name="Ali", status="inactive")
+    rows = client_for(manager, farm).get("/api/v1/activities/assignees").json()
+    assert [r["name"].split()[0] for r in rows] == ["Grace", "Peter"]
+    assert rows[1]["role_label"] == "Livestock Attendant"
+
+
+def test_mark_overdue_command(farm):  # type: ignore[no-untyped-def]
+    from io import StringIO
+
+    from django.core.management import call_command
+
+    ActivityFactory(farm=farm, date=TODAY() + timedelta(days=2))
+    out = StringIO()
+    call_command(
+        "mark_overdue",
+        "--as-of",
+        iso(TODAY() + timedelta(days=3)),
+        f"--farm={farm.slug}",
+        stdout=out,
+    )
+    assert "Marked 1 activities" in out.getvalue()
+    assert Activity.objects.get().status == "overdue"

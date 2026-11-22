@@ -226,3 +226,10 @@ class CalendarSerializer(serializers.Serializer):
     start = serializers.DateField()
     end = serializers.DateField()
     activities = ActivitySerializer(many=True)
+
+
+class AssigneeSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    name = serializers.CharField()
+    role = serializers.CharField()
+    role_label = serializers.CharField()

@@ -162,6 +162,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/activities/assignees": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Active members of the farm, for the "Assign to" list (names and roles only). */
+        get: operations["activities_assignees_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/activities/calendar": {
         parameters: {
             query?: never;
@@ -2091,6 +2108,13 @@ export interface components {
         AssignRequest: {
             /** Format: uuid */
             assigned_to: string | null;
+        };
+        Assignee: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            role: string;
+            role_label: string;
         };
         AuditLog: {
             readonly id: number;
@@ -4116,6 +4140,28 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Activity"];
+                };
+            };
+        };
+    };
+    activities_assignees_list: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Assignee"][];
                 };
             };
         };

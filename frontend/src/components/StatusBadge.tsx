@@ -42,6 +42,14 @@ export const STATUS_MAP: Record<string, StatusDef> = {
   sold: { label: 'Sold', tone: 'grey' },
   died: { label: 'Died', tone: 'red' },
   culled: { label: 'Culled', tone: 'grey' },
+  // Health records
+  missed: { label: 'Missed', tone: 'red' },
+  mild: { label: 'Mild', tone: 'amber' },
+  moderate: { label: 'Moderate', tone: 'amber' },
+  severe: { label: 'Severe', tone: 'red' },
+  good: { label: 'Good', tone: 'green' },
+  needs_attention: { label: 'Needs attention', tone: 'amber' },
+  poor: { label: 'Poor', tone: 'red' },
   // Treatments
   ongoing: { label: 'Ongoing', tone: 'amber' },
   resolved: { label: 'Resolved', tone: 'green' },

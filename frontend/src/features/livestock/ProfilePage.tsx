@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Baby, Camera, HeartPulse, PawPrint, Scale, Syringe, Wheat } from 'lucide-react';
+import { Baby, Camera, HeartPulse, PawPrint, Scale, ShieldAlert, Wheat } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -17,6 +17,8 @@ import page from '@/components/Page.module.css';
 import { StatusBadge } from '@/components/StatusBadge';
 import { useToast } from '@/components/Toast';
 import { useSession } from '@/features/session/SessionContext';
+import { recordType } from '@/features/health/config';
+import { RecordList } from '@/features/health/Records';
 import { can } from '@/routes/permissions';
 
 import {
@@ -84,14 +86,17 @@ export default function ProfilePage() {
       <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
         {tab === 'overview' && <Overview animal={a} />}
         {tab === 'health' && (
-          <Later
-            icon={HeartPulse}
-            what="Treatments, disease observations, vet visits and inspections"
-            phase={4}
-          />
+          <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+            <RecordList type={recordType('treatments')} animalId={a.id} />
+            <RecordList type={recordType('observations')} animalId={a.id} />
+            <RecordList type={recordType('vet-visits')} animalId={a.id} />
+          </div>
         )}
         {tab === 'vaccinations' && (
-          <Later icon={Syringe} what="Vaccinations and deworming, with next due dates" phase={4} />
+          <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+            <RecordList type={recordType('vaccinations')} animalId={a.id} />
+            <RecordList type={recordType('dewormings')} animalId={a.id} />
+          </div>
         )}
         {tab === 'breeding' && <BreedingTab animal={a} />}
         {tab === 'weights' && <WeightsTab animal={a} onWeigh={() => setWeighing(true)} />}
@@ -154,6 +159,19 @@ function Hero({ animal: a, onWeigh }: { animal: Animal; onWeigh: () => void }) {
               Undo
             </button>
           )}
+        </div>
+      )}
+      {a.withdrawal_until && (
+        <div
+          className={styles.banner}
+          role="alert"
+          style={{ background: 'var(--tone-red-bg)', color: 'var(--tone-red-fg)' }}
+        >
+          <span>
+            <ShieldAlert size={18} aria-hidden="true" style={{ verticalAlign: 'middle' }} />{' '}
+            <strong>Do not sell or milk until {formatDate(a.withdrawal_until, fmt)}</strong> (medicine
+            withdrawal period).
+          </span>
         </div>
       )}
       <section className={page.card} style={{ marginBottom: 'var(--space-5)' }}>

@@ -255,6 +255,33 @@ class ActivityViewSet(FarmScopedViewSet):
         )
 
 
+class AssigneesView(FarmScopedAPIView):
+    """Active members of the farm, for the "Assign to" list (names and roles only)."""
+
+    permission_module = "activities"
+
+    @extend_schema(responses=s.AssigneeSerializer(many=True))
+    def get(self, request: Request) -> Response:
+        from apps.accounts.models import FarmMembership, MembershipStatus
+
+        rows = (
+            FarmMembership.objects.filter(farm=request.farm, status=MembershipStatus.ACTIVE)  # type: ignore[attr-defined]
+            .select_related("user")
+            .order_by("user__first_name", "user__last_name")
+        )
+        return Response(
+            [
+                {
+                    "id": str(m.user_id),
+                    "name": m.user.full_name,
+                    "role": m.role,
+                    "role_label": m.get_role_display(),
+                }
+                for m in rows
+            ]
+        )
+
+
 class CategoryViewSet(FarmScopedViewSet):
     model = ActivityCategory
     serializer_class = s.CategorySerializer

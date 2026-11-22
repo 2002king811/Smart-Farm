@@ -14,23 +14,8 @@ export default tseslint.config(
     plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        {
-          allowConstantExport: true,
-          allowExportNames: [
-            'useSession',
-            'useToast',
-            'makeQueryClient',
-            'statusDef',
-            'STATUS_MAP',
-            'applyServerErrors',
-            'passwordStrength',
-            'LIVESTOCK',
-            'HERD_SIZES',
-          ],
-        },
-      ],
+      // Hot-reload hint only; shared helpers next to components are fine here.
+      'react-refresh/only-export-components': 'off',
     },
   },
 );

@@ -22,10 +22,16 @@ import { can, type Module } from './permissions';
 const UsersPage = lazy(() => import('@/features/users/UsersPage'));
 const SettingsPage = lazy(() => import('@/features/settings/SettingsPage'));
 const LivestockRoutes = lazy(() => import('@/features/livestock/LivestockRoutes'));
+const HealthPage = lazy(() => import('@/features/health/HealthPage'));
+const CalendarPage = lazy(() => import('@/features/calendar/CalendarPage'));
+const ActivitiesPage = lazy(() => import('@/features/calendar/ActivitiesPage'));
 
 /** Screens built so far; everything else shows its phase placeholder. */
 const BUILT: Partial<Record<Module, () => ReactNode>> = {
   livestock: () => <LivestockRoutes />,
+  health: () => <HealthPage />,
+  calendar: () => <CalendarPage />,
+  activities: () => <ActivitiesPage />,
   users: () => <UsersPage />,
   settings: () => <SettingsPage />,
 };
