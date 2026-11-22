@@ -12,6 +12,8 @@ ALLOWED = {"JPEG": "jpg", "PNG": "png", "WEBP": "webp"}
 
 
 def process_image(upload, max_size: int = 400) -> ContentFile:  # type: ignore[no-untyped-def]
+    if hasattr(upload, "seek"):
+        upload.seek(0)
     if upload.size > MAX_BYTES:
         raise ValidationError({"file": ["The image must be 10 MB or smaller."]})
     try:

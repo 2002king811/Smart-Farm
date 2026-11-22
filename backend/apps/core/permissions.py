@@ -69,9 +69,13 @@ class FarmModulePermission(BasePermission):
 
 def required_action(request: Request, view: Any) -> str:
     view_action = getattr(view, "action", None) or _method_action(request.method or "GET")
-    overrides: dict[str, str] = getattr(view, "action_permissions", {})
+    overrides: dict[str, Any] = getattr(view, "action_permissions", {})
     if view_action in overrides:
-        return overrides[view_action]
+        rule = overrides[view_action]
+        # A dict maps HTTP methods to actions, e.g. {"GET": "view", "POST": "record_weight"}.
+        if isinstance(rule, dict):
+            return rule.get((request.method or "GET").upper(), "view")
+        return rule
     return DEFAULT_ACTION_MAP.get(view_action, view_action)
 
 

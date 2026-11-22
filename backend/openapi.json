@@ -6,6 +6,1834 @@
         "description": "Multi-farm livestock health and farm management API. Every farm-scoped request must send the X-Farm-ID header with a farm the user belongs to."
     },
     "paths": {
+        "/api/v1/animal-groups": {
+            "get": {
+                "operationId": "animal_groups_list",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "animal-groups"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AnimalGroup"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "animal_groups_create",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-groups"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalGroupRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalGroupRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalGroupRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalGroup"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animal-groups/{id}": {
+            "get": {
+                "operationId": "animal_groups_retrieve",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal group.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-groups"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalGroup"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "animal_groups_update",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal group.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-groups"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalGroupRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalGroupRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalGroupRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalGroup"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "animal_groups_partial_update",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal group.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-groups"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAnimalGroupRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAnimalGroupRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAnimalGroupRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalGroup"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "animal_groups_destroy",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal group.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-groups"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/v1/animal-photos": {
+            "get": {
+                "operationId": "animal_photos_list",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "animal",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "animal-photos"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedAnimalPhotoList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animal-photos/{id}": {
+            "get": {
+                "operationId": "animal_photos_retrieve",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal photo.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-photos"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalPhoto"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "animal_photos_destroy",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal photo.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-photos"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/v1/animal-photos/{id}/primary": {
+            "post": {
+                "operationId": "animal_photos_primary_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal photo.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animal-photos"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalPhoto"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals": {
+            "get": {
+                "operationId": "animals_list",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "active",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "true (default), false or all"
+                    },
+                    {
+                        "in": "query",
+                        "name": "age",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "adult",
+                                "kid",
+                                "young"
+                            ]
+                        },
+                        "description": "* `kid` - Kid\n* `young` - Young\n* `adult` - Adult"
+                    },
+                    {
+                        "in": "query",
+                        "name": "attention",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breeding",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "location",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sex",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "female",
+                                "male"
+                            ]
+                        },
+                        "description": "* `female` - Female\n* `male` - Male"
+                    },
+                    {
+                        "in": "query",
+                        "name": "species",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Health status (comma-separated)"
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedAnimalListList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "animals_create",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalWriteRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalWriteRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalWriteRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/{id}": {
+            "get": {
+                "operationId": "animals_retrieve",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "animals_update",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalWriteRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalWriteRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AnimalWriteRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "animals_partial_update",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAnimalWriteRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAnimalWriteRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedAnimalWriteRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalWrite"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "animals_destroy",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/{id}/exit": {
+            "post": {
+                "operationId": "animals_exit_create",
+                "description": "Record that the animal was sold, died or was culled. Its history stays.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExitRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExitRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ExitRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/{id}/photos": {
+            "get": {
+                "operationId": "animals_photos_list",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "active",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "true (default), false or all"
+                    },
+                    {
+                        "in": "query",
+                        "name": "age",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "adult",
+                                "kid",
+                                "young"
+                            ]
+                        },
+                        "description": "* `kid` - Kid\n* `young` - Young\n* `adult` - Adult"
+                    },
+                    {
+                        "in": "query",
+                        "name": "attention",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breeding",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "location",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sex",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "female",
+                                "male"
+                            ]
+                        },
+                        "description": "* `female` - Female\n* `male` - Male"
+                    },
+                    {
+                        "in": "query",
+                        "name": "species",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Health status (comma-separated)"
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedAnimalPhotoList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "animals_photos_create",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PhotoUploadRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalPhoto"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/{id}/reactivate": {
+            "post": {
+                "operationId": "animals_reactivate_create",
+                "description": "Undo an exit recorded by mistake.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnimalDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/{id}/timeline": {
+            "get": {
+                "operationId": "animals_timeline_list",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "active",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "true (default), false or all"
+                    },
+                    {
+                        "in": "query",
+                        "name": "age",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "adult",
+                                "kid",
+                                "young"
+                            ]
+                        },
+                        "description": "* `kid` - Kid\n* `young` - Young\n* `adult` - Adult"
+                    },
+                    {
+                        "in": "query",
+                        "name": "attention",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breeding",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "location",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sex",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "female",
+                                "male"
+                            ]
+                        },
+                        "description": "* `female` - Female\n* `male` - Male"
+                    },
+                    {
+                        "in": "query",
+                        "name": "species",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Health status (comma-separated)"
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedTimelineEventList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/{id}/weights": {
+            "get": {
+                "operationId": "animals_weights_list",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "active",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "true (default), false or all"
+                    },
+                    {
+                        "in": "query",
+                        "name": "age",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "adult",
+                                "kid",
+                                "young"
+                            ]
+                        },
+                        "description": "* `kid` - Kid\n* `young` - Young\n* `adult` - Adult"
+                    },
+                    {
+                        "in": "query",
+                        "name": "attention",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "breeding",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "group",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "location",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sex",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "female",
+                                "male"
+                            ]
+                        },
+                        "description": "* `female` - Female\n* `male` - Male"
+                    },
+                    {
+                        "in": "query",
+                        "name": "species",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Health status (comma-separated)"
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedWeightRecordList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "animals_weights_create",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this animal.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WeightRecordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WeightRecordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WeightRecordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WeightRecord"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/export": {
+            "get": {
+                "operationId": "animals_export_retrieve",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "format",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "csv",
+                                "xlsx"
+                            ]
+                        }
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "text/csv": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/next-id": {
+            "get": {
+                "operationId": "animals_next_id_retrieve",
+                "description": "The livestock register. Attendants can view, register and record weights.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NextId"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/animals/summary": {
+            "get": {
+                "operationId": "animals_summary_retrieve",
+                "description": "Counts for the register's stat cards (active animals, after filters).",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "animals"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Summary"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/audit-logs": {
             "get": {
                 "operationId": "audit_logs_list",
@@ -1010,6 +2838,348 @@
                 }
             }
         },
+        "/api/v1/locations": {
+            "get": {
+                "operationId": "locations_list",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "type",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "isolation",
+                                "other",
+                                "paddock",
+                                "pen",
+                                "quarantine"
+                            ]
+                        },
+                        "description": "* `paddock` - Paddock\n* `pen` - Pen\n* `isolation` - Isolation\n* `quarantine` - Quarantine\n* `other` - Other"
+                    }
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Location"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "locations_create",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/locations/{id}": {
+            "get": {
+                "operationId": "locations_retrieve",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this location.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "locations_update",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this location.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "locations_partial_update",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this location.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLocationRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLocationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedLocationRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "locations_destroy",
+                "description": "CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly\nhere and implicitly by the model manager. Deletes are soft deletes.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this location.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
         "/api/v1/me": {
             "get": {
                 "operationId": "me_retrieve",
@@ -1698,6 +3868,301 @@
                     }
                 }
             }
+        },
+        "/api/v1/weights": {
+            "get": {
+                "operationId": "weights_list",
+                "description": "Correct or remove a weight (managers and administrators). Recording is per animal.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "animal",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "weights"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedWeightRecordList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/weights/{id}": {
+            "get": {
+                "operationId": "weights_retrieve",
+                "description": "Correct or remove a weight (managers and administrators). Recording is per animal.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this weight record.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "weights"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WeightRecord"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "weights_update",
+                "description": "Correct or remove a weight (managers and administrators). Recording is per animal.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this weight record.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "weights"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WeightRecordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WeightRecordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WeightRecordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WeightRecord"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "weights_partial_update",
+                "description": "Correct or remove a weight (managers and administrators). Recording is per animal.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this weight record.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "weights"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedWeightRecordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedWeightRecordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedWeightRecordRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WeightRecord"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "weights_destroy",
+                "description": "Correct or remove a weight (managers and administrators). Recording is per animal.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this weight record.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "weights"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1739,6 +4204,16 @@
                     "token"
                 ]
             },
+            "AcquisitionSourceEnum": {
+                "enum": [
+                    "born_on_farm",
+                    "purchased",
+                    "gift",
+                    "other"
+                ],
+                "type": "string",
+                "description": "* `born_on_farm` - Born on farm\n* `purchased` - Purchased\n* `gift` - Gift\n* `other` - Other"
+            },
             "ActionEnum": {
                 "enum": [
                     "create",
@@ -1759,6 +4234,649 @@
                 ],
                 "type": "string",
                 "description": "* `in_app` - In-app\n* `whatsapp` - WhatsApp\n* `sms` - SMS\n* `email` - Email"
+            },
+            "AnimalDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "animal_id": {
+                        "type": "string",
+                        "description": "Farm ID, e.g. YPA-001",
+                        "maxLength": 30
+                    },
+                    "ear_tag": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "species": {
+                        "$ref": "#/components/schemas/SpeciesEnum"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "maxLength": 60
+                    },
+                    "sex": {
+                        "$ref": "#/components/schemas/SexEnum"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "dob_estimated": {
+                        "type": "boolean"
+                    },
+                    "age_months": {
+                        "type": "integer",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "is_kid": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "health_status": {
+                        "$ref": "#/components/schemas/HealthStatusEnum"
+                    },
+                    "breeding_status": {
+                        "$ref": "#/components/schemas/BreedingStatusEnum"
+                    },
+                    "location": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NamedRef"
+                            }
+                        ],
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "group": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NamedRef"
+                            }
+                        ],
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "latest_weight_kg": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "latest_weight_date": {
+                        "type": "string",
+                        "format": "date",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "thumbnail": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "exit_reason": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ExitReasonEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            }
+                        ]
+                    },
+                    "acquisition_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "acquisition_source": {
+                        "$ref": "#/components/schemas/AcquisitionSourceEnum"
+                    },
+                    "acquisition_details": {
+                        "type": "string",
+                        "description": "Seller, price, market…",
+                        "maxLength": 200
+                    },
+                    "dam": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AnimalRef"
+                            }
+                        ],
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "sire": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AnimalRef"
+                            }
+                        ],
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "sire_details": {
+                        "type": "string",
+                        "description": "For AI or an outside buck: straw code, owner…",
+                        "maxLength": 120
+                    },
+                    "colour_markings": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "current_condition": {
+                        "type": "string"
+                    },
+                    "previous_history": {
+                        "type": "string"
+                    },
+                    "remarks": {
+                        "type": "string"
+                    },
+                    "exit_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "exit_notes": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "offspring_count": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "created_by_name": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "age_months",
+                    "animal_id",
+                    "created_at",
+                    "created_by_name",
+                    "dam",
+                    "group",
+                    "id",
+                    "is_kid",
+                    "latest_weight_date",
+                    "latest_weight_kg",
+                    "location",
+                    "offspring_count",
+                    "sex",
+                    "sire",
+                    "thumbnail",
+                    "updated_at"
+                ]
+            },
+            "AnimalGroup": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "animal_count": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "default": 0
+                    }
+                },
+                "required": [
+                    "animal_count",
+                    "id",
+                    "name"
+                ]
+            },
+            "AnimalGroupRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "AnimalList": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "animal_id": {
+                        "type": "string",
+                        "description": "Farm ID, e.g. YPA-001",
+                        "maxLength": 30
+                    },
+                    "ear_tag": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "species": {
+                        "$ref": "#/components/schemas/SpeciesEnum"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "maxLength": 60
+                    },
+                    "sex": {
+                        "$ref": "#/components/schemas/SexEnum"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "dob_estimated": {
+                        "type": "boolean"
+                    },
+                    "age_months": {
+                        "type": "integer",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "is_kid": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "health_status": {
+                        "$ref": "#/components/schemas/HealthStatusEnum"
+                    },
+                    "breeding_status": {
+                        "$ref": "#/components/schemas/BreedingStatusEnum"
+                    },
+                    "location": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NamedRef"
+                            }
+                        ],
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "group": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NamedRef"
+                            }
+                        ],
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "latest_weight_kg": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "latest_weight_date": {
+                        "type": "string",
+                        "format": "date",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "thumbnail": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "exit_reason": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ExitReasonEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "age_months",
+                    "animal_id",
+                    "group",
+                    "id",
+                    "is_kid",
+                    "latest_weight_date",
+                    "latest_weight_kg",
+                    "location",
+                    "sex",
+                    "thumbnail"
+                ]
+            },
+            "AnimalPhoto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "animal": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "file": {
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true
+                    },
+                    "thumbnail": {
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true
+                    },
+                    "is_primary": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "caption": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "animal",
+                    "caption",
+                    "created_at",
+                    "file",
+                    "id",
+                    "is_primary",
+                    "thumbnail"
+                ]
+            },
+            "AnimalRef": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "animal_id": {
+                        "type": "string",
+                        "description": "Farm ID, e.g. YPA-001",
+                        "maxLength": 30
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "sex": {
+                        "$ref": "#/components/schemas/SexEnum"
+                    }
+                },
+                "required": [
+                    "animal_id",
+                    "id",
+                    "sex"
+                ]
+            },
+            "AnimalWrite": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "animal_id": {
+                        "type": "string",
+                        "description": "Farm ID, e.g. YPA-001",
+                        "maxLength": 30
+                    },
+                    "ear_tag": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "species": {
+                        "$ref": "#/components/schemas/SpeciesEnum"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "maxLength": 60
+                    },
+                    "sex": {
+                        "$ref": "#/components/schemas/SexEnum"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "acquisition_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "acquisition_source": {
+                        "$ref": "#/components/schemas/AcquisitionSourceEnum"
+                    },
+                    "acquisition_details": {
+                        "type": "string",
+                        "description": "Seller, price, market…",
+                        "maxLength": 200
+                    },
+                    "health_status": {
+                        "$ref": "#/components/schemas/HealthStatusEnum"
+                    },
+                    "breeding_status": {
+                        "$ref": "#/components/schemas/BreedingStatusEnum"
+                    },
+                    "dam": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "sire": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "sire_details": {
+                        "type": "string",
+                        "description": "For AI or an outside buck: straw code, owner…",
+                        "maxLength": 120
+                    },
+                    "location": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "group": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "colour_markings": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "current_condition": {
+                        "type": "string"
+                    },
+                    "previous_history": {
+                        "type": "string"
+                    },
+                    "remarks": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "animal_id",
+                    "id",
+                    "sex"
+                ]
+            },
+            "AnimalWriteRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "animal_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Farm ID, e.g. YPA-001",
+                        "maxLength": 30
+                    },
+                    "ear_tag": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "species": {
+                        "$ref": "#/components/schemas/SpeciesEnum"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "maxLength": 60
+                    },
+                    "sex": {
+                        "$ref": "#/components/schemas/SexEnum"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "estimated_age_months": {
+                        "type": "integer",
+                        "maximum": 360,
+                        "minimum": 0,
+                        "writeOnly": true,
+                        "nullable": true,
+                        "description": "Use when the exact birth date is unknown."
+                    },
+                    "acquisition_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "acquisition_source": {
+                        "$ref": "#/components/schemas/AcquisitionSourceEnum"
+                    },
+                    "acquisition_details": {
+                        "type": "string",
+                        "description": "Seller, price, market…",
+                        "maxLength": 200
+                    },
+                    "health_status": {
+                        "$ref": "#/components/schemas/HealthStatusEnum"
+                    },
+                    "breeding_status": {
+                        "$ref": "#/components/schemas/BreedingStatusEnum"
+                    },
+                    "dam": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "sire": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "sire_details": {
+                        "type": "string",
+                        "description": "For AI or an outside buck: straw code, owner…",
+                        "maxLength": 120
+                    },
+                    "location": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "group": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "colour_markings": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "current_condition": {
+                        "type": "string"
+                    },
+                    "previous_history": {
+                        "type": "string"
+                    },
+                    "remarks": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "animal_id",
+                    "sex"
+                ]
             },
             "AuditLog": {
                 "type": "object",
@@ -1855,6 +4973,20 @@
                     ""
                 ]
             },
+            "BreedingStatusEnum": {
+                "enum": [
+                    "open",
+                    "served",
+                    "pregnant",
+                    "lactating",
+                    "dry",
+                    "breeding_male",
+                    "castrated",
+                    "too_young"
+                ],
+                "type": "string",
+                "description": "* `open` - Open\n* `served` - Served\n* `pregnant` - Pregnant\n* `lactating` - Lactating\n* `dry` - Dry\n* `breeding_male` - Breeding male\n* `castrated` - Castrated\n* `too_young` - Too young"
+            },
             "ChangePasswordRequest": {
                 "type": "object",
                 "properties": {
@@ -1931,6 +5063,34 @@
                 },
                 "required": [
                     "detail"
+                ]
+            },
+            "ExitReasonEnum": {
+                "enum": [
+                    "sold",
+                    "died",
+                    "culled"
+                ],
+                "type": "string",
+                "description": "* `sold` - Sold\n* `died` - Died\n* `culled` - Culled"
+            },
+            "ExitRequest": {
+                "type": "object",
+                "properties": {
+                    "reason": {
+                        "$ref": "#/components/schemas/ExitReasonEnum"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                },
+                "required": [
+                    "reason"
                 ]
             },
             "Farm": {
@@ -2153,6 +5313,18 @@
                 "required": [
                     "identifier"
                 ]
+            },
+            "HealthStatusEnum": {
+                "enum": [
+                    "healthy",
+                    "under_treatment",
+                    "sick",
+                    "quarantined",
+                    "pregnant",
+                    "monitoring"
+                ],
+                "type": "string",
+                "description": "* `healthy` - Healthy\n* `under_treatment` - Under Treatment\n* `sick` - Sick\n* `quarantined` - Quarantined\n* `pregnant` - Pregnant\n* `monitoring` - Monitoring"
             },
             "HerdSizeBandEnum": {
                 "enum": [
@@ -2378,6 +5550,71 @@
                 ],
                 "type": "string",
                 "description": "* `goats` - Goats\n* `sheep` - Sheep\n* `dairy_cattle` - Dairy cattle\n* `beef_cattle` - Beef cattle\n* `poultry` - Poultry"
+            },
+            "Location": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/TypeEnum"
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": 0,
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "animal_count": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "default": 0
+                    }
+                },
+                "required": [
+                    "animal_count",
+                    "id",
+                    "name"
+                ]
+            },
+            "LocationRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/TypeEnum"
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": 0,
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                },
+                "required": [
+                    "name"
+                ]
             },
             "LoginRequest": {
                 "type": "object",
@@ -2747,6 +5984,95 @@
                     "role_label"
                 ]
             },
+            "NamedRef": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name"
+                ]
+            },
+            "NextId": {
+                "type": "object",
+                "properties": {
+                    "animal_id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "animal_id"
+                ]
+            },
+            "PaginatedAnimalListList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AnimalList"
+                        }
+                    }
+                }
+            },
+            "PaginatedAnimalPhotoList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AnimalPhoto"
+                        }
+                    }
+                }
+            },
             "PaginatedAuditLogList": {
                 "type": "object",
                 "required": [
@@ -2837,6 +6163,183 @@
                         "items": {
                             "$ref": "#/components/schemas/Member"
                         }
+                    }
+                }
+            },
+            "PaginatedTimelineEventList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TimelineEvent"
+                        }
+                    }
+                }
+            },
+            "PaginatedWeightRecordList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WeightRecord"
+                        }
+                    }
+                }
+            },
+            "PatchedAnimalGroupRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                }
+            },
+            "PatchedAnimalWriteRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "animal_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Farm ID, e.g. YPA-001",
+                        "maxLength": 30
+                    },
+                    "ear_tag": {
+                        "type": "string",
+                        "maxLength": 30
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "species": {
+                        "$ref": "#/components/schemas/SpeciesEnum"
+                    },
+                    "breed": {
+                        "type": "string",
+                        "maxLength": 60
+                    },
+                    "sex": {
+                        "$ref": "#/components/schemas/SexEnum"
+                    },
+                    "date_of_birth": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "estimated_age_months": {
+                        "type": "integer",
+                        "maximum": 360,
+                        "minimum": 0,
+                        "writeOnly": true,
+                        "nullable": true,
+                        "description": "Use when the exact birth date is unknown."
+                    },
+                    "acquisition_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "acquisition_source": {
+                        "$ref": "#/components/schemas/AcquisitionSourceEnum"
+                    },
+                    "acquisition_details": {
+                        "type": "string",
+                        "description": "Seller, price, market…",
+                        "maxLength": 200
+                    },
+                    "health_status": {
+                        "$ref": "#/components/schemas/HealthStatusEnum"
+                    },
+                    "breeding_status": {
+                        "$ref": "#/components/schemas/BreedingStatusEnum"
+                    },
+                    "dam": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "sire": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "sire_details": {
+                        "type": "string",
+                        "description": "For AI or an outside buck: straw code, owner…",
+                        "maxLength": 120
+                    },
+                    "location": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "group": {
+                        "type": "string",
+                        "format": "uuid",
+                        "nullable": true
+                    },
+                    "colour_markings": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "current_condition": {
+                        "type": "string"
+                    },
+                    "previous_history": {
+                        "type": "string"
+                    },
+                    "remarks": {
+                        "type": "string"
                     }
                 }
             },
@@ -2933,6 +6436,30 @@
                     }
                 }
             },
+            "PatchedLocationRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/TypeEnum"
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": 0,
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                }
+            },
             "PatchedMeUpdateRequest": {
                 "type": "object",
                 "properties": {
@@ -2978,6 +6505,52 @@
                         "maxLength": 80
                     }
                 }
+            },
+            "PatchedWeightRecordRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "weight_kg": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$"
+                    },
+                    "body_condition_score": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,1}(?:\\.\\d{0,1})?$",
+                        "nullable": true,
+                        "description": "1 (very thin) to 5 (very fat)"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                }
+            },
+            "PhotoUploadRequest": {
+                "type": "object",
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "caption": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "is_primary": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "file"
+                ]
             },
             "ResetMemberPasswordRequest": {
                 "type": "object",
@@ -3025,6 +6598,14 @@
                 ],
                 "type": "string",
                 "description": "* `administrator` - Administrator\n* `farm_manager` - Farm Manager\n* `livestock_attendant` - Livestock Attendant"
+            },
+            "SexEnum": {
+                "enum": [
+                    "female",
+                    "male"
+                ],
+                "type": "string",
+                "description": "* `female` - Female\n* `male` - Male"
             },
             "SignupRequest": {
                 "type": "object",
@@ -3099,6 +6680,81 @@
                     "phone"
                 ]
             },
+            "SpeciesEnum": {
+                "enum": [
+                    "goat",
+                    "sheep",
+                    "dairy_cattle",
+                    "beef_cattle",
+                    "poultry"
+                ],
+                "type": "string",
+                "description": "* `goat` - Goat\n* `sheep` - Sheep\n* `dairy_cattle` - Dairy cattle\n* `beef_cattle` - Beef cattle\n* `poultry` - Poultry"
+            },
+            "Summary": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer"
+                    },
+                    "males": {
+                        "type": "integer"
+                    },
+                    "females": {
+                        "type": "integer"
+                    },
+                    "kids": {
+                        "type": "integer"
+                    },
+                    "needing_attention": {
+                        "type": "integer"
+                    },
+                    "pregnant": {
+                        "type": "integer"
+                    },
+                    "inactive": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "females",
+                    "inactive",
+                    "kids",
+                    "males",
+                    "needing_attention",
+                    "pregnant",
+                    "total"
+                ]
+            },
+            "TimelineEvent": {
+                "type": "object",
+                "properties": {
+                    "at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "kind": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "detail": {
+                        "type": "string"
+                    },
+                    "by": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "at",
+                    "by",
+                    "detail",
+                    "kind",
+                    "title"
+                ]
+            },
             "TokenRequest": {
                 "type": "object",
                 "properties": {
@@ -3111,6 +6767,17 @@
                     "token"
                 ]
             },
+            "TypeEnum": {
+                "enum": [
+                    "paddock",
+                    "pen",
+                    "isolation",
+                    "quarantine",
+                    "other"
+                ],
+                "type": "string",
+                "description": "* `paddock` - Paddock\n* `pen` - Pen\n* `isolation` - Isolation\n* `quarantine` - Quarantine\n* `other` - Other"
+            },
             "UploadRequest": {
                 "type": "object",
                 "properties": {
@@ -3121,6 +6788,94 @@
                 },
                 "required": [
                     "file"
+                ]
+            },
+            "WeightRecord": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "animal": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "weight_kg": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$"
+                    },
+                    "body_condition_score": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,1}(?:\\.\\d{0,1})?$",
+                        "nullable": true,
+                        "description": "1 (very thin) to 5 (very fat)"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "recorded_by": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "gain_kg": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "animal",
+                    "created_at",
+                    "gain_kg",
+                    "id",
+                    "recorded_by",
+                    "weight_kg"
+                ]
+            },
+            "WeightRecordRequest": {
+                "type": "object",
+                "description": "ModelSerializer whose auto-generated foreign keys are limited to the active farm.",
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "weight_kg": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,4}(?:\\.\\d{0,2})?$"
+                    },
+                    "body_condition_score": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,1}(?:\\.\\d{0,1})?$",
+                        "nullable": true,
+                        "description": "1 (very thin) to 5 (very fat)"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "maxLength": 200
+                    }
+                },
+                "required": [
+                    "weight_kg"
                 ]
             },
             "WeightUnitEnum": {

@@ -158,6 +158,8 @@ REST_FRAMEWORK = {
         "auth_identifier": "10/minute",
     },
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    # "?format=" is ours (export?format=csv|xlsx|pdf), not DRF's renderer switch.
+    "URL_FORMAT_OVERRIDE": None,
 }
 
 SIMPLE_JWT = {
@@ -191,6 +193,9 @@ SPECTACULAR_SETTINGS = {
         "FarmStatusEnum": "apps.accounts.models.FarmStatus",
         "MembershipStatusEnum": "apps.accounts.models.MembershipStatus",
         "InvitationStatusEnum": "apps.accounts.models.InvitationStatus",
+        "ExitReasonEnum": "apps.livestock.models.ExitReason",
+        "HealthStatusEnum": "apps.livestock.models.HealthStatus",
+        "BreedingStatusEnum": "apps.livestock.models.BreedingStatus",
     },
 }
 

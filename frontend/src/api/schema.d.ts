@@ -4,6 +4,310 @@
  */
 
 export interface paths {
+    "/api/v1/animal-groups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["animal_groups_list"];
+        put?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        post: operations["animal_groups_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animal-groups/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["animal_groups_retrieve"];
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        put: operations["animal_groups_update"];
+        post?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        delete: operations["animal_groups_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        patch: operations["animal_groups_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/animal-photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["animal_photos_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animal-photos/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["animal_photos_retrieve"];
+        put?: never;
+        post?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        delete: operations["animal_photos_destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animal-photos/{id}/primary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["animal_photos_primary_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_list"];
+        put?: never;
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        post: operations["animals_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_retrieve"];
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        put: operations["animals_update"];
+        post?: never;
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        delete: operations["animals_destroy"];
+        options?: never;
+        head?: never;
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        patch: operations["animals_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/animals/{id}/exit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Record that the animal was sold, died or was culled. Its history stays. */
+        post: operations["animals_exit_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/{id}/photos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_photos_list"];
+        put?: never;
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        post: operations["animals_photos_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/{id}/reactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Undo an exit recorded by mistake. */
+        post: operations["animals_reactivate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/{id}/timeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_timeline_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/{id}/weights": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_weights_list"];
+        put?: never;
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        post: operations["animals_weights_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_export_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/next-id": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The livestock register. Attendants can view, register and record weights. */
+        get: operations["animals_next_id_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/animals/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Counts for the register's stat cards (active animals, after filters). */
+        get: operations["animals_summary_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/audit-logs": {
         parameters: {
             query?: never;
@@ -387,6 +691,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/locations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["locations_list"];
+        put?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        post: operations["locations_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/locations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        get: operations["locations_retrieve"];
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        put: operations["locations_update"];
+        post?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        delete: operations["locations_destroy"];
+        options?: never;
+        head?: never;
+        /**
+         * @description CRUD for a farm-owned model. Queries are filtered by the active farm twice: explicitly
+         *     here and implicitly by the model manager. Deletes are soft deletes.
+         */
+        patch: operations["locations_partial_update"];
+        trace?: never;
+    };
     "/api/v1/me": {
         parameters: {
             query?: never;
@@ -543,6 +903,43 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/weights": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Correct or remove a weight (managers and administrators). Recording is per animal. */
+        get: operations["weights_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/weights/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Correct or remove a weight (managers and administrators). Recording is per animal. */
+        get: operations["weights_retrieve"];
+        /** @description Correct or remove a weight (managers and administrators). Recording is per animal. */
+        put: operations["weights_update"];
+        post?: never;
+        /** @description Correct or remove a weight (managers and administrators). Recording is per animal. */
+        delete: operations["weights_destroy"];
+        options?: never;
+        head?: never;
+        /** @description Correct or remove a weight (managers and administrators). Recording is per animal. */
+        patch: operations["weights_partial_update"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -554,6 +951,14 @@ export interface components {
             username?: string;
             password?: string;
         };
+        /**
+         * @description * `born_on_farm` - Born on farm
+         *     * `purchased` - Purchased
+         *     * `gift` - Gift
+         *     * `other` - Other
+         * @enum {string}
+         */
+        AcquisitionSourceEnum: "born_on_farm" | "purchased" | "gift" | "other";
         /**
          * @description * `create` - Created
          *     * `update` - Updated
@@ -571,6 +976,188 @@ export interface components {
          * @enum {string}
          */
         AlertChannelsEnum: "in_app" | "whatsapp" | "sms" | "email";
+        AnimalDetail: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @description Farm ID, e.g. YPA-001 */
+            animal_id: string;
+            ear_tag?: string;
+            name?: string;
+            species?: components["schemas"]["SpeciesEnum"];
+            breed?: string;
+            sex: components["schemas"]["SexEnum"];
+            /** Format: date */
+            date_of_birth?: string | null;
+            dob_estimated?: boolean;
+            readonly age_months: number | null;
+            readonly is_kid: boolean;
+            health_status?: components["schemas"]["HealthStatusEnum"];
+            breeding_status?: components["schemas"]["BreedingStatusEnum"];
+            readonly location: components["schemas"]["NamedRef"] | null;
+            readonly group: components["schemas"]["NamedRef"] | null;
+            /** Format: decimal */
+            readonly latest_weight_kg: string | null;
+            /** Format: date */
+            readonly latest_weight_date: string | null;
+            readonly thumbnail: string | null;
+            is_active?: boolean;
+            exit_reason?: components["schemas"]["ExitReasonEnum"] | components["schemas"]["BlankEnum"];
+            /** Format: date */
+            acquisition_date?: string | null;
+            acquisition_source?: components["schemas"]["AcquisitionSourceEnum"];
+            /** @description Seller, price, market… */
+            acquisition_details?: string;
+            readonly dam: components["schemas"]["AnimalRef"] | null;
+            readonly sire: components["schemas"]["AnimalRef"] | null;
+            /** @description For AI or an outside buck: straw code, owner… */
+            sire_details?: string;
+            colour_markings?: string;
+            current_condition?: string;
+            previous_history?: string;
+            remarks?: string;
+            /** Format: date */
+            exit_date?: string | null;
+            exit_notes?: string;
+            readonly offspring_count: number;
+            /** Format: date-time */
+            readonly created_at: string;
+            readonly created_by_name: string | null;
+            /** Format: date-time */
+            readonly updated_at: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        AnimalGroup: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            description?: string;
+            /** @default 0 */
+            readonly animal_count: number;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        AnimalGroupRequest: {
+            name: string;
+            description?: string;
+        };
+        AnimalList: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @description Farm ID, e.g. YPA-001 */
+            animal_id: string;
+            ear_tag?: string;
+            name?: string;
+            species?: components["schemas"]["SpeciesEnum"];
+            breed?: string;
+            sex: components["schemas"]["SexEnum"];
+            /** Format: date */
+            date_of_birth?: string | null;
+            dob_estimated?: boolean;
+            readonly age_months: number | null;
+            readonly is_kid: boolean;
+            health_status?: components["schemas"]["HealthStatusEnum"];
+            breeding_status?: components["schemas"]["BreedingStatusEnum"];
+            readonly location: components["schemas"]["NamedRef"] | null;
+            readonly group: components["schemas"]["NamedRef"] | null;
+            /** Format: decimal */
+            readonly latest_weight_kg: string | null;
+            /** Format: date */
+            readonly latest_weight_date: string | null;
+            readonly thumbnail: string | null;
+            is_active?: boolean;
+            exit_reason?: components["schemas"]["ExitReasonEnum"] | components["schemas"]["BlankEnum"];
+        };
+        AnimalPhoto: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly animal: string;
+            /** Format: uri */
+            readonly file: string;
+            /** Format: uri */
+            readonly thumbnail: string;
+            readonly is_primary: boolean;
+            readonly caption: string;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        AnimalRef: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @description Farm ID, e.g. YPA-001 */
+            animal_id: string;
+            name?: string;
+            sex: components["schemas"]["SexEnum"];
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        AnimalWrite: {
+            /** Format: uuid */
+            readonly id: string;
+            /** @description Farm ID, e.g. YPA-001 */
+            animal_id: string;
+            ear_tag?: string;
+            name?: string;
+            species?: components["schemas"]["SpeciesEnum"];
+            breed?: string;
+            sex: components["schemas"]["SexEnum"];
+            /** Format: date */
+            date_of_birth?: string | null;
+            /** Format: date */
+            acquisition_date?: string | null;
+            acquisition_source?: components["schemas"]["AcquisitionSourceEnum"];
+            /** @description Seller, price, market… */
+            acquisition_details?: string;
+            health_status?: components["schemas"]["HealthStatusEnum"];
+            breeding_status?: components["schemas"]["BreedingStatusEnum"];
+            /** Format: uuid */
+            dam?: string | null;
+            /** Format: uuid */
+            sire?: string | null;
+            /** @description For AI or an outside buck: straw code, owner… */
+            sire_details?: string;
+            /** Format: uuid */
+            location?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            colour_markings?: string;
+            current_condition?: string;
+            previous_history?: string;
+            remarks?: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        AnimalWriteRequest: {
+            /** @description Farm ID, e.g. YPA-001 */
+            animal_id: string;
+            ear_tag?: string;
+            name?: string;
+            species?: components["schemas"]["SpeciesEnum"];
+            breed?: string;
+            sex: components["schemas"]["SexEnum"];
+            /** Format: date */
+            date_of_birth?: string | null;
+            /** @description Use when the exact birth date is unknown. */
+            estimated_age_months?: number | null;
+            /** Format: date */
+            acquisition_date?: string | null;
+            acquisition_source?: components["schemas"]["AcquisitionSourceEnum"];
+            /** @description Seller, price, market… */
+            acquisition_details?: string;
+            health_status?: components["schemas"]["HealthStatusEnum"];
+            breeding_status?: components["schemas"]["BreedingStatusEnum"];
+            /** Format: uuid */
+            dam?: string | null;
+            /** Format: uuid */
+            sire?: string | null;
+            /** @description For AI or an outside buck: straw code, owner… */
+            sire_details?: string;
+            /** Format: uuid */
+            location?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            colour_markings?: string;
+            current_condition?: string;
+            previous_history?: string;
+            remarks?: string;
+        };
         AuditLog: {
             readonly id: number;
             /** Format: date-time */
@@ -593,6 +1180,18 @@ export interface components {
         };
         /** @enum {unknown} */
         BlankEnum: "";
+        /**
+         * @description * `open` - Open
+         *     * `served` - Served
+         *     * `pregnant` - Pregnant
+         *     * `lactating` - Lactating
+         *     * `dry` - Dry
+         *     * `breeding_male` - Breeding male
+         *     * `castrated` - Castrated
+         *     * `too_young` - Too young
+         * @enum {string}
+         */
+        BreedingStatusEnum: "open" | "served" | "pregnant" | "lactating" | "dry" | "breeding_male" | "castrated" | "too_young";
         ChangePasswordRequest: {
             current_password: string;
             password: string;
@@ -631,6 +1230,19 @@ export interface components {
         DefaultCalendarViewEnum: "month" | "week" | "day" | "agenda";
         Detail: {
             detail: string;
+        };
+        /**
+         * @description * `sold` - Sold
+         *     * `died` - Died
+         *     * `culled` - Culled
+         * @enum {string}
+         */
+        ExitReasonEnum: "sold" | "died" | "culled";
+        ExitRequest: {
+            reason: components["schemas"]["ExitReasonEnum"];
+            /** Format: date */
+            date?: string;
+            notes?: string;
         };
         Farm: {
             /** Format: uuid */
@@ -691,6 +1303,16 @@ export interface components {
             /** @default email */
             channel: components["schemas"]["ChannelEnum"];
         };
+        /**
+         * @description * `healthy` - Healthy
+         *     * `under_treatment` - Under Treatment
+         *     * `sick` - Sick
+         *     * `quarantined` - Quarantined
+         *     * `pregnant` - Pregnant
+         *     * `monitoring` - Monitoring
+         * @enum {string}
+         */
+        HealthStatusEnum: "healthy" | "under_treatment" | "sick" | "quarantined" | "pregnant" | "monitoring";
         /**
          * @description * `1-20` - 1–20 animals
          *     * `21-50` - 21–50 animals
@@ -763,6 +1385,24 @@ export interface components {
          * @enum {string}
          */
         LivestockTypesEnum: "goats" | "sheep" | "dairy_cattle" | "beef_cattle" | "poultry";
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        Location: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            type?: components["schemas"]["TypeEnum"];
+            capacity?: number | null;
+            description?: string;
+            /** @default 0 */
+            readonly animal_count: number;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        LocationRequest: {
+            name: string;
+            type?: components["schemas"]["TypeEnum"];
+            capacity?: number | null;
+            description?: string;
+        };
         LoginRequest: {
             /** @description Username, email or phone number */
             identifier: string;
@@ -861,6 +1501,44 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        NamedRef: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+        };
+        NextId: {
+            animal_id: string;
+        };
+        PaginatedAnimalListList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["AnimalList"][];
+        };
+        PaginatedAnimalPhotoList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["AnimalPhoto"][];
+        };
         PaginatedAuditLogList: {
             /** @example 140 */
             count: number;
@@ -906,6 +1584,76 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Member"][];
         };
+        PaginatedTimelineEventList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["TimelineEvent"][];
+        };
+        PaginatedWeightRecordList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["WeightRecord"][];
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedAnimalGroupRequest: {
+            name?: string;
+            description?: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedAnimalWriteRequest: {
+            /** @description Farm ID, e.g. YPA-001 */
+            animal_id?: string;
+            ear_tag?: string;
+            name?: string;
+            species?: components["schemas"]["SpeciesEnum"];
+            breed?: string;
+            sex?: components["schemas"]["SexEnum"];
+            /** Format: date */
+            date_of_birth?: string | null;
+            /** @description Use when the exact birth date is unknown. */
+            estimated_age_months?: number | null;
+            /** Format: date */
+            acquisition_date?: string | null;
+            acquisition_source?: components["schemas"]["AcquisitionSourceEnum"];
+            /** @description Seller, price, market… */
+            acquisition_details?: string;
+            health_status?: components["schemas"]["HealthStatusEnum"];
+            breeding_status?: components["schemas"]["BreedingStatusEnum"];
+            /** Format: uuid */
+            dam?: string | null;
+            /** Format: uuid */
+            sire?: string | null;
+            /** @description For AI or an outside buck: straw code, owner… */
+            sire_details?: string;
+            /** Format: uuid */
+            location?: string | null;
+            /** Format: uuid */
+            group?: string | null;
+            colour_markings?: string;
+            current_condition?: string;
+            previous_history?: string;
+            remarks?: string;
+        };
         PatchedFarmRequest: {
             name?: string;
             location?: string;
@@ -927,6 +1675,13 @@ export interface components {
             /** @description Month the financial year starts (1 = January). */
             financial_year_start?: number;
         };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedLocationRequest: {
+            name?: string;
+            type?: components["schemas"]["TypeEnum"];
+            capacity?: number | null;
+            description?: string;
+        };
         PatchedMeUpdateRequest: {
             first_name?: string;
             last_name?: string;
@@ -938,6 +1693,26 @@ export interface components {
         PatchedMemberUpdateRequest: {
             role?: components["schemas"]["RoleEnum"];
             job_title?: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        PatchedWeightRecordRequest: {
+            /** Format: date */
+            date?: string;
+            /** Format: decimal */
+            weight_kg?: string;
+            /**
+             * Format: decimal
+             * @description 1 (very thin) to 5 (very fat)
+             */
+            body_condition_score?: string | null;
+            notes?: string;
+        };
+        PhotoUploadRequest: {
+            /** Format: binary */
+            file: string;
+            caption?: string;
+            /** @default false */
+            is_primary: boolean;
         };
         ResetMemberPasswordRequest: {
             channels: components["schemas"]["ChannelsEnum"][];
@@ -955,6 +1730,12 @@ export interface components {
          * @enum {string}
          */
         RoleEnum: "administrator" | "farm_manager" | "livestock_attendant";
+        /**
+         * @description * `female` - Female
+         *     * `male` - Male
+         * @enum {string}
+         */
+        SexEnum: "female" | "male";
         SignupRequest: {
             first_name: string;
             last_name: string;
@@ -969,12 +1750,81 @@ export interface components {
             job_title?: string;
             alert_channels?: components["schemas"]["AlertChannelsEnum"][];
         };
+        /**
+         * @description * `goat` - Goat
+         *     * `sheep` - Sheep
+         *     * `dairy_cattle` - Dairy cattle
+         *     * `beef_cattle` - Beef cattle
+         *     * `poultry` - Poultry
+         * @enum {string}
+         */
+        SpeciesEnum: "goat" | "sheep" | "dairy_cattle" | "beef_cattle" | "poultry";
+        Summary: {
+            total: number;
+            males: number;
+            females: number;
+            kids: number;
+            needing_attention: number;
+            pregnant: number;
+            inactive: number;
+        };
+        TimelineEvent: {
+            /** Format: date-time */
+            at: string;
+            kind: string;
+            title: string;
+            detail: string;
+            by: string | null;
+        };
         TokenRequest: {
             token: string;
         };
+        /**
+         * @description * `paddock` - Paddock
+         *     * `pen` - Pen
+         *     * `isolation` - Isolation
+         *     * `quarantine` - Quarantine
+         *     * `other` - Other
+         * @enum {string}
+         */
+        TypeEnum: "paddock" | "pen" | "isolation" | "quarantine" | "other";
         UploadRequest: {
             /** Format: binary */
             file: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        WeightRecord: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly animal: string;
+            /** Format: date */
+            date?: string;
+            /** Format: decimal */
+            weight_kg: string;
+            /**
+             * Format: decimal
+             * @description 1 (very thin) to 5 (very fat)
+             */
+            body_condition_score?: string | null;
+            notes?: string;
+            readonly recorded_by: string | null;
+            readonly gain_kg: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        /** @description ModelSerializer whose auto-generated foreign keys are limited to the active farm. */
+        WeightRecordRequest: {
+            /** Format: date */
+            date?: string;
+            /** Format: decimal */
+            weight_kg: string;
+            /**
+             * Format: decimal
+             * @description 1 (very thin) to 5 (very fat)
+             */
+            body_condition_score?: string | null;
+            notes?: string;
         };
         /**
          * @description * `kg` - Kilograms (kg)
@@ -991,6 +1841,818 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    animal_groups_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalGroup"][];
+                };
+            };
+        };
+    };
+    animal_groups_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnimalGroupRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AnimalGroupRequest"];
+                "multipart/form-data": components["schemas"]["AnimalGroupRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalGroup"];
+                };
+            };
+        };
+    };
+    animal_groups_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal group. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalGroup"];
+                };
+            };
+        };
+    };
+    animal_groups_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal group. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnimalGroupRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AnimalGroupRequest"];
+                "multipart/form-data": components["schemas"]["AnimalGroupRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalGroup"];
+                };
+            };
+        };
+    };
+    animal_groups_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal group. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    animal_groups_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal group. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedAnimalGroupRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedAnimalGroupRequest"];
+                "multipart/form-data": components["schemas"]["PatchedAnimalGroupRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalGroup"];
+                };
+            };
+        };
+    };
+    animal_photos_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedAnimalPhotoList"];
+                };
+            };
+        };
+    };
+    animal_photos_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal photo. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalPhoto"];
+                };
+            };
+        };
+    };
+    animal_photos_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal photo. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    animal_photos_primary_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal photo. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalPhoto"];
+                };
+            };
+        };
+    };
+    animals_list: {
+        parameters: {
+            query?: {
+                /** @description true (default), false or all */
+                active?: string;
+                /**
+                 * @description * `kid` - Kid
+                 *     * `young` - Young
+                 *     * `adult` - Adult
+                 */
+                age?: "adult" | "kid" | "young";
+                attention?: boolean;
+                breed?: string;
+                breeding?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                group?: string;
+                location?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `female` - Female
+                 *     * `male` - Male
+                 */
+                sex?: "female" | "male";
+                species?: string;
+                /** @description Health status (comma-separated) */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedAnimalListList"];
+                };
+            };
+        };
+    };
+    animals_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnimalWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AnimalWriteRequest"];
+                "multipart/form-data": components["schemas"]["AnimalWriteRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalDetail"];
+                };
+            };
+        };
+    };
+    animals_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalDetail"];
+                };
+            };
+        };
+    };
+    animals_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AnimalWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AnimalWriteRequest"];
+                "multipart/form-data": components["schemas"]["AnimalWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalDetail"];
+                };
+            };
+        };
+    };
+    animals_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    animals_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedAnimalWriteRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedAnimalWriteRequest"];
+                "multipart/form-data": components["schemas"]["PatchedAnimalWriteRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalWrite"];
+                };
+            };
+        };
+    };
+    animals_exit_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExitRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ExitRequest"];
+                "multipart/form-data": components["schemas"]["ExitRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalDetail"];
+                };
+            };
+        };
+    };
+    animals_photos_list: {
+        parameters: {
+            query?: {
+                /** @description true (default), false or all */
+                active?: string;
+                /**
+                 * @description * `kid` - Kid
+                 *     * `young` - Young
+                 *     * `adult` - Adult
+                 */
+                age?: "adult" | "kid" | "young";
+                attention?: boolean;
+                breed?: string;
+                breeding?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                group?: string;
+                location?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `female` - Female
+                 *     * `male` - Male
+                 */
+                sex?: "female" | "male";
+                species?: string;
+                /** @description Health status (comma-separated) */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedAnimalPhotoList"];
+                };
+            };
+        };
+    };
+    animals_photos_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["PhotoUploadRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalPhoto"];
+                };
+            };
+        };
+    };
+    animals_reactivate_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AnimalDetail"];
+                };
+            };
+        };
+    };
+    animals_timeline_list: {
+        parameters: {
+            query?: {
+                /** @description true (default), false or all */
+                active?: string;
+                /**
+                 * @description * `kid` - Kid
+                 *     * `young` - Young
+                 *     * `adult` - Adult
+                 */
+                age?: "adult" | "kid" | "young";
+                attention?: boolean;
+                breed?: string;
+                breeding?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                group?: string;
+                location?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `female` - Female
+                 *     * `male` - Male
+                 */
+                sex?: "female" | "male";
+                species?: string;
+                /** @description Health status (comma-separated) */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedTimelineEventList"];
+                };
+            };
+        };
+    };
+    animals_weights_list: {
+        parameters: {
+            query?: {
+                /** @description true (default), false or all */
+                active?: string;
+                /**
+                 * @description * `kid` - Kid
+                 *     * `young` - Young
+                 *     * `adult` - Adult
+                 */
+                age?: "adult" | "kid" | "young";
+                attention?: boolean;
+                breed?: string;
+                breeding?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                group?: string;
+                location?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `female` - Female
+                 *     * `male` - Male
+                 */
+                sex?: "female" | "male";
+                species?: string;
+                /** @description Health status (comma-separated) */
+                status?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedWeightRecordList"];
+                };
+            };
+        };
+    };
+    animals_weights_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this animal. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WeightRecordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["WeightRecordRequest"];
+                "multipart/form-data": components["schemas"]["WeightRecordRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WeightRecord"];
+                };
+            };
+        };
+    };
+    animals_export_retrieve: {
+        parameters: {
+            query?: {
+                format?: "csv" | "xlsx";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
+            };
+        };
+    };
+    animals_next_id_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NextId"];
+                };
+            };
+        };
+    };
+    animals_summary_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Summary"];
+                };
+            };
+        };
+    };
     audit_logs_list: {
         parameters: {
             query?: {
@@ -1549,6 +3211,180 @@ export interface operations {
             };
         };
     };
+    locations_list: {
+        parameters: {
+            query?: {
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `paddock` - Paddock
+                 *     * `pen` - Pen
+                 *     * `isolation` - Isolation
+                 *     * `quarantine` - Quarantine
+                 *     * `other` - Other
+                 */
+                type?: "isolation" | "other" | "paddock" | "pen" | "quarantine";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Location"][];
+                };
+            };
+        };
+    };
+    locations_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["LocationRequest"];
+                "multipart/form-data": components["schemas"]["LocationRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Location"];
+                };
+            };
+        };
+    };
+    locations_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this location. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Location"];
+                };
+            };
+        };
+    };
+    locations_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this location. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LocationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["LocationRequest"];
+                "multipart/form-data": components["schemas"]["LocationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Location"];
+                };
+            };
+        };
+    };
+    locations_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this location. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    locations_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this location. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedLocationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedLocationRequest"];
+                "multipart/form-data": components["schemas"]["PatchedLocationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Location"];
+                };
+            };
+        };
+    };
     me_retrieve: {
         parameters: {
             query?: never;
@@ -1899,6 +3735,149 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    weights_list: {
+        parameters: {
+            query?: {
+                animal?: string;
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedWeightRecordList"];
+                };
+            };
+        };
+    };
+    weights_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this weight record. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WeightRecord"];
+                };
+            };
+        };
+    };
+    weights_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this weight record. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["WeightRecordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["WeightRecordRequest"];
+                "multipart/form-data": components["schemas"]["WeightRecordRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WeightRecord"];
+                };
+            };
+        };
+    };
+    weights_destroy: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this weight record. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    weights_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this weight record. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedWeightRecordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedWeightRecordRequest"];
+                "multipart/form-data": components["schemas"]["PatchedWeightRecordRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WeightRecord"];
                 };
             };
         };

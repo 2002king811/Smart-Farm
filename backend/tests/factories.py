@@ -7,6 +7,7 @@ from django.utils import timezone
 from apps.accounts.models import Farm, FarmMembership, Invitation, Role, User
 from apps.accounts.security import hash_token
 from apps.audit.models import AuditLog
+from apps.livestock.models import Animal, AnimalGroup, AnimalPhoto, Location, WeightRecord
 from tests.testapp.models import Goat, Pen
 
 
@@ -86,6 +87,54 @@ class AuditLogFactory(factory.django.DjangoModelFactory):
     object_repr = "Something"
 
 
+class LocationFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Location
+
+    farm = factory.SubFactory(FarmFactory)
+    name = factory.Sequence(lambda n: f"Paddock {n}")
+
+
+class AnimalGroupFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = AnimalGroup
+
+    farm = factory.SubFactory(FarmFactory)
+    name = factory.Sequence(lambda n: f"Group {n}")
+
+
+class AnimalFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Animal
+
+    farm = factory.SubFactory(FarmFactory)
+    animal_id = factory.Sequence(lambda n: f"YPA-{n + 1:03d}")
+    ear_tag = factory.Sequence(lambda n: f"KE{n + 1000}")
+    name = factory.Sequence(lambda n: f"Goat {n}")
+    sex = "female"
+    breed = "Galla"
+    date_of_birth = factory.LazyFunction(lambda: timezone.localdate() - timedelta(days=500))
+
+
+class WeightRecordFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = WeightRecord
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(lambda o: AnimalFactory(farm=o.farm))
+    weight_kg = "32.50"
+
+
+class AnimalPhotoFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = AnimalPhoto
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(lambda o: AnimalFactory(farm=o.farm))
+    file = factory.django.ImageField(color="green")
+    thumbnail = factory.django.ImageField(color="green", width=40, height=40)
+
+
 # Farm-scoped endpoints whose model is not a FarmOwnedModel.
 FACTORY_FOR_ENDPOINT_MODEL = {
     FarmMembership: MembershipFactory,
@@ -98,4 +147,9 @@ FACTORY_FOR_MODEL = {
     Pen: PenFactory,
     Goat: GoatFactory,
     AuditLog: AuditLogFactory,
+    Location: LocationFactory,
+    AnimalGroup: AnimalGroupFactory,
+    Animal: AnimalFactory,
+    WeightRecord: WeightRecordFactory,
+    AnimalPhoto: AnimalPhotoFactory,
 }

@@ -25,4 +25,10 @@ class FarmScopedModelSerializer(serializers.ModelSerializer):
     serializer_related_field = FarmScopedRelatedField
 
     class Meta:
-        read_only_fields = ("id", "created_at", "updated_at", "created_by", "updated_by")
+        read_only_fields: tuple[str, ...] = (
+            "id",
+            "created_at",
+            "updated_at",
+            "created_by",
+            "updated_by",
+        )

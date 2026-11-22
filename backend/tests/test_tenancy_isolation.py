@@ -122,8 +122,10 @@ def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member
     while url:
         res = client.get(url)
         assert res.status_code == 200, res.content
-        ids |= {str(r["id"]) for r in res.json()["results"]}
-        url = res.json().get("next")
+        body = res.json()
+        rows = body["results"] if isinstance(body, dict) else body  # unpaginated short lists
+        ids |= {str(r["id"]) for r in rows}
+        url = body.get("next") if isinstance(body, dict) else None
     assert str(mine.pk) in ids
     assert str(theirs.pk) not in ids
     assert all(model._base_manager.get(pk=i).farm_id == farm_a.pk for i in ids)
@@ -158,13 +160,10 @@ def test_member_of_both_farms_sees_only_the_selected_one(route, farm_a, farm_b, 
 
     FarmMembership.objects.create(user=user, farm=farm_b, role=Role.ADMINISTRATOR)
 
-    ids_a = {
-        str(r["id"])
-        for r in client_for(user, farm_a).get(f"/api/v1/{route}?page_size=200").json()["results"]
-    }
-    ids_b = {
-        str(r["id"])
-        for r in client_for(user, farm_b).get(f"/api/v1/{route}?page_size=200").json()["results"]
-    }
+    def ids(farm):  # type: ignore[no-untyped-def]
+        body = client_for(user, farm).get(f"/api/v1/{route}?page_size=200").json()
+        return {str(r["id"]) for r in (body["results"] if isinstance(body, dict) else body)}
+
+    ids_a, ids_b = ids(farm_a), ids(farm_b)
     assert str(a.pk) in ids_a and str(b.pk) not in ids_a
     assert str(b.pk) in ids_b and str(a.pk) not in ids_b

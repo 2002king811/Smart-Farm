@@ -113,7 +113,7 @@ def test_me_and_my_farms(farm_a, farm_b, member, client_for):  # type: ignore[no
 
 
 def test_openapi_schema_builds(client):  # type: ignore[no-untyped-def]
-    res = client.get("/api/schema/?format=json")
+    res = client.get("/api/schema/", HTTP_ACCEPT="application/vnd.oai.openapi+json")
     assert res.status_code == 200
     assert "/api/v1/me/farms" in res.json()["paths"]
 

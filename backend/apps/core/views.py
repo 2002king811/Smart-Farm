@@ -25,7 +25,7 @@ class FarmContextMixin:
 
     permission_classes: Any = [permissions.IsAuthenticated, FarmModulePermission]
     permission_module: str | None = None
-    action_permissions: dict[str, str] = {}
+    action_permissions: dict[str, Any] = {}
     model: type[models.Model] | None = None
     _farm_ctx_token: Any = None
 
