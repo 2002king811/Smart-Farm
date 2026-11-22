@@ -81,7 +81,7 @@ class HealthRecordSerializer(FarmScopedModelSerializer):
         day = current("date") or timezone.localdate()
         if day > timezone.localdate():
             errors["date"] = "Record what has happened: the date cannot be in the future."
-        next_field = self.Meta.model.NEXT_DATE_FIELD
+        next_field = getattr(self.Meta.model, "NEXT_DATE_FIELD", None)
         if next_field and current(next_field) and current(next_field) <= day:
             errors[next_field] = "The next date must be after the record date."
         if (

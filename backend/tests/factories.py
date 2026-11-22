@@ -7,6 +7,7 @@ from django.utils import timezone
 from apps.accounts.models import Farm, FarmMembership, Invitation, Role, User
 from apps.accounts.security import hash_token
 from apps.audit.models import AuditLog
+from apps.breeding.models import Birth, Mating, Mortality
 from apps.calendar.models import Activity, ActivityCategory, ActivityNote, ActivityStatusHistory
 from apps.health.models import (
     Deworming,
@@ -20,6 +21,14 @@ from apps.health.models import (
     VetVisit,
 )
 from apps.livestock.models import Animal, AnimalGroup, AnimalPhoto, Location, WeightRecord
+from apps.nutrition.models import (
+    FeedingRecord,
+    FeedItem,
+    FeedStockMovement,
+    NutritionAssessment,
+    Supplementation,
+    WaterHygieneCheck,
+)
 from tests.testapp.models import Goat, Pen
 
 
@@ -267,6 +276,91 @@ class ActivityStatusHistoryFactory(factory.django.DjangoModelFactory):
     to_status = "completed"
 
 
+class MatingFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Mating
+
+    farm = factory.SubFactory(FarmFactory)
+    doe = factory.LazyAttribute(lambda o: AnimalFactory(farm=o.farm, sex="female"))
+    buck = factory.LazyAttribute(lambda o: AnimalFactory(farm=o.farm, sex="male"))
+    date = factory.LazyFunction(lambda: timezone.localdate() - timedelta(days=40))
+
+
+class BirthFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Birth
+
+    farm = factory.SubFactory(FarmFactory)
+    dam = factory.LazyAttribute(lambda o: AnimalFactory(farm=o.farm, sex="female"))
+
+
+class MortalityFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Mortality
+
+    farm = factory.SubFactory(FarmFactory)
+    animal = factory.LazyAttribute(lambda o: AnimalFactory(farm=o.farm))
+    cause = "Pneumonia"
+
+
+class KidFactory(AnimalFactory):
+    date_of_birth = factory.LazyFunction(lambda: timezone.localdate() - timedelta(days=30))
+
+
+class FeedItemFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = FeedItem
+
+    farm = factory.SubFactory(FarmFactory)
+    name = factory.Sequence(lambda n: f"Feed {n}")
+    unit = "kg"
+
+
+class FeedStockMovementFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = FeedStockMovement
+
+    farm = factory.SubFactory(FarmFactory)
+    feed_item = factory.LazyAttribute(lambda o: FeedItemFactory(farm=o.farm))
+    kind = "purchase"
+    quantity = "100"
+
+
+class FeedingRecordFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = FeedingRecord
+
+    farm = factory.SubFactory(FarmFactory)
+    feed_item = factory.LazyAttribute(lambda o: FeedItemFactory(farm=o.farm))
+    quantity = "5"
+
+
+class NutritionAssessmentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = NutritionAssessment
+
+    farm = factory.SubFactory(FarmFactory)
+    findings = "Good condition"
+
+
+class SupplementationFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Supplementation
+
+    farm = factory.SubFactory(FarmFactory)
+    supplement = "Mineral lick"
+
+
+class WaterHygieneCheckFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = WaterHygieneCheck
+
+    farm = factory.SubFactory(FarmFactory)
+
+
+# Endpoints whose list shows only some rows of a model need a matching factory.
+FACTORY_FOR_ROUTE = {"kids": KidFactory}
+
 # Farm-scoped endpoints whose model is not a FarmOwnedModel.
 FACTORY_FOR_ENDPOINT_MODEL = {
     FarmMembership: MembershipFactory,
@@ -297,4 +391,13 @@ FACTORY_FOR_MODEL = {
     Activity: ActivityFactory,
     ActivityNote: ActivityNoteFactory,
     ActivityStatusHistory: ActivityStatusHistoryFactory,
+    Mating: MatingFactory,
+    Birth: BirthFactory,
+    Mortality: MortalityFactory,
+    FeedItem: FeedItemFactory,
+    FeedStockMovement: FeedStockMovementFactory,
+    FeedingRecord: FeedingRecordFactory,
+    NutritionAssessment: NutritionAssessmentFactory,
+    Supplementation: SupplementationFactory,
+    WaterHygieneCheck: WaterHygieneCheckFactory,
 }

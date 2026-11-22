@@ -286,6 +286,7 @@ LINKS: dict[str, tuple[str, str, list[int]]] = {
     "treatment": (CategoryKey.TREATMENT, ActivitySource.TREATMENT, [1]),
     "vetvisit": (CategoryKey.VET_VISIT, ActivitySource.HEALTH, [3, 1]),
     "healthinspection": (CategoryKey.INSPECTION, ActivitySource.HEALTH, [3, 1]),
+    "nutritionassessment": (CategoryKey.FEEDING, ActivitySource.HEALTH, [3, 1]),
 }
 
 

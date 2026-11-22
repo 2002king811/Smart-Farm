@@ -13,7 +13,7 @@ from django.urls import URLPattern, URLResolver, get_resolver
 from apps.accounts.models import Role
 from apps.core.models import FarmOwnedModel
 from apps.core.views import FarmContextMixin
-from tests.factories import FACTORY_FOR_ENDPOINT_MODEL, FACTORY_FOR_MODEL
+from tests.factories import FACTORY_FOR_ENDPOINT_MODEL, FACTORY_FOR_MODEL, FACTORY_FOR_ROUTE
 
 ALL_FACTORIES = {**FACTORY_FOR_MODEL, **FACTORY_FOR_ENDPOINT_MODEL}
 
@@ -110,7 +110,7 @@ def test_discovers_farm_viewsets() -> None:
 def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member, client_for):  # type: ignore[no-untyped-def]
     viewset = VIEWSETS[route]
     model = _model_for(viewset)
-    factory = ALL_FACTORIES[model]
+    factory = FACTORY_FOR_ROUTE.get(route) or ALL_FACTORIES[model]
     mine = factory(farm=farm_a)
     theirs = factory(farm=farm_b)
     user = member(farm_a, Role.ADMINISTRATOR)
@@ -153,7 +153,7 @@ def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member
 @pytest.mark.parametrize("route", sorted(VIEWSETS))
 def test_member_of_both_farms_sees_only_the_selected_one(route, farm_a, farm_b, member, client_for):  # type: ignore[no-untyped-def]
     model = _model_for(VIEWSETS[route])
-    factory = ALL_FACTORIES[model]
+    factory = FACTORY_FOR_ROUTE.get(route) or ALL_FACTORIES[model]
     a, b = factory(farm=farm_a), factory(farm=farm_b)
     user = member(farm_a, Role.ADMINISTRATOR)
     from apps.accounts.models import FarmMembership
