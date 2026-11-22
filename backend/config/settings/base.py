@@ -154,7 +154,8 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "60/minute",
         "user": "600/minute",
-        "auth": "10/minute",
+        "auth": "20/minute",
+        "auth_identifier": "10/minute",
     },
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
@@ -172,6 +173,8 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "id",
 }
 JWT_REFRESH_COOKIE_NAME = "sf_refresh"
+JWT_CSRF_COOKIE_NAME = "sf_csrf"
+JWT_COOKIE_SECURE = env.bool("JWT_COOKIE_SECURE", default=not DEBUG)
 JWT_REMEMBER_ME_REFRESH_LIFETIME = timedelta(days=30)
 
 SPECTACULAR_SETTINGS = {
@@ -184,10 +187,17 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
     "SCHEMA_PATH_PREFIX": r"/api/v1",
+    "ENUM_NAME_OVERRIDES": {
+        "FarmStatusEnum": "apps.accounts.models.FarmStatus",
+        "MembershipStatusEnum": "apps.accounts.models.MembershipStatus",
+        "InvitationStatusEnum": "apps.accounts.models.InvitationStatus",
+    },
 }
 
 # --- CORS / CSRF -------------------------------------------------------------------------
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=["http://localhost:5180", "http://127.0.0.1:5180"])
+CORS_ALLOWED_ORIGINS = env.list(
+    "CORS_ALLOWED_ORIGINS", default=["http://localhost:5180", "http://127.0.0.1:5180"]
+)
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "accept",

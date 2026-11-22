@@ -22,3 +22,5 @@ LOGGING["handlers"]["console"]["formatter"] = "text"  # type: ignore[index] # no
 
 INSTALLED_APPS = [*INSTALLED_APPS, "tests.testapp"]  # noqa: F405
 ROOT_URLCONF = "tests.urls"
+RUN_ON_COMMIT_IMMEDIATELY = True
+JWT_COOKIE_SECURE = False

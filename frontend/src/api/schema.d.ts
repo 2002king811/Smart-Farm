@@ -48,6 +48,345 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_login_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_logout_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/forgot": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_password_forgot_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_password_reset_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Swaps the refresh cookie for a new access token (and a rotated refresh cookie). */
+        post: operations["auth_refresh_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_signup_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verify-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_verify_email_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verify-email/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_verify_email_resend_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verify-phone": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_verify_phone_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verify-phone/send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["auth_verify_phone_send_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/farm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["farm_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        patch: operations["farm_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/farm/logo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["farm_logo_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invitations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["invitations_list"];
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["invitations_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invitations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["invitations_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invitations/{id}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["invitations_resend_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invitations/{id}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["invitations_revoke_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invitations/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description New people choose a password here; people with an account accept while logged in. */
+        post: operations["invitations_accept_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/invitations/lookup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description What the invite page shows before accepting: farm, role, who invited you. */
+        get: operations["invitations_lookup_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me": {
         parameters: {
             query?: never;
@@ -62,7 +401,8 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        patch?: never;
+        /** @description The signed-in user. Not farm-scoped. */
+        patch: operations["me_partial_update"];
         trace?: never;
     };
     "/api/v1/me/farms": {
@@ -82,10 +422,138 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Change password. Signs out other devices and returns a fresh session for this one. */
+        post: operations["me_password_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/photo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["me_photo_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        get: operations["members_list"];
+        put?: never;
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        post: operations["members_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/members/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        get: operations["members_retrieve"];
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        put: operations["members_update"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        patch: operations["members_partial_update"];
+        trace?: never;
+    };
+    "/api/v1/members/{id}/activate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        post: operations["members_activate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/members/{id}/deactivate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        post: operations["members_deactivate_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/members/{id}/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description User Management. Deactivate rather than delete, so records and history stay intact. */
+        post: operations["members_reset_password_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        AcceptInvitationRequest: {
+            token: string;
+            first_name?: string;
+            last_name?: string;
+            username?: string;
+            password?: string;
+        };
         /**
          * @description * `create` - Created
          *     * `update` - Updated
@@ -95,6 +563,14 @@ export interface components {
          * @enum {string}
          */
         ActionEnum: "create" | "update" | "delete" | "restore" | "status_change";
+        /**
+         * @description * `in_app` - In-app
+         *     * `whatsapp` - WhatsApp
+         *     * `sms` - SMS
+         *     * `email` - Email
+         * @enum {string}
+         */
+        AlertChannelsEnum: "in_app" | "whatsapp" | "sms" | "email";
         AuditLog: {
             readonly id: number;
             /** Format: date-time */
@@ -111,6 +587,40 @@ export interface components {
             readonly after: unknown;
             readonly ip: string | null;
         };
+        AuthResponse: {
+            access: string;
+            user: components["schemas"]["Me"];
+        };
+        /** @enum {unknown} */
+        BlankEnum: "";
+        ChangePasswordRequest: {
+            current_password: string;
+            password: string;
+        };
+        /**
+         * @description * `email` - Email
+         *     * `sms` - SMS
+         * @enum {string}
+         */
+        ChannelEnum: "email" | "sms";
+        /**
+         * @description * `email` - Email
+         *     * `sms` - SMS
+         *     * `whatsapp` - WhatsApp
+         * @enum {string}
+         */
+        ChannelsEnum: "email" | "sms" | "whatsapp";
+        CodeRequest: {
+            code: string;
+        };
+        /**
+         * @description * `DD MMM YYYY` - DD MMM YYYY
+         *     * `DD/MM/YYYY` - DD/MM/YYYY
+         *     * `MM/DD/YYYY` - MM/DD/YYYY
+         *     * `YYYY-MM-DD` - YYYY-MM-DD
+         * @enum {string}
+         */
+        DateFormatEnum: "DD MMM YYYY" | "DD/MM/YYYY" | "MM/DD/YYYY" | "YYYY-MM-DD";
         /**
          * @description * `month` - Month
          *     * `week` - Week
@@ -119,13 +629,51 @@ export interface components {
          * @enum {string}
          */
         DefaultCalendarViewEnum: "month" | "week" | "day" | "agenda";
+        Detail: {
+            detail: string;
+        };
+        Farm: {
+            /** Format: uuid */
+            readonly id: string;
+            name: string;
+            readonly slug: string;
+            /** Format: uri */
+            readonly logo: string | null;
+            location?: string;
+            county?: string;
+            country?: string;
+            phone?: string;
+            email?: string;
+            description?: string;
+            herd_size_band?: components["schemas"]["HerdSizeBandEnum"] | components["schemas"]["BlankEnum"];
+            livestock_types?: components["schemas"]["LivestockTypesEnum"][];
+            /** @description Prefix for suggested animal IDs, e.g. YPA-021. */
+            animal_id_prefix?: string;
+            timezone?: string;
+            date_format?: components["schemas"]["DateFormatEnum"];
+            currency?: string;
+            weight_unit?: components["schemas"]["WeightUnitEnum"];
+            language?: components["schemas"]["LanguageEnum"];
+            default_calendar_view?: components["schemas"]["DefaultCalendarViewEnum"];
+            /** @description Month the financial year starts (1 = January). */
+            financial_year_start?: number;
+            readonly status: components["schemas"]["FarmStatusEnum"];
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        /**
+         * @description * `active` - Active
+         *     * `suspended` - Suspended
+         * @enum {string}
+         */
+        FarmStatusEnum: "active" | "suspended";
         FarmSummary: {
             /** Format: uuid */
             readonly id: string;
             name: string;
             slug: string;
             /** Format: uri */
-            logo?: string | null;
+            readonly logo: string | null;
             county?: string;
             country?: string;
             timezone?: string;
@@ -134,20 +682,94 @@ export interface components {
             language?: components["schemas"]["LanguageEnum"];
             date_format?: string;
             default_calendar_view?: components["schemas"]["DefaultCalendarViewEnum"];
-            status?: components["schemas"]["FarmSummaryStatusEnum"];
+            status?: components["schemas"]["FarmStatusEnum"];
+            /** @description Prefix for suggested animal IDs, e.g. YPA-021. */
+            animal_id_prefix?: string;
+        };
+        ForgotPasswordRequest: {
+            identifier: string;
+            /** @default email */
+            channel: components["schemas"]["ChannelEnum"];
         };
         /**
-         * @description * `active` - Active
-         *     * `suspended` - Suspended
+         * @description * `1-20` - 1–20 animals
+         *     * `21-50` - 21–50 animals
+         *     * `51-100` - 51–100 animals
+         *     * `101-500` - 101–500 animals
+         *     * `500+` - More than 500 animals
          * @enum {string}
          */
-        FarmSummaryStatusEnum: "active" | "suspended";
+        HerdSizeBandEnum: "1-20" | "21-50" | "51-100" | "101-500" | "500+";
+        Invitation: {
+            /** Format: uuid */
+            readonly id: string;
+            first_name: string;
+            last_name?: string;
+            email?: string;
+            phone?: string;
+            role: components["schemas"]["RoleEnum"];
+            readonly role_label: string;
+            channels: components["schemas"]["ChannelsEnum"][];
+            readonly status: components["schemas"]["InvitationStatusEnum"];
+            readonly invited_by_name: string | null;
+            /** Format: date-time */
+            readonly expires_at: string;
+            /** Format: date-time */
+            readonly sent_at: string | null;
+            /** Format: date-time */
+            readonly accepted_at: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+        };
+        InvitationLookup: {
+            farm_name: string;
+            role: string;
+            role_label: string;
+            first_name: string;
+            last_name: string;
+            email: string;
+            phone: string;
+            invited_by_name: string | null;
+            has_account: boolean;
+        };
+        InvitationRequest: {
+            first_name: string;
+            last_name?: string;
+            email?: string;
+            phone?: string;
+            role: components["schemas"]["RoleEnum"];
+            channels: components["schemas"]["ChannelsEnum"][];
+        };
+        /**
+         * @description * `pending` - Pending
+         *     * `accepted` - Accepted
+         *     * `revoked` - Revoked
+         *     * `expired` - Expired
+         * @enum {string}
+         */
+        InvitationStatusEnum: "pending" | "accepted" | "revoked" | "expired";
         /**
          * @description * `en` - English
          *     * `sw` - Kiswahili
          * @enum {string}
          */
         LanguageEnum: "en" | "sw";
+        /**
+         * @description * `goats` - Goats
+         *     * `sheep` - Sheep
+         *     * `dairy_cattle` - Dairy cattle
+         *     * `beef_cattle` - Beef cattle
+         *     * `poultry` - Poultry
+         * @enum {string}
+         */
+        LivestockTypesEnum: "goats" | "sheep" | "dairy_cattle" | "beef_cattle" | "poultry";
+        LoginRequest: {
+            /** @description Username, email or phone number */
+            identifier: string;
+            password: string;
+            /** @default false */
+            remember: boolean;
+        };
         Me: {
             /** Format: uuid */
             readonly id: string;
@@ -168,7 +790,61 @@ export interface components {
             readonly email_verified: boolean;
             readonly phone_verified: boolean;
             readonly must_change_password: boolean;
+            readonly alert_channels: components["schemas"]["AlertChannelsEnum"][];
+            /** Format: date-time */
+            readonly last_login: string | null;
         };
+        Member: {
+            /** Format: uuid */
+            readonly id: string;
+            /** Format: uuid */
+            readonly user_id: string;
+            readonly username: string;
+            readonly first_name: string;
+            readonly last_name: string;
+            readonly full_name: string;
+            readonly email: string;
+            readonly phone: string;
+            /** Format: uri */
+            readonly photo: string | null;
+            readonly email_verified: boolean;
+            readonly phone_verified: boolean;
+            /** Format: date-time */
+            readonly last_login: string;
+            role: components["schemas"]["RoleEnum"];
+            readonly role_label: string;
+            readonly status: components["schemas"]["MembershipStatusEnum"];
+            /** @description The person's role on the farm, e.g. Owner. */
+            job_title?: string;
+            /** Format: date-time */
+            readonly joined_at: string;
+            readonly invited_by_name: string | null;
+        };
+        MemberCreateRequest: {
+            channels: components["schemas"]["ChannelsEnum"][];
+            first_name: string;
+            last_name: string;
+            email?: string;
+            phone?: string;
+            username?: string;
+            role: components["schemas"]["RoleEnum"];
+            job_title?: string;
+        };
+        MemberCreated: {
+            member: components["schemas"]["Member"];
+            temporary_password: string;
+        };
+        MemberRequest: {
+            role: components["schemas"]["RoleEnum"];
+            /** @description The person's role on the farm, e.g. Owner. */
+            job_title?: string;
+        };
+        /**
+         * @description * `active` - Active
+         *     * `inactive` - Inactive
+         * @enum {string}
+         */
+        MembershipStatusEnum: "active" | "inactive";
         /** @description One entry in the sidebar farm switcher, with the role table for that farm. */
         MyFarm: {
             /** Format: uuid */
@@ -176,19 +852,15 @@ export interface components {
             farm: components["schemas"]["FarmSummary"];
             role: components["schemas"]["RoleEnum"];
             role_label: string;
-            status?: components["schemas"]["MyFarmStatusEnum"];
+            status?: components["schemas"]["MembershipStatusEnum"];
+            /** @description The person's role on the farm, e.g. Owner. */
+            job_title?: string;
             /** Format: date-time */
             readonly joined_at: string;
             readonly permissions: {
                 [key: string]: unknown;
             };
         };
-        /**
-         * @description * `active` - Active
-         *     * `inactive` - Inactive
-         * @enum {string}
-         */
-        MyFarmStatusEnum: "active" | "inactive";
         PaginatedAuditLogList: {
             /** @example 140 */
             count: number;
@@ -204,6 +876,78 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["AuditLog"][];
         };
+        PaginatedInvitationList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Invitation"][];
+        };
+        PaginatedMemberList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Member"][];
+        };
+        PatchedFarmRequest: {
+            name?: string;
+            location?: string;
+            county?: string;
+            country?: string;
+            phone?: string;
+            email?: string;
+            description?: string;
+            herd_size_band?: components["schemas"]["HerdSizeBandEnum"] | components["schemas"]["BlankEnum"];
+            livestock_types?: components["schemas"]["LivestockTypesEnum"][];
+            /** @description Prefix for suggested animal IDs, e.g. YPA-021. */
+            animal_id_prefix?: string;
+            timezone?: string;
+            date_format?: components["schemas"]["DateFormatEnum"];
+            currency?: string;
+            weight_unit?: components["schemas"]["WeightUnitEnum"];
+            language?: components["schemas"]["LanguageEnum"];
+            default_calendar_view?: components["schemas"]["DefaultCalendarViewEnum"];
+            /** @description Month the financial year starts (1 = January). */
+            financial_year_start?: number;
+        };
+        PatchedMeUpdateRequest: {
+            first_name?: string;
+            last_name?: string;
+            /** Email address */
+            email?: string;
+            phone?: string;
+            language?: components["schemas"]["LanguageEnum"];
+        };
+        PatchedMemberUpdateRequest: {
+            role?: components["schemas"]["RoleEnum"];
+            job_title?: string;
+        };
+        ResetMemberPasswordRequest: {
+            channels: components["schemas"]["ChannelsEnum"][];
+        };
+        ResetPasswordRequest: {
+            password: string;
+            token?: string;
+            identifier?: string;
+            code?: string;
+        };
         /**
          * @description * `administrator` - Administrator
          *     * `farm_manager` - Farm Manager
@@ -211,6 +955,27 @@ export interface components {
          * @enum {string}
          */
         RoleEnum: "administrator" | "farm_manager" | "livestock_attendant";
+        SignupRequest: {
+            first_name: string;
+            last_name: string;
+            /** Format: email */
+            email: string;
+            phone: string;
+            password: string;
+            farm_name: string;
+            county?: string;
+            herd_size_band?: components["schemas"]["HerdSizeBandEnum"] | components["schemas"]["BlankEnum"];
+            livestock_types: components["schemas"]["LivestockTypesEnum"][];
+            job_title?: string;
+            alert_channels?: components["schemas"]["AlertChannelsEnum"][];
+        };
+        TokenRequest: {
+            token: string;
+        };
+        UploadRequest: {
+            /** Format: binary */
+            file: string;
+        };
         /**
          * @description * `kg` - Kilograms (kg)
          *     * `lb` - Pounds (lb)
@@ -292,6 +1057,498 @@ export interface operations {
             };
         };
     };
+    auth_login_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["LoginRequest"];
+                "multipart/form-data": components["schemas"]["LoginRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+        };
+    };
+    auth_logout_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    auth_password_forgot_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ForgotPasswordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ForgotPasswordRequest"];
+                "multipart/form-data": components["schemas"]["ForgotPasswordRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    auth_password_reset_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetPasswordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ResetPasswordRequest"];
+                "multipart/form-data": components["schemas"]["ResetPasswordRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    auth_refresh_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+        };
+    };
+    auth_signup_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["SignupRequest"];
+                "multipart/form-data": components["schemas"]["SignupRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+        };
+    };
+    auth_verify_email_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TokenRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["TokenRequest"];
+                "multipart/form-data": components["schemas"]["TokenRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    auth_verify_email_resend_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    auth_verify_phone_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CodeRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["CodeRequest"];
+                "multipart/form-data": components["schemas"]["CodeRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Me"];
+                };
+            };
+        };
+    };
+    auth_verify_phone_send_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Detail"];
+                };
+            };
+        };
+    };
+    farm_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Farm"];
+                };
+            };
+        };
+    };
+    farm_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedFarmRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedFarmRequest"];
+                "multipart/form-data": components["schemas"]["PatchedFarmRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Farm"];
+                };
+            };
+        };
+    };
+    farm_logo_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["UploadRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Farm"];
+                };
+            };
+        };
+    };
+    invitations_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /**
+                 * @description * `administrator` - Administrator
+                 *     * `farm_manager` - Farm Manager
+                 *     * `livestock_attendant` - Livestock Attendant
+                 */
+                role?: "administrator" | "farm_manager" | "livestock_attendant";
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `pending` - Pending
+                 *     * `accepted` - Accepted
+                 *     * `revoked` - Revoked
+                 *     * `expired` - Expired
+                 */
+                status?: "accepted" | "expired" | "pending" | "revoked";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedInvitationList"];
+                };
+            };
+        };
+    };
+    invitations_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InvitationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["InvitationRequest"];
+                "multipart/form-data": components["schemas"]["InvitationRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Invitation"];
+                };
+            };
+        };
+    };
+    invitations_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this invitation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Invitation"];
+                };
+            };
+        };
+    };
+    invitations_resend_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this invitation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Invitation"];
+                };
+            };
+        };
+    };
+    invitations_revoke_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this invitation. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Invitation"];
+                };
+            };
+        };
+    };
+    invitations_accept_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AcceptInvitationRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["AcceptInvitationRequest"];
+                "multipart/form-data": components["schemas"]["AcceptInvitationRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+        };
+    };
+    invitations_lookup_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvitationLookup"];
+                };
+            };
+        };
+    };
     me_retrieve: {
         parameters: {
             query?: never;
@@ -300,6 +1557,31 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Me"];
+                };
+            };
+        };
+    };
+    me_partial_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedMeUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedMeUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedMeUpdateRequest"];
+            };
+        };
         responses: {
             200: {
                 headers: {
@@ -331,6 +1613,292 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MyFarm"][];
+                };
+            };
+        };
+    };
+    me_password_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangePasswordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ChangePasswordRequest"];
+                "multipart/form-data": components["schemas"]["ChangePasswordRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthResponse"];
+                };
+            };
+        };
+    };
+    me_photo_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["UploadRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Me"];
+                };
+            };
+        };
+    };
+    members_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /**
+                 * @description * `administrator` - Administrator
+                 *     * `farm_manager` - Farm Manager
+                 *     * `livestock_attendant` - Livestock Attendant
+                 */
+                role?: "administrator" | "farm_manager" | "livestock_attendant";
+                /** @description A search term. */
+                search?: string;
+                /**
+                 * @description * `active` - Active
+                 *     * `inactive` - Inactive
+                 */
+                status?: "active" | "inactive";
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedMemberList"];
+                };
+            };
+        };
+    };
+    members_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MemberCreateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MemberCreateRequest"];
+                "multipart/form-data": components["schemas"]["MemberCreateRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MemberCreated"];
+                };
+            };
+        };
+    };
+    members_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this farm membership. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Member"];
+                };
+            };
+        };
+    };
+    members_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this farm membership. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MemberRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["MemberRequest"];
+                "multipart/form-data": components["schemas"]["MemberRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Member"];
+                };
+            };
+        };
+    };
+    members_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this farm membership. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedMemberUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedMemberUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedMemberUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Member"];
+                };
+            };
+        };
+    };
+    members_activate_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this farm membership. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Member"];
+                };
+            };
+        };
+    };
+    members_deactivate_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this farm membership. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Member"];
+                };
+            };
+        };
+    };
+    members_reset_password_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this farm membership. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetMemberPasswordRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["ResetMemberPasswordRequest"];
+                "multipart/form-data": components["schemas"]["ResetMemberPasswordRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Detail"];
                 };
             };
         };

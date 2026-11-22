@@ -155,6 +155,861 @@
                 }
             }
         },
+        "/api/v1/auth/login": {
+            "post": {
+                "operationId": "auth_login_create",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "operationId": "auth_logout_create",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/password/forgot": {
+            "post": {
+                "operationId": "auth_password_forgot_create",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ForgotPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/password/reset": {
+            "post": {
+                "operationId": "auth_password_reset_create",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/refresh": {
+            "post": {
+                "operationId": "auth_refresh_create",
+                "description": "Swaps the refresh cookie for a new access token (and a rotated refresh cookie).",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/signup": {
+            "post": {
+                "operationId": "auth_signup_create",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignupRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignupRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SignupRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/verify-email": {
+            "post": {
+                "operationId": "auth_verify_email_create",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/verify-email/resend": {
+            "post": {
+                "operationId": "auth_verify_email_resend_create",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/verify-phone": {
+            "post": {
+                "operationId": "auth_verify_phone_create",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CodeRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CodeRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CodeRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Me"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/verify-phone/send": {
+            "post": {
+                "operationId": "auth_verify_phone_send_create",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/farm": {
+            "get": {
+                "operationId": "farm_retrieve",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "farm"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Farm"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "farm_partial_update",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "farm"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedFarmRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedFarmRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedFarmRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Farm"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/farm/logo": {
+            "post": {
+                "operationId": "farm_logo_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "farm"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UploadRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Farm"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/invitations": {
+            "get": {
+                "operationId": "invitations_list",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "role",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "administrator",
+                                "farm_manager",
+                                "livestock_attendant"
+                            ]
+                        },
+                        "description": "* `administrator` - Administrator\n* `farm_manager` - Farm Manager\n* `livestock_attendant` - Livestock Attendant"
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "accepted",
+                                "expired",
+                                "pending",
+                                "revoked"
+                            ]
+                        },
+                        "description": "* `pending` - Pending\n* `accepted` - Accepted\n* `revoked` - Revoked\n* `expired` - Expired"
+                    }
+                ],
+                "tags": [
+                    "invitations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedInvitationList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "invitations_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "invitations"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InvitationRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InvitationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InvitationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invitation"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/invitations/{id}": {
+            "get": {
+                "operationId": "invitations_retrieve",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this invitation.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "invitations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invitation"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/invitations/{id}/resend": {
+            "post": {
+                "operationId": "invitations_resend_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this invitation.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "invitations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invitation"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/invitations/{id}/revoke": {
+            "post": {
+                "operationId": "invitations_revoke_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this invitation.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "invitations"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invitation"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/invitations/accept": {
+            "post": {
+                "operationId": "invitations_accept_create",
+                "description": "New people choose a password here; people with an account accept while logged in.",
+                "tags": [
+                    "invitations"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AcceptInvitationRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AcceptInvitationRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AcceptInvitationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/invitations/lookup": {
+            "get": {
+                "operationId": "invitations_lookup_retrieve",
+                "description": "What the invite page shows before accepting: farm, role, who invited you.",
+                "tags": [
+                    "invitations"
+                ],
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InvitationLookup"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/me": {
             "get": {
                 "operationId": "me_retrieve",
@@ -162,6 +1017,49 @@
                 "tags": [
                     "me"
                 ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Me"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "me_partial_update",
+                "description": "The signed-in user. Not farm-scoped.",
+                "tags": [
+                    "me"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedMeUpdateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedMeUpdateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedMeUpdateRequest"
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "jwtAuth": []
@@ -229,10 +1127,618 @@
                     }
                 }
             }
+        },
+        "/api/v1/me/password": {
+            "post": {
+                "operationId": "me_password_create",
+                "description": "Change password. Signs out other devices and returns a fresh session for this one.",
+                "tags": [
+                    "me"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponse"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/me/photo": {
+            "post": {
+                "operationId": "me_photo_create",
+                "tags": [
+                    "me"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UploadRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Me"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/members": {
+            "get": {
+                "operationId": "members_list",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "role",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "administrator",
+                                "farm_manager",
+                                "livestock_attendant"
+                            ]
+                        },
+                        "description": "* `administrator` - Administrator\n* `farm_manager` - Farm Manager\n* `livestock_attendant` - Livestock Attendant"
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "inactive"
+                            ]
+                        },
+                        "description": "* `active` - Active\n* `inactive` - Inactive"
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedMemberList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "members_create",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberCreateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberCreateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberCreateRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MemberCreated"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/members/{id}": {
+            "get": {
+                "operationId": "members_retrieve",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this farm membership.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Member"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "members_update",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this farm membership.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Member"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "members_partial_update",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this farm membership.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedMemberUpdateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedMemberUpdateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedMemberUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Member"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/members/{id}/activate": {
+            "post": {
+                "operationId": "members_activate_create",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this farm membership.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Member"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/members/{id}/deactivate": {
+            "post": {
+                "operationId": "members_deactivate_create",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this farm membership.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Member"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/members/{id}/reset-password": {
+            "post": {
+                "operationId": "members_reset_password_create",
+                "description": "User Management. Deactivate rather than delete, so records and history stay intact.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this farm membership.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "members"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetMemberPasswordRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetMemberPasswordRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetMemberPasswordRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Detail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "AcceptInvitationRequest": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "username": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^[\\w.@+-]{3,150}$"
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": [
+                    "token"
+                ]
+            },
             "ActionEnum": {
                 "enum": [
                     "create",
@@ -243,6 +1749,16 @@
                 ],
                 "type": "string",
                 "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed"
+            },
+            "AlertChannelsEnum": {
+                "enum": [
+                    "in_app",
+                    "whatsapp",
+                    "sms",
+                    "email"
+                ],
+                "type": "string",
+                "description": "* `in_app` - In-app\n* `whatsapp` - WhatsApp\n* `sms` - SMS\n* `email` - Email"
             },
             "AuditLog": {
                 "type": "object",
@@ -319,6 +1835,83 @@
                     "user_name"
                 ]
             },
+            "AuthResponse": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/Me"
+                    }
+                },
+                "required": [
+                    "access",
+                    "user"
+                ]
+            },
+            "BlankEnum": {
+                "enum": [
+                    ""
+                ]
+            },
+            "ChangePasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "current_password": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    }
+                },
+                "required": [
+                    "current_password",
+                    "password"
+                ]
+            },
+            "ChannelEnum": {
+                "enum": [
+                    "email",
+                    "sms"
+                ],
+                "type": "string",
+                "description": "* `email` - Email\n* `sms` - SMS"
+            },
+            "ChannelsEnum": {
+                "enum": [
+                    "email",
+                    "sms",
+                    "whatsapp"
+                ],
+                "type": "string",
+                "description": "* `email` - Email\n* `sms` - SMS\n* `whatsapp` - WhatsApp"
+            },
+            "CodeRequest": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^\\s*\\d{6}\\s*$"
+                    }
+                },
+                "required": [
+                    "code"
+                ]
+            },
+            "DateFormatEnum": {
+                "enum": [
+                    "DD MMM YYYY",
+                    "DD/MM/YYYY",
+                    "MM/DD/YYYY",
+                    "YYYY-MM-DD"
+                ],
+                "type": "string",
+                "description": "* `DD MMM YYYY` - DD MMM YYYY\n* `DD/MM/YYYY` - DD/MM/YYYY\n* `MM/DD/YYYY` - MM/DD/YYYY\n* `YYYY-MM-DD` - YYYY-MM-DD"
+            },
             "DefaultCalendarViewEnum": {
                 "enum": [
                     "month",
@@ -328,6 +1921,150 @@
                 ],
                 "type": "string",
                 "description": "* `month` - Month\n* `week` - Week\n* `day` - Day\n* `agenda` - Agenda"
+            },
+            "Detail": {
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "detail"
+                ]
+            },
+            "Farm": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 120
+                    },
+                    "slug": {
+                        "type": "string",
+                        "readOnly": true,
+                        "pattern": "^[-a-zA-Z0-9_]+$"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "county": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "email": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "herd_size_band": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/HerdSizeBandEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            }
+                        ]
+                    },
+                    "livestock_types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LivestockTypesEnum"
+                        }
+                    },
+                    "animal_id_prefix": {
+                        "type": "string",
+                        "description": "Prefix for suggested animal IDs, e.g. YPA-021.",
+                        "maxLength": 10
+                    },
+                    "timezone": {
+                        "type": "string",
+                        "maxLength": 64
+                    },
+                    "date_format": {
+                        "$ref": "#/components/schemas/DateFormatEnum"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "maxLength": 3
+                    },
+                    "weight_unit": {
+                        "$ref": "#/components/schemas/WeightUnitEnum"
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/LanguageEnum"
+                    },
+                    "default_calendar_view": {
+                        "$ref": "#/components/schemas/DefaultCalendarViewEnum"
+                    },
+                    "financial_year_start": {
+                        "type": "integer",
+                        "maximum": 32767,
+                        "minimum": 0,
+                        "description": "Month the financial year starts (1 = January)."
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FarmStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "logo",
+                    "name",
+                    "slug",
+                    "status"
+                ]
+            },
+            "FarmStatusEnum": {
+                "enum": [
+                    "active",
+                    "suspended"
+                ],
+                "type": "string",
+                "description": "* `active` - Active\n* `suspended` - Suspended"
             },
             "FarmSummary": {
                 "type": "object",
@@ -349,7 +2086,8 @@
                     "logo": {
                         "type": "string",
                         "format": "uri",
-                        "nullable": true
+                        "nullable": true,
+                        "readOnly": true
                     },
                     "county": {
                         "type": "string",
@@ -381,22 +2119,246 @@
                         "$ref": "#/components/schemas/DefaultCalendarViewEnum"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/FarmSummaryStatusEnum"
+                        "$ref": "#/components/schemas/FarmStatusEnum"
+                    },
+                    "animal_id_prefix": {
+                        "type": "string",
+                        "description": "Prefix for suggested animal IDs, e.g. YPA-021.",
+                        "maxLength": 10
                     }
                 },
                 "required": [
                     "id",
+                    "logo",
                     "name",
                     "slug"
                 ]
             },
-            "FarmSummaryStatusEnum": {
+            "ForgotPasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "channel": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ChannelEnum"
+                            }
+                        ],
+                        "default": "email"
+                    }
+                },
+                "required": [
+                    "identifier"
+                ]
+            },
+            "HerdSizeBandEnum": {
                 "enum": [
-                    "active",
-                    "suspended"
+                    "1-20",
+                    "21-50",
+                    "51-100",
+                    "101-500",
+                    "500+"
                 ],
                 "type": "string",
-                "description": "* `active` - Active\n* `suspended` - Suspended"
+                "description": "* `1-20` - 1–20 animals\n* `21-50` - 21–50 animals\n* `51-100` - 51–100 animals\n* `101-500` - 101–500 animals\n* `500+` - More than 500 animals"
+            },
+            "Invitation": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "role_label": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChannelsEnum"
+                        }
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/InvitationStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "invited_by_name": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "sent_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "accepted_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "accepted_at",
+                    "channels",
+                    "created_at",
+                    "expires_at",
+                    "first_name",
+                    "id",
+                    "invited_by_name",
+                    "role",
+                    "role_label",
+                    "sent_at",
+                    "status"
+                ]
+            },
+            "InvitationLookup": {
+                "type": "object",
+                "properties": {
+                    "farm_name": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    },
+                    "role_label": {
+                        "type": "string"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "invited_by_name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "has_account": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "email",
+                    "farm_name",
+                    "first_name",
+                    "has_account",
+                    "invited_by_name",
+                    "last_name",
+                    "phone",
+                    "role",
+                    "role_label"
+                ]
+            },
+            "InvitationRequest": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChannelsEnum"
+                        }
+                    }
+                },
+                "required": [
+                    "channels",
+                    "first_name",
+                    "role"
+                ]
+            },
+            "InvitationStatusEnum": {
+                "enum": [
+                    "pending",
+                    "accepted",
+                    "revoked",
+                    "expired"
+                ],
+                "type": "string",
+                "description": "* `pending` - Pending\n* `accepted` - Accepted\n* `revoked` - Revoked\n* `expired` - Expired"
             },
             "LanguageEnum": {
                 "enum": [
@@ -405,6 +2367,39 @@
                 ],
                 "type": "string",
                 "description": "* `en` - English\n* `sw` - Kiswahili"
+            },
+            "LivestockTypesEnum": {
+                "enum": [
+                    "goats",
+                    "sheep",
+                    "dairy_cattle",
+                    "beef_cattle",
+                    "poultry"
+                ],
+                "type": "string",
+                "description": "* `goats` - Goats\n* `sheep` - Sheep\n* `dairy_cattle` - Dairy cattle\n* `beef_cattle` - Beef cattle\n* `poultry` - Poultry"
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "identifier": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Username, email or phone number"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "remember": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                },
+                "required": [
+                    "identifier",
+                    "password"
+                ]
             },
             "Me": {
                 "type": "object",
@@ -466,6 +2461,123 @@
                     "must_change_password": {
                         "type": "boolean",
                         "readOnly": true
+                    },
+                    "alert_channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AlertChannelsEnum"
+                        },
+                        "readOnly": true
+                    },
+                    "last_login": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "alert_channels",
+                    "email",
+                    "email_verified",
+                    "first_name",
+                    "full_name",
+                    "id",
+                    "language",
+                    "last_login",
+                    "last_name",
+                    "must_change_password",
+                    "phone",
+                    "phone_verified",
+                    "photo",
+                    "username"
+                ]
+            },
+            "Member": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "user_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "email": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "photo": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "readOnly": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "phone_verified": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "last_login": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "role_label": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/MembershipStatusEnum"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "description": "The person's role on the farm, e.g. Owner.",
+                        "maxLength": 80
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "invited_by_name": {
+                        "type": "string",
+                        "nullable": true,
+                        "readOnly": true
                     }
                 },
                 "required": [
@@ -474,14 +2586,120 @@
                     "first_name",
                     "full_name",
                     "id",
-                    "language",
+                    "invited_by_name",
+                    "joined_at",
+                    "last_login",
                     "last_name",
-                    "must_change_password",
                     "phone",
                     "phone_verified",
                     "photo",
+                    "role",
+                    "role_label",
+                    "status",
+                    "user_id",
                     "username"
                 ]
+            },
+            "MemberCreateRequest": {
+                "type": "object",
+                "properties": {
+                    "channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChannelsEnum"
+                        }
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email"
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "username": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "pattern": "^[\\w.@+-]{3,150}$"
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "maxLength": 80
+                    }
+                },
+                "required": [
+                    "channels",
+                    "first_name",
+                    "last_name",
+                    "role"
+                ]
+            },
+            "MemberCreated": {
+                "type": "object",
+                "properties": {
+                    "member": {
+                        "$ref": "#/components/schemas/Member"
+                    },
+                    "temporary_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "member",
+                    "temporary_password"
+                ]
+            },
+            "MemberRequest": {
+                "type": "object",
+                "properties": {
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "description": "The person's role on the farm, e.g. Owner.",
+                        "maxLength": 80
+                    }
+                },
+                "required": [
+                    "role"
+                ]
+            },
+            "MembershipStatusEnum": {
+                "enum": [
+                    "active",
+                    "inactive"
+                ],
+                "type": "string",
+                "description": "* `active` - Active\n* `inactive` - Inactive"
             },
             "MyFarm": {
                 "type": "object",
@@ -502,7 +2720,12 @@
                         "type": "string"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/MyFarmStatusEnum"
+                        "$ref": "#/components/schemas/MembershipStatusEnum"
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "description": "The person's role on the farm, e.g. Owner.",
+                        "maxLength": 80
                     },
                     "joined_at": {
                         "type": "string",
@@ -523,14 +2746,6 @@
                     "role",
                     "role_label"
                 ]
-            },
-            "MyFarmStatusEnum": {
-                "enum": [
-                    "active",
-                    "inactive"
-                ],
-                "type": "string",
-                "description": "* `active` - Active\n* `inactive` - Inactive"
             },
             "PaginatedAuditLogList": {
                 "type": "object",
@@ -563,6 +2778,245 @@
                     }
                 }
             },
+            "PaginatedInvitationList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Invitation"
+                        }
+                    }
+                }
+            },
+            "PaginatedMemberList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Member"
+                        }
+                    }
+                }
+            },
+            "PatchedFarmRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                    },
+                    "location": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "county": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "country": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 2
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "email": {
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "herd_size_band": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/HerdSizeBandEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            }
+                        ]
+                    },
+                    "livestock_types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LivestockTypesEnum"
+                        }
+                    },
+                    "animal_id_prefix": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Prefix for suggested animal IDs, e.g. YPA-021.",
+                        "maxLength": 10
+                    },
+                    "timezone": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64
+                    },
+                    "date_format": {
+                        "$ref": "#/components/schemas/DateFormatEnum"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 3
+                    },
+                    "weight_unit": {
+                        "$ref": "#/components/schemas/WeightUnitEnum"
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/LanguageEnum"
+                    },
+                    "default_calendar_view": {
+                        "$ref": "#/components/schemas/DefaultCalendarViewEnum"
+                    },
+                    "financial_year_start": {
+                        "type": "integer",
+                        "maximum": 32767,
+                        "minimum": 0,
+                        "description": "Month the financial year starts (1 = January)."
+                    }
+                }
+            },
+            "PatchedMeUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "title": "Email address",
+                        "oneOf": [
+                            {
+                                "type": "string",
+                                "format": "email",
+                                "maxLength": 254
+                            },
+                            {
+                                "type": "string",
+                                "maxLength": 0
+                            }
+                        ]
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/LanguageEnum"
+                    }
+                }
+            },
+            "PatchedMemberUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "maxLength": 80
+                    }
+                }
+            },
+            "ResetMemberPasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChannelsEnum"
+                        }
+                    }
+                },
+                "required": [
+                    "channels"
+                ]
+            },
+            "ResetPasswordRequest": {
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "token": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "identifier": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "code": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "password"
+                ]
+            },
             "RoleEnum": {
                 "enum": [
                     "administrator",
@@ -571,6 +3025,103 @@
                 ],
                 "type": "string",
                 "description": "* `administrator` - Administrator\n* `farm_manager` - Farm Manager\n* `livestock_attendant` - Livestock Attendant"
+            },
+            "SignupRequest": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "minLength": 1
+                    },
+                    "phone": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8
+                    },
+                    "farm_name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                    },
+                    "county": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "herd_size_band": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/HerdSizeBandEnum"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BlankEnum"
+                            }
+                        ]
+                    },
+                    "livestock_types": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LivestockTypesEnum"
+                        }
+                    },
+                    "job_title": {
+                        "type": "string",
+                        "maxLength": 80
+                    },
+                    "alert_channels": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AlertChannelsEnum"
+                        }
+                    }
+                },
+                "required": [
+                    "email",
+                    "farm_name",
+                    "first_name",
+                    "last_name",
+                    "livestock_types",
+                    "password",
+                    "phone"
+                ]
+            },
+            "TokenRequest": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "token"
+                ]
+            },
+            "UploadRequest": {
+                "type": "object",
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "required": [
+                    "file"
+                ]
             },
             "WeightUnitEnum": {
                 "enum": [

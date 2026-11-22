@@ -13,12 +13,31 @@ from django.urls import URLPattern, URLResolver, get_resolver
 from apps.accounts.models import Role
 from apps.core.models import FarmOwnedModel
 from apps.core.views import FarmContextMixin
-from tests.factories import FACTORY_FOR_MODEL
+from tests.factories import FACTORY_FOR_ENDPOINT_MODEL, FACTORY_FOR_MODEL
+
+ALL_FACTORIES = {**FACTORY_FOR_MODEL, **FACTORY_FOR_ENDPOINT_MODEL}
 
 pytestmark = pytest.mark.django_db
 
 # Endpoints under /api/v1/ that are deliberately not farm-scoped (they act on the user).
-NON_FARM_ENDPOINTS = {"me", "me/farms"}
+NON_FARM_ENDPOINTS = {
+    "me",
+    "me/farms",
+    "me/photo",
+    "me/password",
+    "auth/signup",
+    "auth/login",
+    "auth/refresh",
+    "auth/logout",
+    "auth/password/forgot",
+    "auth/password/reset",
+    "auth/verify-email",
+    "auth/verify-email/resend",
+    "auth/verify-phone/send",
+    "auth/verify-phone",
+    "invitations/lookup",
+    "invitations/accept",
+}
 
 
 def _walk(patterns: list[Any], prefix: str = "") -> list[tuple[str, Any]]:
@@ -91,7 +110,7 @@ def test_discovers_farm_viewsets() -> None:
 def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member, client_for):  # type: ignore[no-untyped-def]
     viewset = VIEWSETS[route]
     model = _model_for(viewset)
-    factory = FACTORY_FOR_MODEL[model]
+    factory = ALL_FACTORIES[model]
     mine = factory(farm=farm_a)
     theirs = factory(farm=farm_b)
     user = member(farm_a, Role.ADMINISTRATOR)
@@ -107,7 +126,7 @@ def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member
         url = res.json().get("next")
     assert str(mine.pk) in ids
     assert str(theirs.pk) not in ids
-    assert all(model.unscoped.get(pk=i).farm_id == farm_a.pk for i in ids)
+    assert all(model._base_manager.get(pk=i).farm_id == farm_a.pk for i in ids)
 
     # Detail of the other farm's row: 404, as if it does not exist.
     assert client.get(f"/api/v1/{route}/{theirs.pk}").status_code == 404
@@ -119,9 +138,9 @@ def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member
         assert client.patch(f"/api/v1/{route}/{theirs.pk}", {}, format="json").status_code == 404
     if "delete" in allowed and hasattr(viewset, "destroy"):
         assert client.delete(f"/api/v1/{route}/{theirs.pk}").status_code == 404
-        assert model.unscoped.get(pk=theirs.pk).farm_id == farm_b.pk
+        assert model._base_manager.get(pk=theirs.pk).farm_id == farm_b.pk
         if hasattr(theirs, "deleted_at"):
-            assert model.unscoped.get(pk=theirs.pk).deleted_at is None
+            assert model._base_manager.get(pk=theirs.pk).deleted_at is None
 
     # Asking for the other farm (not a member): 404, never 403, so farm IDs cannot be probed.
     other = client_for(user, farm_b)
@@ -132,7 +151,7 @@ def test_endpoint_never_returns_another_farms_data(route, farm_a, farm_b, member
 @pytest.mark.parametrize("route", sorted(VIEWSETS))
 def test_member_of_both_farms_sees_only_the_selected_one(route, farm_a, farm_b, member, client_for):  # type: ignore[no-untyped-def]
     model = _model_for(VIEWSETS[route])
-    factory = FACTORY_FOR_MODEL[model]
+    factory = ALL_FACTORIES[model]
     a, b = factory(farm=farm_a), factory(farm=farm_b)
     user = member(farm_a, Role.ADMINISTRATOR)
     from apps.accounts.models import FarmMembership

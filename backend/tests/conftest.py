@@ -49,3 +49,15 @@ def admin_a(farm_a: Farm, member: Callable[..., User]) -> User:
 @pytest.fixture
 def user_factory() -> type[UserFactory]:
     return UserFactory
+
+
+@pytest.fixture(autouse=True)
+def _reset_shared_state():  # type: ignore[no-untyped-def]
+    """Throttle counters live in the cache; sent messages in a module list."""
+    from django.core.cache import cache
+
+    from apps.notifications import messaging
+
+    cache.clear()
+    messaging.SENT.clear()
+    yield

@@ -29,8 +29,6 @@ def _normalise(data: Any) -> dict[str, Any]:
             return {"detail": _as_list(data["detail"])}
         result: dict[str, Any] = {}
         for key, value in data.items():
-            if key == "code":
-                continue
             # Nested serializers keep their structure; leaves are always lists of strings.
             if isinstance(value, dict):
                 result[key] = _normalise(value)

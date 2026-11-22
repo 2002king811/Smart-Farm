@@ -13,6 +13,17 @@ class Language(models.TextChoices):
     KISWAHILI = "sw", "Kiswahili"
 
 
+class AlertChannel(models.TextChoices):
+    IN_APP = "in_app", "In-app"
+    WHATSAPP = "whatsapp", "WhatsApp"
+    SMS = "sms", "SMS"
+    EMAIL = "email", "Email"
+
+
+def default_alert_channels() -> list[str]:
+    return [AlertChannel.IN_APP]
+
+
 class User(AbstractUser):
     """A person. Farm access and role come from FarmMembership, never from the user row."""
 
@@ -24,6 +35,15 @@ class User(AbstractUser):
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
     must_change_password = models.BooleanField(default=False)
+    # Channels chosen at sign-up (step 3). Phase 6 turns these into notification preferences.
+    alert_channels = ArrayField(
+        models.CharField(max_length=10, choices=AlertChannel.choices),
+        default=default_alert_channels,
+        blank=True,
+    )
+    # Login lockout: 5 failed attempts lock the account for 15 minutes.
+    failed_login_count = models.PositiveSmallIntegerField(default=0)
+    locked_until = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         constraints = [
@@ -60,6 +80,14 @@ class WeightUnit(models.TextChoices):
     LB = "lb", "Pounds (lb)"
 
 
+class HerdSizeBand(models.TextChoices):
+    UP_TO_20 = "1-20", "1–20 animals"
+    UP_TO_50 = "21-50", "21–50 animals"
+    UP_TO_100 = "51-100", "51–100 animals"
+    UP_TO_500 = "101-500", "101–500 animals"
+    OVER_500 = "500+", "More than 500 animals"
+
+
 class FarmStatus(models.TextChoices):
     ACTIVE = "active", "Active"
     SUSPENDED = "suspended", "Suspended"
@@ -78,6 +106,7 @@ class Farm(models.Model):
     phone = models.CharField(max_length=16, blank=True, validators=[e164_validator])
     email = models.EmailField(blank=True)
     description = models.TextField(blank=True)
+    herd_size_band = models.CharField(max_length=10, choices=HerdSizeBand.choices, blank=True)
     livestock_types = ArrayField(
         models.CharField(max_length=20, choices=LivestockType.choices), default=list, blank=True
     )
@@ -130,6 +159,9 @@ class FarmMembership(models.Model):
     invited_by = models.ForeignKey(
         User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
     )
+    job_title = models.CharField(
+        max_length=80, blank=True, help_text="The person's role on the farm, e.g. Owner."
+    )
     joined_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -143,3 +175,93 @@ class FarmMembership(models.Model):
     @property
     def is_active(self) -> bool:
         return self.status == MembershipStatus.ACTIVE
+
+
+class DeliveryChannel(models.TextChoices):
+    EMAIL = "email", "Email"
+    SMS = "sms", "SMS"
+    WHATSAPP = "whatsapp", "WhatsApp"
+
+
+class InvitationStatus(models.TextChoices):
+    PENDING = "pending", "Pending"
+    ACCEPTED = "accepted", "Accepted"
+    REVOKED = "revoked", "Revoked"
+    EXPIRED = "expired", "Expired"
+
+
+class Invitation(models.Model):
+    """An invite link to join a farm with a role. Only a hash of the token is stored."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name="invitations")
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150, blank=True)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=16, blank=True, validators=[e164_validator])
+    role = models.CharField(max_length=24, choices=Role.choices)
+    channels = ArrayField(
+        models.CharField(max_length=10, choices=DeliveryChannel.choices), default=list
+    )
+    token_hash = models.CharField(max_length=64, unique=True)
+    status = models.CharField(
+        max_length=10, choices=InvitationStatus.choices, default=InvitationStatus.PENDING
+    )
+    invited_by = models.ForeignKey(
+        User, null=True, on_delete=models.SET_NULL, related_name="sent_invitations"
+    )
+    accepted_by = models.ForeignKey(
+        User, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
+    expires_at = models.DateTimeField()
+    sent_at = models.DateTimeField(null=True, blank=True)
+    accepted_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+        indexes = [models.Index(fields=["farm", "status"])]
+
+    def __str__(self) -> str:
+        return f"Invitation for {self.first_name} {self.last_name} to {self.farm}"
+
+
+class OTPPurpose(models.TextChoices):
+    VERIFY_PHONE = "verify_phone", "Verify phone"
+    RESET_PASSWORD = "reset_password", "Reset password"
+
+
+class OTPCode(models.Model):
+    """A 6-digit code sent by SMS. Stored hashed; expires after 15 minutes; 5 attempts."""
+
+    MAX_ATTEMPTS = 5
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="otp_codes")
+    purpose = models.CharField(max_length=20, choices=OTPPurpose.choices)
+    destination = models.CharField(max_length=16)
+    code_hash = models.CharField(max_length=64)
+    attempts = models.PositiveSmallIntegerField(default=0)
+    expires_at = models.DateTimeField()
+    used_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["user", "purpose", "created_at"])]
+
+    def __str__(self) -> str:
+        return f"{self.get_purpose_display()} code for {self.user}"
+
+
+class PasswordResetToken(models.Model):
+    """A one-time password reset link sent by email. Stored hashed; expires after 15 minutes."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reset_tokens")
+    token_hash = models.CharField(max_length=64, unique=True)
+    expires_at = models.DateTimeField()
+    used_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"Password reset for {self.user}"

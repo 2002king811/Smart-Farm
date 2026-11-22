@@ -6,6 +6,7 @@ from typing import Any
 
 from django.db import models
 from rest_framework import mixins, permissions, viewsets
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -29,6 +30,8 @@ class FarmContextMixin:
     _farm_ctx_token: Any = None
 
     def check_permissions(self, request: Request) -> None:
+        if getattr(request.user, "must_change_password", False):
+            raise PermissionDenied("Choose a new password before continuing.")
         if request.user and request.user.is_authenticated and not hasattr(request, "membership"):
             membership = resolve_membership(request)
             request.membership = membership  # type: ignore[attr-defined]

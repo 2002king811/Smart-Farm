@@ -40,10 +40,11 @@ def record(
     before: dict[str, Any] | None,
     after: dict[str, Any] | None,
     changed: list[str] | None = None,
+    farm_id: Any = None,
 ) -> AuditLog:
     ctx = get_context()
     return AuditLog.objects.create(
-        farm_id=instance.farm_id,  # type: ignore[attr-defined]
+        farm_id=farm_id or instance.farm_id,  # type: ignore[attr-defined]
         user_id=ctx.user_id,
         action=action,
         content_type=ContentType.objects.get_for_model(type(instance)),
@@ -83,3 +84,28 @@ def record_save(instance: Any, created: bool) -> AuditLog | None:
         {k: after[k] for k in changed},
         changed,
     )
+
+
+def record_event(
+    farm_id: Any,
+    instance: models.Model,
+    action: str,
+    before: dict[str, Any] | None = None,
+    after: dict[str, Any] | None = None,
+) -> AuditLog:
+    """Audit a change to a model that is not a FarmScopedModel (farm settings, memberships,
+    invitations). ``before``/``after`` hold only the fields that changed."""
+    before = _jsonable(before) if before is not None else None
+    after = _jsonable(after) if after is not None else None
+    changed = sorted(set(before or {}) | set(after or {}))
+    return record(instance, action, before, after, changed, farm_id=farm_id)
+
+
+def diff(instance: models.Model, old: dict[str, Any], fields: list[str]) -> tuple[dict, dict]:
+    """(before, after) for the given fields that changed since ``old`` was taken."""
+    before, after = {}, {}
+    for f in fields:
+        new = getattr(instance, f)
+        if old.get(f) != new:
+            before[f], after[f] = old.get(f), new
+    return before, after

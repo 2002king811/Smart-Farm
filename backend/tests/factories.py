@@ -1,7 +1,11 @@
+from datetime import timedelta
+
 import factory
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 
-from apps.accounts.models import Farm, FarmMembership, Role, User
+from apps.accounts.models import Farm, FarmMembership, Invitation, Role, User
+from apps.accounts.security import hash_token
 from apps.audit.models import AuditLog
 from tests.testapp.models import Goat, Pen
 
@@ -41,6 +45,20 @@ class MembershipFactory(factory.django.DjangoModelFactory):
     role = Role.ADMINISTRATOR
 
 
+class InvitationFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Invitation
+
+    farm = factory.SubFactory(FarmFactory)
+    first_name = "Peter"
+    last_name = "Otieno"
+    email = factory.Sequence(lambda n: f"invitee{n}@example.com")
+    role = Role.LIVESTOCK_ATTENDANT
+    channels = ["email"]
+    token_hash = factory.Sequence(lambda n: hash_token(f"token-{n}"))
+    expires_at = factory.LazyFunction(lambda: timezone.now() + timedelta(days=7))
+
+
 class PenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Pen
@@ -67,6 +85,12 @@ class AuditLogFactory(factory.django.DjangoModelFactory):
     object_id = factory.Faker("uuid4")
     object_repr = "Something"
 
+
+# Farm-scoped endpoints whose model is not a FarmOwnedModel.
+FACTORY_FOR_ENDPOINT_MODEL = {
+    FarmMembership: MembershipFactory,
+    Invitation: InvitationFactory,
+}
 
 # Every farm-owned model needs an entry here: the tenancy isolation test uses it to create one
 # record in each of two farms. Add new models as each phase introduces them.
