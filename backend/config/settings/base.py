@@ -105,9 +105,10 @@ LANGUAGES = [("en", "English"), ("sw", "Kiswahili")]
 TIME_ZONE = "Africa/Nairobi"
 USE_I18N = True
 USE_TZ = True
-DEFAULT_COUNTRY = "KE"
-DEFAULT_CURRENCY = "KES"
-DEFAULT_PHONE_REGION = "+254"
+# Default for new farms (each farm chooses its own country, currency, phone prefix and time zone).
+DEFAULT_COUNTRY = env("DEFAULT_COUNTRY", default="UG")
+DEFAULT_CURRENCY = env("DEFAULT_CURRENCY", default="UGX")
+DEFAULT_PHONE_REGION = env("DEFAULT_PHONE_REGION", default="+256")
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"

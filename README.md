@@ -175,6 +175,14 @@ cd frontend && npm run api:generate
 cd backend && python manage.py export_permissions
 ```
 
+## Countries, districts and currency
+
+- **Default country:** new farms default to **Uganda** (UGX, +256, Africa/Kampala). Sign-up asks for the country first, and then that country's districts.
+- **Supported countries:** Uganda (districts), Kenya (counties), Tanzania (regions) and Rwanda (districts), served at `GET /api/v1/countries`. Any other country is accepted, with a typed area name.
+- **What the country sets:** the farm's currency, time zone and phone prefix. Local numbers are stored in international format, e.g. 0772 123 456 becomes +256772123456.
+- **Moving a farm to another country** (Settings → Farm profile) also switches its currency and time zone, unless they had been changed by hand.
+- **Platform defaults** can be changed with `DEFAULT_COUNTRY`, `DEFAULT_CURRENCY` and `DEFAULT_PHONE_REGION`.
+
 ## Accounts and sessions (phase 2)
 
 - **Sign-up** (`POST /api/v1/auth/signup`, 3 steps in the UI) creates the user, the farm and an Administrator membership in one transaction. It then sends an email confirmation link and an SMS code. The app can be used straight away, but SMS and WhatsApp sending stay off until the phone is confirmed.

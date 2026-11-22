@@ -4243,6 +4243,33 @@
                 }
             }
         },
+        "/api/v1/countries": {
+            "get": {
+                "operationId": "countries_list",
+                "description": "Supported countries with their districts / counties / regions, currency and phone prefix.",
+                "tags": [
+                    "countries"
+                ],
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Country"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/dewormings": {
             "get": {
                 "operationId": "dewormings_list",
@@ -14313,6 +14340,44 @@
                 "type": "string",
                 "description": "* `normal` - Normal\n* `assisted` - Assisted\n* `difficult` - Difficult (dystocia)"
             },
+            "Country": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "phone_prefix": {
+                        "type": "string"
+                    },
+                    "timezone": {
+                        "type": "string"
+                    },
+                    "region_label": {
+                        "type": "string"
+                    },
+                    "regions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "code",
+                    "currency",
+                    "name",
+                    "phone_prefix",
+                    "region_label",
+                    "regions",
+                    "timezone"
+                ]
+            },
             "DateFormatEnum": {
                 "enum": [
                     "DD MMM YYYY",
@@ -19292,8 +19357,15 @@
                         "minLength": 1,
                         "maxLength": 120
                     },
+                    "country": {
+                        "type": "string",
+                        "minLength": 1,
+                        "default": "UG",
+                        "maxLength": 2
+                    },
                     "county": {
                         "type": "string",
+                        "description": "District / county / region",
                         "maxLength": 80
                     },
                     "herd_size_band": {

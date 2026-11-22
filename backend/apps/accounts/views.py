@@ -17,6 +17,7 @@ from rest_framework.views import APIView
 
 from apps.audit.models import AuditAction
 from apps.audit.services import diff, record_event
+from apps.core import regions
 from apps.core.images import process_image
 from apps.core.views import FarmContextMixin
 
@@ -292,7 +293,17 @@ class FarmView(FarmContextMixin, APIView):
         old = {f: getattr(farm, f) for f in FARM_FIELDS}
         serializer = s.FarmSerializer(farm, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        extra = {}
+        new_country = serializer.validated_data.get("country")
+        if new_country and new_country != farm.country:
+            # Moving country also moves currency and time zone, unless they were customised.
+            before, after = regions.locale_for(farm.country), regions.locale_for(new_country)
+            for key, value in after.items():
+                if key not in serializer.validated_data and getattr(farm, key) == before.get(
+                    key, getattr(farm, key)
+                ):
+                    extra[key] = value
+        serializer.save(**extra)
         before, after = diff(farm, old, FARM_FIELDS)
         if before:
             record_event(farm.pk, farm, AuditAction.UPDATE, before, after)
@@ -493,3 +504,13 @@ class AcceptInvitationView(APIView):
         current = request.user if request.user.is_authenticated else None
         user = services.accept_invitation(data.pop("token"), current, data)  # type: ignore[arg-type]
         return _session_response(user, services.issue_tokens(user))
+
+
+class CountriesView(PublicAuthView):
+    """Supported countries with their districts / counties / regions, currency and phone prefix."""
+
+    throttle_classes: list[Any] = []
+
+    @extend_schema(responses=s.CountrySerializer(many=True))
+    def get(self, request: Request) -> Response:
+        return Response(regions.COUNTRIES)

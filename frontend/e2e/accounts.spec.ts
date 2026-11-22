@@ -40,7 +40,7 @@ test('new farmer signs up, invites a manager and an attendant; each sees only th
   await page.getByLabel('Password', { exact: true }).fill(PASSWORD);
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByLabel('Farm name').fill(`YPA FARM ${run}`);
-  await page.getByLabel('County / region').selectOption('Nakuru');
+  await page.getByLabel('District').selectOption('Mbarara');
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('button', { name: 'Create account' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Dashboard' })).toBeVisible();

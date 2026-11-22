@@ -843,6 +843,23 @@ export interface paths {
         patch: operations["births_partial_update"];
         trace?: never;
     };
+    "/api/v1/countries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Supported countries with their districts / counties / regions, currency and phone prefix. */
+        get: operations["countries_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/dewormings": {
         parameters: {
             query?: never;
@@ -2860,6 +2877,15 @@ export interface components {
          * @enum {string}
          */
         ConditionEnum: "normal" | "assisted" | "difficult";
+        Country: {
+            code: string;
+            name: string;
+            currency: string;
+            phone_prefix: string;
+            timezone: string;
+            region_label: string;
+            regions: string[];
+        };
         /**
          * @description * `DD MMM YYYY` - DD MMM YYYY
          *     * `DD/MM/YYYY` - DD/MM/YYYY
@@ -4653,6 +4679,9 @@ export interface components {
             phone: string;
             password: string;
             farm_name: string;
+            /** @default UG */
+            country: string;
+            /** @description District / county / region */
             county?: string;
             herd_size_band?: components["schemas"]["HerdSizeBandEnum"] | components["schemas"]["BlankEnum"];
             livestock_types: components["schemas"]["LivestockTypesEnum"][];
@@ -7024,6 +7053,25 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Birth"];
+                };
+            };
+        };
+    };
+    countries_list: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Country"][];
                 };
             };
         };

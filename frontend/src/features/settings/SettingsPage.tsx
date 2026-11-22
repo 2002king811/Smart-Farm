@@ -21,6 +21,7 @@ import {
 import { LoadingState } from '@/components/LoadingState';
 import page from '@/components/Page.module.css';
 import { useToast } from '@/components/Toast';
+import { CountrySelect, RegionField, useCountries } from '@/features/auth/countries';
 import { HERD_SIZES, LIVESTOCK } from '@/features/auth/SignupPage';
 import { optionalEmail, optionalPhone, password } from '@/features/auth/schemas';
 import { useSession } from '@/features/session/SessionContext';
@@ -143,6 +144,7 @@ function ImagePicker({
 const farmSchema = z.object({
   name: z.string().trim().min(2, 'Enter the farm name.'),
   location: z.string(),
+  country: z.string(),
   county: z.string(),
   phone: optionalPhone,
   email: optionalEmail,
@@ -161,6 +163,7 @@ function FarmSection() {
 }
 
 function FarmForm({ farm }: { farm: Farm }) {
+  const countries = useCountries();
   const qc = useQueryClient();
   const toast = useToast();
   const { refetchFarms } = useSession();
@@ -169,6 +172,7 @@ function FarmForm({ farm }: { farm: Farm }) {
     defaultValues: {
       name: farm.name,
       location: farm.location ?? '',
+      country: farm.country ?? 'UG',
       county: farm.county ?? '',
       phone: farm.phone ?? '',
       email: farm.email ?? '',
@@ -221,7 +225,28 @@ function FarmForm({ farm }: { farm: Farm }) {
         </div>
         <div className={page.grid2}>
           <FormInput label="Location" placeholder="Town or village" {...form.register('location')} />
-          <FormInput label="County / region" {...form.register('county')} />
+        </div>
+        <div className={page.grid2}>
+          {countries.data && (
+            <CountrySelect
+              countries={countries.data}
+              value={form.watch('country')}
+              onChange={(code) => {
+                form.setValue('country', code, { shouldDirty: true });
+                form.setValue('county', '', { shouldDirty: true });
+              }}
+              error={errors.country?.message}
+            />
+          )}
+          {countries.data && (
+            <RegionField
+              country={form.watch('country')}
+              countries={countries.data}
+              value={form.watch('county')}
+              onChange={(v) => form.setValue('county', v, { shouldDirty: true })}
+              error={errors.county?.message}
+            />
+          )}
         </div>
         <div className={page.grid2}>
           <FormInput
@@ -281,8 +306,8 @@ function FarmForm({ farm }: { farm: Farm }) {
 // --- System -----------------------------------------------------------------------------------------
 
 const TIMEZONES = [
-  'Africa/Nairobi',
   'Africa/Kampala',
+  'Africa/Nairobi',
   'Africa/Dar_es_Salaam',
   'Africa/Kigali',
   'Africa/Addis_Ababa',
@@ -291,7 +316,7 @@ const TIMEZONES = [
   'UTC',
 ];
 const DATE_FORMATS = ['DD MMM YYYY', 'DD/MM/YYYY', 'MM/DD/YYYY', 'YYYY-MM-DD'];
-const CURRENCIES = ['KES', 'UGX', 'TZS', 'RWF', 'ETB', 'USD'];
+const CURRENCIES = ['UGX', 'KES', 'TZS', 'RWF', 'ETB', 'USD'];
 const MONTHS = [
   'January',
   'February',
@@ -332,9 +357,9 @@ function SystemForm({ farm }: { farm: Farm }) {
   const form = useForm<SystemValues>({
     resolver: zodResolver(systemSchema),
     defaultValues: {
-      timezone: farm.timezone ?? 'Africa/Nairobi',
+      timezone: farm.timezone ?? 'Africa/Kampala',
       date_format: farm.date_format ?? 'DD MMM YYYY',
-      currency: farm.currency ?? 'KES',
+      currency: farm.currency ?? 'UGX',
       weight_unit: farm.weight_unit ?? 'kg',
       language: farm.language ?? 'en',
       default_calendar_view: farm.default_calendar_view ?? 'month',

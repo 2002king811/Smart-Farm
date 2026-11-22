@@ -18,6 +18,7 @@ import { useSession } from '@/features/session/SessionContext';
 
 import { AuthLayout } from './AuthLayout';
 import styles from './AuthLayout.module.css';
+import { CountrySelect, RegionField, useCountries } from './countries';
 import { email, password, phone } from './schemas';
 
 export const LIVESTOCK = [
@@ -36,11 +37,6 @@ export const HERD_SIZES = [
   ['500+', 'More than 500 animals'],
 ] as const;
 
-const KENYA_COUNTIES =
-  "Baringo Bomet Bungoma Busia Elgeyo-Marakwet Embu Garissa Homa_Bay Isiolo Kajiado Kakamega Kericho Kiambu Kilifi Kirinyaga Kisii Kisumu Kitui Kwale Laikipia Lamu Machakos Makueni Mandera Marsabit Meru Migori Mombasa Murang'a Nairobi Nakuru Nandi Narok Nyamira Nyandarua Nyeri Samburu Siaya Taita-Taveta Tana_River Tharaka-Nithi Trans-Nzoia Turkana Uasin_Gishu Vihiga Wajir West_Pokot"
-    .split(' ')
-    .map((c) => c.replace(/_/g, ' '));
-
 const ROLES_ON_FARM = ['Owner', 'Farm manager', 'Veterinary officer', 'Family member', 'Other'];
 
 const schema = z.object({
@@ -49,6 +45,7 @@ const schema = z.object({
   email,
   phone,
   password,
+  country: z.string(),
   farm_name: z.string().trim().min(2, 'Enter your farm name.'),
   county: z.string(),
   herd_size_band: z.string(),
@@ -59,7 +56,7 @@ const schema = z.object({
 type Values = z.infer<typeof schema>;
 
 const STEP_FIELDS: (keyof Values)[][] = [
-  ['first_name', 'last_name', 'email', 'phone', 'password'],
+  ['country', 'first_name', 'last_name', 'email', 'phone', 'password'],
   ['farm_name', 'county', 'herd_size_band', 'livestock_types', 'job_title'],
   ['alert_channels'],
 ];
@@ -69,11 +66,15 @@ export function SignupPage() {
   const { startSession } = useSession();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const countries = useCountries();
+  const prefixOf = (code: string) => countries.data?.find((c) => c.code === code)?.phone_prefix ?? '+';
   const {
     register,
     handleSubmit,
     trigger,
     watch,
+    setValue,
+    getValues,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<Values>({
@@ -83,7 +84,8 @@ export function SignupPage() {
       first_name: '',
       last_name: '',
       email: '',
-      phone: '+254 ',
+      phone: '+256 ',
+      country: 'UG',
       password: '',
       farm_name: '',
       county: '',
@@ -93,6 +95,8 @@ export function SignupPage() {
       alert_channels: ['whatsapp', 'email'],
     },
   });
+
+  const country = watch('country');
 
   const next = async () => {
     if (await trigger(STEP_FIELDS[step])) setStep((s) => s + 1);
@@ -147,6 +151,20 @@ export function SignupPage() {
 
         {step === 0 && (
           <>
+            {countries.data && (
+              <CountrySelect
+                countries={countries.data}
+                value={country}
+                onChange={(code) => {
+                  const old = prefixOf(country);
+                  setValue('country', code);
+                  setValue('county', '');
+                  // Swap the phone's country code if the user hasn't typed a number yet.
+                  const current = getValues('phone').trim();
+                  if (!current || current === old) setValue('phone', `${prefixOf(code)} `);
+                }}
+              />
+            )}
             <div className={styles.grid2}>
               <FormInput
                 label="First name"
@@ -172,7 +190,7 @@ export function SignupPage() {
               label="Mobile number"
               type="tel"
               autoComplete="tel"
-              hint="We send a 6-digit code to confirm it."
+              hint="We send a 6-digit code to confirm it. You can type it as 0772 123 456."
               error={errors.phone?.message}
               {...register('phone')}
             />
@@ -195,15 +213,15 @@ export function SignupPage() {
               {...register('farm_name')}
             />
             <div className={styles.grid2}>
-              <FormSelect label="County / region" {...register('county')}>
-                <option value="">Choose…</option>
-                {KENYA_COUNTIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-                <option value="Other">Outside Kenya / other</option>
-              </FormSelect>
+              {countries.data && (
+                <RegionField
+                  country={country}
+                  countries={countries.data}
+                  value={watch('county')}
+                  onChange={(v) => setValue('county', v)}
+                  error={errors.county?.message}
+                />
+              )}
               <FormSelect label="Herd size" {...register('herd_size_band')}>
                 <option value="">Choose…</option>
                 {HERD_SIZES.map(([v, l]) => (

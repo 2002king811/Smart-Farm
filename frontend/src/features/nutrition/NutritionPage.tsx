@@ -87,7 +87,7 @@ const qty = (v: string | number) => Number(v).toLocaleString('en-KE', { maximumF
 
 export default function NutritionPage() {
   const { activeFarm } = useSession();
-  const currency = activeFarm?.farm.currency ?? 'KES';
+  const currency = activeFarm?.farm.currency ?? 'UGX';
   const summary = useQuery({
     queryKey: ['nutrition', 'summary'],
     queryFn: () => api<Summary>('/nutrition/summary'),
@@ -139,7 +139,7 @@ export default function NutritionPage() {
 
 function FeedStock() {
   const { role, activeFarm } = useSession();
-  const currency = activeFarm?.farm.currency ?? 'KES';
+  const currency = activeFarm?.farm.currency ?? 'UGX';
   const items = useQuery({
     queryKey: ['nutrition', 'feed-items'],
     queryFn: () => api<FeedItem[]>('/feed-items'),
@@ -246,7 +246,7 @@ function ItemForm({ item, onClose }: { item?: FeedItem; onClose: () => void }) {
   const qc = useQueryClient();
   const toast = useToast();
   const { activeFarm } = useSession();
-  const currency = activeFarm?.farm.currency ?? 'KES';
+  const currency = activeFarm?.farm.currency ?? 'UGX';
   const form = useForm({
     defaultValues: {
       name: item?.name ?? '',
@@ -337,7 +337,7 @@ function StockForm({ item, onClose }: { item: FeedItem; onClose: () => void }) {
   const qc = useQueryClient();
   const toast = useToast();
   const { activeFarm } = useSession();
-  const currency = activeFarm?.farm.currency ?? 'KES';
+  const currency = activeFarm?.farm.currency ?? 'UGX';
   const form = useForm({
     defaultValues: {
       kind: 'purchase',
@@ -445,7 +445,7 @@ function StockForm({ item, onClose }: { item: FeedItem; onClose: () => void }) {
 function StockHistory() {
   const { activeFarm } = useSession();
   const fmt = activeFarm?.farm.date_format ?? 'DD MMM YYYY';
-  const currency = activeFarm?.farm.currency ?? 'KES';
+  const currency = activeFarm?.farm.currency ?? 'UGX';
   const list = useCursorList<Movement>(['nutrition', 'movements'], '/feed-stock', {});
   const rows = list.data?.pages.flatMap((p) => p.results) ?? [];
   if (list.isPending) return <LoadingState />;

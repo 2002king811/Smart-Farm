@@ -74,7 +74,7 @@ test('feeding lowers the feed stock', async ({ page }) => {
   await page.getByRole('button', { name: 'Update stock of Rhodes grass hay' }).click();
   let dialog = page.getByRole('dialog');
   await dialog.getByLabel('Quantity (bale)').fill('20');
-  await dialog.getByLabel('Price per bale (KES)').fill('450');
+  await dialog.getByLabel('Price per bale (UGX)').fill('450');
   await dialog.getByRole('button', { name: 'Save' }).click();
   await expect(page.getByText('Rhodes grass hay: 20 bale in stock.')).toBeVisible();
   const hayRow = page.getByRole('row', { name: /Rhodes grass hay/ });

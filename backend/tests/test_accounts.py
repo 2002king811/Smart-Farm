@@ -36,6 +36,7 @@ SIGNUP = {
     "phone": "0712 345 678",
     "password": "Green-Pasture-27",
     "farm_name": "YPA FARM",
+    "country": "KE",
     "county": "Nakuru",
     "herd_size_band": "1-20",
     "livestock_types": ["goats"],
@@ -61,7 +62,8 @@ def code_in(body: str) -> str:
 
 
 def signup(client: APIClient, **overrides: Any) -> Any:
-    return client.post("/api/v1/auth/signup", {**SIGNUP, **overrides}, format="json")
+    body = {k: v for k, v in {**SIGNUP, **overrides}.items() if v is not None}
+    return client.post("/api/v1/auth/signup", body, format="json")
 
 
 def login(client: APIClient, identifier: str, password: str, **extra: Any) -> Any:
@@ -167,7 +169,74 @@ def test_second_farm_gets_unique_slug():  # type: ignore[no-untyped-def]
     ],
 )
 def test_phone_normalisation(raw, expected):  # type: ignore[no-untyped-def]
-    assert services.normalise_phone(raw) == expected
+    assert services.normalise_phone(raw, prefix="+254") == expected
+
+
+def test_uganda_is_the_default_country():  # type: ignore[no-untyped-def]
+    res = signup(
+        APIClient(), country=None, county="Mbarara", phone="0772 123 456", email="ug@farm.ug"
+    )
+    assert res.status_code == 201, res.content
+    assert res.json()["user"]["phone"] == "+256772123456"
+    farm = Farm.objects.get()
+    assert (farm.country, farm.currency, farm.timezone, farm.county) == (
+        "UG",
+        "UGX",
+        "Africa/Kampala",
+        "Mbarara",
+    )
+    assert services.normalise_phone("0772123456") == "+256772123456"
+
+
+def test_district_must_belong_to_country():  # type: ignore[no-untyped-def]
+    res = signup(APIClient(), country="UG", county="Nakuru")
+    assert res.json()["errors"]["county"] == ["Choose a district of Uganda."]
+    other = signup(APIClient(), country="ZM", county="Lusaka", phone="+260971234567")
+    assert other.status_code == 201  # countries we don't list take any area name
+
+
+def test_countries_endpoint():  # type: ignore[no-untyped-def]
+    countries = APIClient().get("/api/v1/countries").json()
+    uganda = countries[0]
+    assert (
+        uganda["code"] == "UG"
+        and uganda["currency"] == "UGX"
+        and uganda["region_label"] == "District"
+    )
+    assert {"Kampala", "Wakiso", "Mbarara", "Gulu"} <= set(uganda["regions"])
+    assert len(uganda["regions"]) > 130
+    assert [c["code"] for c in countries] == ["UG", "KE", "TZ", "RW"]
+
+
+def test_changing_country_moves_currency_and_timezone(farm_a, admin_a, client_for):  # type: ignore[no-untyped-def]
+    farm_a.country, farm_a.currency, farm_a.timezone, farm_a.county = (
+        "KE",
+        "KES",
+        "Africa/Nairobi",
+        "Nakuru",
+    )
+    farm_a.save()
+    client = client_for(admin_a, farm_a)
+    res = client.patch("/api/v1/farm", {"country": "UG", "county": "Wakiso"}, format="json").json()
+    assert (res["country"], res["currency"], res["timezone"], res["county"]) == (
+        "UG",
+        "UGX",
+        "Africa/Kampala",
+        "Wakiso",
+    )
+    bad = client.patch("/api/v1/farm", {"county": "Nakuru"}, format="json")
+    assert bad.json()["errors"]["county"] == ["Choose a district of Uganda."]
+    # A customised currency is kept when moving.
+    client.patch("/api/v1/farm", {"currency": "USD"}, format="json")
+    res = client.patch("/api/v1/farm", {"country": "KE", "county": "Nairobi"}, format="json").json()
+    assert res["currency"] == "USD" and res["timezone"] == "Africa/Nairobi"
+
+
+def test_login_with_local_number_of_any_supported_country(daniel):  # type: ignore[no-untyped-def]
+    from apps.accounts.models import User as U
+
+    U.objects.filter(pk=daniel.pk).update(phone="+256772123456")
+    assert login(APIClient(), "0772123456", "Green-Pasture-27").status_code == 200
 
 
 # --- Login, lockout, sessions ---------------------------------------------------------------------

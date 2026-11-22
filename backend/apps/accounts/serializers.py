@@ -4,6 +4,8 @@ from zoneinfo import available_timezones
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
+from apps.core import regions
+from apps.core.context import current_farm_id
 from apps.core.permissions import load_matrix
 
 from . import services
@@ -28,15 +30,33 @@ class FileUrlField(serializers.ReadOnlyField):
 
 
 class PhoneField(serializers.CharField):
-    """Accepts 0712 345 678, 712345678 or +254712345678 and stores E.164."""
+    """Accepts 0772 123 456, 772123456 or +256772123456 and stores E.164.
+
+    A local number gets the prefix of the country in the same form (sign-up), else of the
+    active farm, else the platform default."""
 
     def __init__(self, **kwargs: Any) -> None:
         kwargs.setdefault("max_length", 20)
         super().__init__(**kwargs)
 
+    def _prefix(self) -> str:
+        data = getattr(self.parent, "initial_data", None)
+        if isinstance(data, dict) and data.get("country"):
+            return regions.phone_prefix(str(data["country"]))
+        # Editing someone who already has a number: keep its country code.
+        existing = getattr(getattr(self.parent, "instance", None), "phone", "") or ""
+        for c in regions.COUNTRIES:
+            if existing.startswith(c["phone_prefix"]):
+                return c["phone_prefix"]
+        farm_id = current_farm_id()
+        if farm_id:
+            code = Farm.objects.filter(pk=farm_id).values_list("country", flat=True).first()
+            return regions.phone_prefix(code)
+        return regions.phone_prefix(None)
+
     def to_internal_value(self, data: Any) -> str:
         value = super().to_internal_value(data)
-        return services.normalise_phone(value) if value else ""
+        return services.normalise_phone(value, prefix=self._prefix()) if value else ""
 
 
 def _password_errors(password: str, user: User | None = None) -> None:
@@ -158,7 +178,10 @@ class SignupSerializer(serializers.Serializer):
     password = serializers.CharField(trim_whitespace=False, min_length=8)
     # Step 2: farm
     farm_name = serializers.CharField(max_length=120)
-    county = serializers.CharField(max_length=80, required=False, allow_blank=True)
+    country = serializers.CharField(max_length=2, required=False, default=regions.DEFAULT_COUNTRY)
+    county = serializers.CharField(
+        max_length=80, required=False, allow_blank=True, help_text="District / county / region"
+    )
     herd_size_band = serializers.ChoiceField(
         choices=HerdSizeBand.choices, required=False, allow_blank=True
     )
@@ -174,6 +197,18 @@ class SignupSerializer(serializers.Serializer):
     def validate_password(self, value: str) -> str:
         _password_errors(value)
         return value
+
+    def validate_country(self, value: str) -> str:
+        value = value.upper()
+        if not value.isalpha() or len(value) != 2:
+            raise serializers.ValidationError("Choose a country.")
+        return value
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        problem = regions.validate_region(attrs.get("country", ""), attrs.get("county", ""))
+        if problem:
+            raise serializers.ValidationError({"county": [problem]})
+        return attrs
 
 
 class LoginSerializer(serializers.Serializer):
@@ -264,6 +299,21 @@ class FarmSerializer(serializers.ModelSerializer):
             "created_at",
         )
         read_only_fields = ("id", "slug", "logo", "status", "created_at")
+
+    def validate_country(self, value: str) -> str:
+        value = value.upper()
+        if not value.isalpha() or len(value) != 2:
+            raise serializers.ValidationError("Choose a country.")
+        return value
+
+    def validate(self, attrs: dict[str, Any]) -> dict[str, Any]:
+        code = attrs.get("country", getattr(self.instance, "country", ""))
+        region = attrs.get("county", getattr(self.instance, "county", ""))
+        if "country" in attrs or "county" in attrs:
+            problem = regions.validate_region(code, region)
+            if problem:
+                raise serializers.ValidationError({"county": [problem]})
+        return attrs
 
     def validate_timezone(self, value: str) -> str:
         if value not in available_timezones():
@@ -429,3 +479,13 @@ class AcceptInvitationSerializer(serializers.Serializer):
     last_name = serializers.CharField(max_length=150, required=False, allow_blank=True)
     username = serializers.RegexField(r"^[\w.@+-]{3,150}$", required=False, allow_blank=True)
     password = serializers.CharField(trim_whitespace=False, required=False, min_length=8)
+
+
+class CountrySerializer(serializers.Serializer):
+    code = serializers.CharField()
+    name = serializers.CharField()
+    currency = serializers.CharField()
+    phone_prefix = serializers.CharField()
+    timezone = serializers.CharField()
+    region_label = serializers.CharField()
+    regions = serializers.ListField(child=serializers.CharField())

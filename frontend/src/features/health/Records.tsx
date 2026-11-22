@@ -272,7 +272,7 @@ function RecordFormBody({
   const qc = useQueryClient();
   const toast = useToast();
   const { activeFarm } = useSession();
-  const currency = activeFarm?.farm.currency ?? 'KES';
+  const currency = activeFarm?.farm.currency ?? 'UGX';
   const form = useForm<Values>({ defaultValues: initialValues(type, row, animalId) });
   const { errors, isSubmitting } = form.formState;
   const needs = (t: string) => type.fields.some((f) => f.type === t);

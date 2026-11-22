@@ -55,7 +55,7 @@ describe('nutrition', () => {
     const table = await screen.findByRole('table');
     expect(within(table).getByText('Low stock')).toBeInTheDocument();
     expect(within(table).getByText('3 days')).toBeInTheDocument();
-    expect(screen.getByText('KES 9,000')).toBeInTheDocument();
+    expect(screen.getByText('UGX 9,000')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Update stock of Rhodes grass hay' }));
     const dialog = await screen.findByRole('dialog');
     await userEvent.type(within(dialog).getByLabelText('Quantity (bale)'), '20');

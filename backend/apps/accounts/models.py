@@ -102,7 +102,7 @@ class Farm(models.Model):
     logo = models.ImageField(upload_to="farms/logos/", blank=True)
     location = models.CharField(max_length=200, blank=True)
     county = models.CharField(max_length=80, blank=True)
-    country = models.CharField(max_length=2, default="KE")
+    country = models.CharField(max_length=2, default="UG")
     phone = models.CharField(max_length=16, blank=True, validators=[e164_validator])
     email = models.EmailField(blank=True)
     description = models.TextField(blank=True)
@@ -113,9 +113,9 @@ class Farm(models.Model):
     animal_id_prefix = models.CharField(
         max_length=10, default="YPA", help_text="Prefix for suggested animal IDs, e.g. YPA-021."
     )
-    timezone = models.CharField(max_length=64, default="Africa/Nairobi")
+    timezone = models.CharField(max_length=64, default="Africa/Kampala")
     date_format = models.CharField(max_length=20, default="DD MMM YYYY")
-    currency = models.CharField(max_length=3, default="KES")
+    currency = models.CharField(max_length=3, default="UGX")
     weight_unit = models.CharField(max_length=2, choices=WeightUnit.choices, default=WeightUnit.KG)
     language = models.CharField(max_length=5, choices=Language.choices, default=Language.ENGLISH)
     default_calendar_view = models.CharField(

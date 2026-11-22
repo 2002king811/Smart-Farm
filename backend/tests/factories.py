@@ -55,6 +55,10 @@ class FarmFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda n: f"Farm {n}")
     slug = factory.Sequence(lambda n: f"farm-{n}")
+    # The test farms are Kenyan (YPA FARM); Uganda is covered by its own tests.
+    country = "KE"
+    currency = "KES"
+    timezone = "Africa/Nairobi"
     livestock_types = ["goats"]
 
 

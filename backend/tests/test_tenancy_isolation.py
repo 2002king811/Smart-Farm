@@ -22,6 +22,7 @@ pytestmark = pytest.mark.django_db
 # Endpoints under /api/v1/ that are deliberately not farm-scoped (they act on the user).
 NON_FARM_ENDPOINTS = {
     "me",
+    "countries",
     "me/farms",
     "me/photo",
     "me/password",

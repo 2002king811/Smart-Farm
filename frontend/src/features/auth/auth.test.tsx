@@ -90,3 +90,58 @@ describe('sign-up', () => {
     expect(passwordStrength('Green-Pasture-27').label).toBe('Strong');
   });
 });
+
+describe('country and district', () => {
+  beforeEach(clearSession);
+
+  it('defaults to Uganda and lists the districts of the chosen country', async () => {
+    const countries = [
+      {
+        code: 'UG',
+        name: 'Uganda',
+        currency: 'UGX',
+        phone_prefix: '+256',
+        timezone: 'Africa/Kampala',
+        region_label: 'District',
+        regions: ['Kampala', 'Mbarara', 'Wakiso'],
+      },
+      {
+        code: 'KE',
+        name: 'Kenya',
+        currency: 'KES',
+        phone_prefix: '+254',
+        timezone: 'Africa/Nairobi',
+        region_label: 'County',
+        regions: ['Nakuru'],
+      },
+    ];
+    let posted: Record<string, unknown> = {};
+    mockApi((url, init) => {
+      if (url.pathname === '/api/v1/countries') return { body: countries };
+      if (url.pathname === '/api/v1/auth/signup') {
+        posted = JSON.parse(String(init!.body));
+        return { status: 400, body: { errors: { detail: ['stop'] } } };
+      }
+    });
+    renderWithProviders(<AppRoutes />, { route: '/signup' });
+    expect(await screen.findByLabelText('Country')).toHaveValue('UG');
+    expect(screen.getByLabelText('Mobile number')).toHaveValue('+256 ');
+    await userEvent.selectOptions(screen.getByLabelText('Country'), 'KE');
+    expect(screen.getByLabelText('Mobile number')).toHaveValue('+254 ');
+    await userEvent.selectOptions(screen.getByLabelText('Country'), 'UG');
+    await userEvent.type(screen.getByLabelText('First name'), 'Daniel');
+    await userEvent.type(screen.getByLabelText('Last name'), 'Okello');
+    await userEvent.type(screen.getByLabelText('Email'), 'daniel@farm.ug');
+    await userEvent.type(screen.getByLabelText('Mobile number'), '772123456');
+    await userEvent.type(screen.getByLabelText('Password'), 'Green-Pasture-27');
+    await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+    await userEvent.type(await screen.findByLabelText('Farm name'), 'Okello Goats');
+    expect(screen.getByRole('option', { name: 'Mbarara' })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: 'Nakuru' })).not.toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByLabelText('District'), 'Mbarara');
+    await userEvent.click(screen.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(await screen.findByRole('button', { name: 'Create account' }));
+    await screen.findByText('stop');
+    expect(posted).toMatchObject({ country: 'UG', county: 'Mbarara', phone: '+256 772123456' });
+  });
+});

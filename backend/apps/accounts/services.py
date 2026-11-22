@@ -143,9 +143,13 @@ def find_user(identifier: str) -> User | None:
     if not identifier:
         return None
     query = Q(username__iexact=identifier) | Q(email__iexact=identifier)
-    phone = normalise_phone(identifier, strict=False)
-    if phone:
-        query |= Q(phone=phone)
+    # A local number (0772…) could belong to any supported country: try each prefix.
+    from apps.core.regions import COUNTRIES
+
+    for c in COUNTRIES:
+        phone = normalise_phone(identifier, strict=False, prefix=c["phone_prefix"])
+        if phone:
+            query |= Q(phone=phone)
     return User.objects.filter(query).first()
 
 
@@ -182,20 +186,21 @@ def authenticate(identifier: str, password: str) -> User:
 # --- Phone numbers and usernames ------------------------------------------------------------------
 
 
-def normalise_phone(value: str, strict: bool = True) -> str:
-    """Kenya-first phone normalisation to E.164: 0712 345 678 → +254712345678."""
+def normalise_phone(value: str, strict: bool = True, prefix: str | None = None) -> str:
+    """Local numbers to E.164 with the country's prefix: 0772 123 456 → +256772123456 (Uganda)."""
+    prefix = prefix or settings.DEFAULT_PHONE_REGION
     raw = re.sub(r"[\s\-()]", "", value or "")
     if not raw:
         return ""
     if raw.startswith("00"):
         raw = "+" + raw[2:]
     elif raw.startswith("0") and len(raw) == 10:
-        raw = settings.DEFAULT_PHONE_REGION + raw[1:]
+        raw = prefix + raw[1:]
     elif re.fullmatch(r"[17]\d{8}", raw):
-        raw = settings.DEFAULT_PHONE_REGION + raw
+        raw = prefix + raw
     if not re.fullmatch(r"\+[1-9]\d{7,14}", raw):
         if strict:
-            raise ValidationError(["Enter a valid mobile number, for example +254712345678."])
+            raise ValidationError([f"Enter a valid mobile number, for example {prefix}712345678."])
         return ""
     return raw
 
@@ -261,9 +266,14 @@ def signup(data: dict[str, Any]) -> tuple[User, Farm]:
     user.set_password(data["password"])
     user.save()
 
+    from apps.core.regions import locale_for
+
+    country = data.get("country") or settings.DEFAULT_COUNTRY
     farm = Farm.objects.create(
         name=data["farm_name"].strip(),
         slug=unique_slug(data["farm_name"]),
+        country=country,
+        **locale_for(country),
         county=data.get("county", "").strip(),
         herd_size_band=data.get("herd_size_band", ""),
         livestock_types=data.get("livestock_types", []),
