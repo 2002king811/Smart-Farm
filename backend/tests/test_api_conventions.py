@@ -174,6 +174,13 @@ def test_dev_outbox_only_in_debug(client, settings):  # type: ignore[no-untyped-
         messaging.SENT.append(messaging.SentMessage("sms", "+254700000000", "123456 is your code"))
         res = client.get("/api/dev/outbox")
         assert res.json()["messages"][0]["body"] == "123456 is your code"
+        messaging.SENT.append(
+            messaging.SentMessage("email", "a@b.ke", "Open http://x/verify?token=a:b <tag>", "Hi")
+        )
+        page = client.get("/api/dev/outbox", HTTP_ACCEPT="text/html").content.decode()
+        assert '<span class="code">123456</span>' in page
+        assert '<a href="http://x/verify?token=a:b">' in page
+        assert "&lt;tag&gt;" in page
     finally:
         settings.DEBUG = False
         reload(config.urls)

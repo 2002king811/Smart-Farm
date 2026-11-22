@@ -26,5 +26,6 @@ describe('api client', () => {
     expect(err.status).toBe(400);
     expect(err.field('ear_tag')).toEqual(['Already used on this farm.']);
     expect(err.field('name')).toEqual([]);
+    expect(err.message).toBe('Already used on this farm.');
   });
 });

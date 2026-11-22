@@ -271,7 +271,8 @@ def test_email_verification_link():  # type: ignore[no-untyped-def]
     res = signup(APIClient())
     token = token_in(sent("email")[0].body)
     assert APIClient().post("/api/v1/auth/verify-email", {"token": "bad"}).status_code == 400
-    ok = APIClient().post("/api/v1/auth/verify-email", {"token": token})
+    # A link copied with a trailing literal "\\n" or extra text still works.
+    ok = APIClient().post("/api/v1/auth/verify-email", {"token": token + "\\n\\nThis link works"})
     assert ok.status_code == 200
     assert User.objects.get(email="daniel@ypa.co.ke").email_verified
     me = authed(res.json()["access"])

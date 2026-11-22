@@ -22,7 +22,15 @@ export class ApiError extends Error {
     public status: number,
     public errors: FieldErrors,
   ) {
-    super(errors.detail?.[0] ?? errors.non_field_errors?.[0] ?? `Request failed (${status})`);
+    super(
+      errors.detail?.[0] ??
+        errors.non_field_errors?.[0] ??
+        // Otherwise the first field message, e.g. {"token": ["This link has expired…"]}.
+        Object.values(errors)
+          .flat()
+          .find((m) => typeof m === 'string') ??
+        `Request failed (${status})`,
+    );
     this.name = 'ApiError';
   }
 

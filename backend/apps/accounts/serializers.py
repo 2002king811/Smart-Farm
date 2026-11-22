@@ -190,6 +190,10 @@ class AuthResponseSerializer(serializers.Serializer):
 class TokenSerializer(serializers.Serializer):
     token = serializers.CharField()
 
+    def validate_token(self, value: str) -> str:
+        # Copied links sometimes bring a trailing "\\n" or text after a space; keep the token only.
+        return value.split("\\n")[0].split()[0] if value.strip() else value
+
 
 class CodeSerializer(serializers.Serializer):
     code = serializers.RegexField(
