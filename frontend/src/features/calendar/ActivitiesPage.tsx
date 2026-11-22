@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { ClipboardList, Plus } from 'lucide-react';
-import { useDeferredValue, useState } from 'react';
+import { useDeferredValue, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { api, ApiError } from '@/api/client';
 import { EmptyState } from '@/components/EmptyState';
@@ -38,7 +39,20 @@ export default function ActivitiesPage() {
   const [category, setCategory] = useState('');
   const [assignee, setAssignee] = useState('');
   const [priority, setPriority] = useState('');
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [params, setParams] = useSearchParams();
+  // Links from notifications open the activity: /activities?activity=<id>
+  const [openId, setOpenIdState] = useState<string | null>(params.get('activity'));
+  const setOpenId = (id: string | null) => {
+    setOpenIdState(id);
+    if (!id && params.has('activity')) {
+      params.delete('activity');
+      setParams(params, { replace: true });
+    }
+  };
+  const linked = params.get('activity');
+  useEffect(() => {
+    if (linked) setOpenIdState(linked);
+  }, [linked]);
   const [creating, setCreating] = useState(false);
   const q = useDeferredValue(search);
   const categories = useCategories();

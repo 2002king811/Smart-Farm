@@ -2,6 +2,7 @@ import { Bell, Menu, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
+import { useLiveNotifications, useUnreadCount } from '@/features/notifications/api';
 import { useSession } from '@/features/session/SessionContext';
 import { LANGUAGES } from '@/i18n';
 
@@ -18,6 +19,10 @@ interface Props {
 export function Header({ title, onMenu, menuOpen = false, compact = false }: Props) {
   const { t, i18n } = useTranslation();
   const { activeFarm } = useSession();
+  const unread = useUnreadCount(Boolean(activeFarm));
+  useLiveNotifications(Boolean(activeFarm));
+  const count = unread.data?.unread ?? 0;
+  const bellLabel = count ? `${t('header.notifications')}: ${count} unread` : t('header.notifications');
 
   return (
     <header className={`${styles.header} ${compact ? styles.compact : ''}`}>
@@ -66,8 +71,17 @@ export function Header({ title, onMenu, menuOpen = false, compact = false }: Pro
             </select>
           </>
         )}
-        <Link to="/notifications" className={styles.iconButton} aria-label={t('header.notifications')}>
+        <Link to="/notifications" className={styles.iconButton} aria-label={bellLabel}>
           <Bell size={22} aria-hidden="true" />
+          {count > 0 && (
+            <span
+              className={`${styles.badge} ${unread.data?.urgent ? styles.badgeUrgent : ''}`}
+              data-testid="bell-count"
+              aria-hidden="true"
+            >
+              {count > 99 ? '99+' : count}
+            </span>
+          )}
         </Link>
         <UserMenu />
       </div>

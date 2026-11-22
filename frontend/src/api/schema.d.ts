@@ -843,6 +843,40 @@ export interface paths {
         patch: operations["births_partial_update"];
         trace?: never;
     };
+    "/api/v1/channel-contacts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Where the signed-in person receives email, SMS and WhatsApp, and their consent. */
+        get: operations["channel_contacts_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/channel-contacts/{channel}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** @description Non-model endpoints (dashboard, reports) that still need the active farm. */
+        patch: operations["channel_contacts_partial_update"];
+        trace?: never;
+    };
     "/api/v1/countries": {
         parameters: {
             query?: never;
@@ -1777,6 +1811,178 @@ export interface paths {
         patch: operations["mortality_partial_update"];
         trace?: never;
     };
+    "/api/v1/notification-preferences": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The event × channel matrix and quiet hours / digest / language for the signed-in person. */
+        get: operations["notification_preferences_retrieve"];
+        /** @description The event × channel matrix and quiet hours / digest / language for the signed-in person. */
+        put: operations["notification_preferences_update"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["notifications_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["notifications_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/{id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["notifications_read_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/read-all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["notifications_read_all_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        post: operations["notifications_test_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/unread-count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["notifications_unread_count_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/notifications/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * @description Resolves request.farm / request.membership before permission checks run.
+         *
+         *     The active farm is also put into the request context, so FarmScopedModel managers
+         *     scope every query in this request, including ones inside serializers and services.
+         */
+        get: operations["notifications_usage_list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/nutrition-assessments": {
         parameters: {
             query?: never;
@@ -2522,7 +2728,7 @@ export interface components {
          *     * `email` - Email
          * @enum {string}
          */
-        AlertChannelsEnum: "in_app" | "whatsapp" | "sms" | "email";
+        AlertChannelEnum: "in_app" | "whatsapp" | "sms" | "email";
         AnimalDetail: {
             /** Format: uuid */
             readonly id: string;
@@ -2854,19 +3060,6 @@ export interface components {
             current_password: string;
             password: string;
         };
-        /**
-         * @description * `email` - Email
-         *     * `sms` - SMS
-         * @enum {string}
-         */
-        ChannelEnum: "email" | "sms";
-        /**
-         * @description * `email` - Email
-         *     * `sms` - SMS
-         *     * `whatsapp` - WhatsApp
-         * @enum {string}
-         */
-        ChannelsEnum: "email" | "sms" | "whatsapp";
         CodeRequest: {
             code: string;
         };
@@ -2877,6 +3070,29 @@ export interface components {
          * @enum {string}
          */
         ConditionEnum: "normal" | "assisted" | "difficult";
+        Contact: {
+            channel: components["schemas"]["AlertChannelEnum"];
+            readonly channel_label: string;
+            address: string;
+            verified?: boolean;
+            readonly opted_in: boolean;
+            /**
+             * Format: date-time
+             * @description WhatsApp needs recorded consent
+             */
+            opted_in_at?: string | null;
+            /**
+             * Format: date-time
+             * @description SMS STOP / WhatsApp opt-out
+             */
+            opted_out_at?: string | null;
+            /**
+             * Format: date-time
+             * @description Email hard bounce
+             */
+            bounced_at?: string | null;
+            readonly problem: string;
+        };
         Country: {
             code: string;
             name: string;
@@ -2902,6 +3118,39 @@ export interface components {
          * @enum {string}
          */
         DefaultCalendarViewEnum: "month" | "week" | "day" | "agenda";
+        Delivery: {
+            /** Format: uuid */
+            readonly id: string;
+            channel: components["schemas"]["AlertChannelEnum"];
+            status?: components["schemas"]["DeliveryStatusEnum"];
+            error?: string;
+            attempts?: number;
+            /**
+             * Format: date-time
+             * @description Held for quiet hours
+             */
+            send_after?: string | null;
+            /** Format: date-time */
+            sent_at?: string | null;
+            /** Format: date-time */
+            status_at?: string | null;
+        };
+        /**
+         * @description * `email` - Email
+         *     * `sms` - SMS
+         *     * `whatsapp` - WhatsApp
+         * @enum {string}
+         */
+        DeliveryChannelEnum: "email" | "sms" | "whatsapp";
+        /**
+         * @description * `queued` - Queued
+         *     * `sent` - Sent
+         *     * `delivered` - Delivered
+         *     * `read` - Read
+         *     * `failed` - Failed
+         * @enum {string}
+         */
+        DeliveryStatusEnum: "queued" | "sent" | "delivered" | "read" | "failed";
         Detail: {
             detail: string;
         };
@@ -3113,10 +3362,16 @@ export interface components {
             animals_fed?: number | null;
             responsible?: string;
         };
+        /**
+         * @description * `email` - Email
+         *     * `sms` - SMS
+         * @enum {string}
+         */
+        ForgotPasswordChannelEnum: "email" | "sms";
         ForgotPasswordRequest: {
             identifier: string;
             /** @default email */
-            channel: components["schemas"]["ChannelEnum"];
+            channel: components["schemas"]["ForgotPasswordChannelEnum"];
         };
         /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
         HealthInspection: {
@@ -3252,7 +3507,7 @@ export interface components {
             phone?: string;
             role: components["schemas"]["RoleEnum"];
             readonly role_label: string;
-            channels: components["schemas"]["ChannelsEnum"][];
+            channels: components["schemas"]["DeliveryChannelEnum"][];
             readonly status: components["schemas"]["InvitationStatusEnum"];
             readonly invited_by_name: string | null;
             /** Format: date-time */
@@ -3281,7 +3536,7 @@ export interface components {
             email?: string;
             phone?: string;
             role: components["schemas"]["RoleEnum"];
-            channels: components["schemas"]["ChannelsEnum"][];
+            channels: components["schemas"]["DeliveryChannelEnum"][];
         };
         /**
          * @description * `pending` - Pending
@@ -3448,6 +3703,33 @@ export interface components {
          * @enum {string}
          */
         MatingStatusEnum: "active" | "kidded" | "failed" | "aborted";
+        MatrixRow: {
+            event_type: components["schemas"]["MatrixRowEventTypeEnum"];
+            readonly label: string;
+            channels: {
+                [key: string]: boolean;
+            };
+        };
+        /**
+         * @description * `activity.upcoming` - Upcoming activity
+         *     * `activity.due_today` - Activity due today
+         *     * `activity.overdue` - Overdue activity
+         *     * `vaccination.reminder` - Vaccination reminder
+         *     * `deworming.reminder` - Deworming reminder
+         *     * `health.alert` - Health alert
+         *     * `task.assigned` - Task assigned
+         *     * `activity.completed` - Activity completed
+         *     * `feed.low_stock` - Low feed stock
+         *     * `daily.summary` - Daily summary
+         * @enum {string}
+         */
+        MatrixRowEventTypeEnum: "activity.upcoming" | "activity.due_today" | "activity.overdue" | "vaccination.reminder" | "deworming.reminder" | "health.alert" | "task.assigned" | "activity.completed" | "feed.low_stock" | "daily.summary";
+        MatrixRowRequest: {
+            event_type: components["schemas"]["MatrixRowEventTypeEnum"];
+            channels: {
+                [key: string]: boolean;
+            };
+        };
         Me: {
             /** Format: uuid */
             readonly id: string;
@@ -3468,7 +3750,7 @@ export interface components {
             readonly email_verified: boolean;
             readonly phone_verified: boolean;
             readonly must_change_password: boolean;
-            readonly alert_channels: components["schemas"]["AlertChannelsEnum"][];
+            readonly alert_channels: components["schemas"]["AlertChannelEnum"][];
             /** Format: date-time */
             readonly last_login: string | null;
         };
@@ -3531,7 +3813,7 @@ export interface components {
             readonly invited_by_name: string | null;
         };
         MemberCreateRequest: {
-            channels: components["schemas"]["ChannelsEnum"][];
+            channels: components["schemas"]["DeliveryChannelEnum"][];
             first_name: string;
             last_name: string;
             email?: string;
@@ -3649,6 +3931,60 @@ export interface components {
         };
         NoteRequest: {
             text: string;
+        };
+        Notification: {
+            /** Format: uuid */
+            readonly id: string;
+            event_type: components["schemas"]["NotificationEventTypeEnum"];
+            readonly event_label: string;
+            title: string;
+            message: string;
+            link?: string;
+            urgent?: boolean;
+            readonly read: boolean;
+            /** Format: date-time */
+            read_at?: string | null;
+            /** Format: date-time */
+            readonly created_at: string;
+            readonly deliveries: components["schemas"]["Delivery"][];
+        };
+        /**
+         * @description * `activity.upcoming` - Upcoming activity
+         *     * `activity.due_today` - Activity due today
+         *     * `activity.overdue` - Overdue activity
+         *     * `vaccination.reminder` - Vaccination reminder
+         *     * `deworming.reminder` - Deworming reminder
+         *     * `health.alert` - Health alert
+         *     * `task.assigned` - Task assigned
+         *     * `activity.completed` - Activity completed
+         *     * `feed.low_stock` - Low feed stock
+         *     * `daily.summary` - Daily summary
+         *     * `usage.warning` - Message allowance warning
+         *     * `test` - Test message
+         * @enum {string}
+         */
+        NotificationEventTypeEnum: "activity.upcoming" | "activity.due_today" | "activity.overdue" | "vaccination.reminder" | "deworming.reminder" | "health.alert" | "task.assigned" | "activity.completed" | "feed.low_stock" | "daily.summary" | "usage.warning" | "test";
+        NotificationSettings: {
+            quiet_hours_enabled?: boolean;
+            /** Format: time */
+            quiet_start?: string;
+            /** Format: time */
+            quiet_end?: string;
+            /** Format: time */
+            digest_time?: string;
+            language?: components["schemas"]["LanguageEnum"];
+            default_reminder_days?: number;
+        };
+        NotificationSettingsRequest: {
+            quiet_hours_enabled?: boolean;
+            /** Format: time */
+            quiet_start?: string;
+            /** Format: time */
+            quiet_end?: string;
+            /** Format: time */
+            digest_time?: string;
+            language?: components["schemas"]["LanguageEnum"];
+            default_reminder_days?: number;
         };
         /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
         NutritionAssessment: {
@@ -3955,6 +4291,21 @@ export interface components {
             previous?: string | null;
             results: components["schemas"]["Note"][];
         };
+        PaginatedNotificationList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Notification"][];
+        };
         PaginatedNutritionAssessmentList: {
             /** @example 140 */
             count: number;
@@ -4029,6 +4380,21 @@ export interface components {
              */
             previous?: string | null;
             results: components["schemas"]["Treatment"][];
+        };
+        PaginatedUsageList: {
+            /** @example 140 */
+            count: number;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cD00ODY%3D"
+             */
+            next?: string | null;
+            /**
+             * Format: uri
+             * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+             */
+            previous?: string | null;
+            results: components["schemas"]["Usage"][];
         };
         PaginatedVaccinationList: {
             /** @example 140 */
@@ -4237,6 +4603,9 @@ export interface components {
             name?: string;
             colour?: string;
             icon?: string;
+        };
+        PatchedContactUpdateRequest: {
+            opted_in?: boolean;
         };
         /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
         PatchedDewormingRequest: {
@@ -4570,6 +4939,14 @@ export interface components {
             /** @default false */
             is_primary: boolean;
         };
+        Preferences: {
+            matrix: components["schemas"]["MatrixRow"][];
+            settings: components["schemas"]["NotificationSettings"];
+        };
+        PreferencesRequest: {
+            matrix: components["schemas"]["MatrixRowRequest"][];
+            settings: components["schemas"]["NotificationSettingsRequest"];
+        };
         Pregnancy: {
             /** Format: uuid */
             mating_id: string;
@@ -4611,7 +4988,7 @@ export interface components {
          */
         RepeatEnum: "weekly" | "monthly" | "quarterly" | "yearly";
         ResetMemberPasswordRequest: {
-            channels: components["schemas"]["ChannelsEnum"][];
+            channels: components["schemas"]["DeliveryChannelEnum"][];
         };
         ResetPasswordRequest: {
             password: string;
@@ -4686,7 +5063,7 @@ export interface components {
             herd_size_band?: components["schemas"]["HerdSizeBandEnum"] | components["schemas"]["BlankEnum"];
             livestock_types: components["schemas"]["LivestockTypesEnum"][];
             job_title?: string;
-            alert_channels?: components["schemas"]["AlertChannelsEnum"][];
+            alert_channels?: components["schemas"]["AlertChannelEnum"][];
         };
         /**
          * @description * `manual` - Manual
@@ -4800,6 +5177,9 @@ export interface components {
             count: number;
             applied: number;
         };
+        TestSendRequest: {
+            channel: components["schemas"]["AlertChannelEnum"];
+        };
         TimelineEvent: {
             /** Format: date-time */
             at: string;
@@ -4892,9 +5272,20 @@ export interface components {
          * @enum {string}
          */
         UnitEnum: "kg" | "bale" | "bag" | "litre" | "block";
+        UnreadCount: {
+            unread: number;
+            urgent: number;
+        };
         UploadRequest: {
             /** Format: binary */
             file: string;
+        };
+        Usage: {
+            channel: string;
+            label: string;
+            used: number;
+            allowance: number | null;
+            month: string;
         };
         /** @description Shared behaviour: subject labels, who recorded it, and date checks. */
         Vaccination: {
@@ -7053,6 +7444,58 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Birth"];
+                };
+            };
+        };
+    };
+    channel_contacts_list: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Contact"][];
+                };
+            };
+        };
+    };
+    channel_contacts_partial_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                channel: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["PatchedContactUpdateRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PatchedContactUpdateRequest"];
+                "multipart/form-data": components["schemas"]["PatchedContactUpdateRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Contact"];
                 };
             };
         };
@@ -9393,6 +9836,243 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Mortality"];
+                };
+            };
+        };
+    };
+    notification_preferences_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Preferences"];
+                };
+            };
+        };
+    };
+    notification_preferences_update: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PreferencesRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["PreferencesRequest"];
+                "multipart/form-data": components["schemas"]["PreferencesRequest"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Preferences"];
+                };
+            };
+        };
+    };
+    notifications_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                event_type?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+                unread?: boolean;
+                urgent?: boolean;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedNotificationList"];
+                };
+            };
+        };
+    };
+    notifications_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this notification. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"];
+                };
+            };
+        };
+    };
+    notifications_read_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path: {
+                /** @description A UUID string identifying this notification. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"];
+                };
+            };
+        };
+    };
+    notifications_read_all_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnreadCount"];
+                };
+            };
+        };
+    };
+    notifications_test_create: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TestSendRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["TestSendRequest"];
+                "multipart/form-data": components["schemas"]["TestSendRequest"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Notification"];
+                };
+            };
+        };
+    };
+    notifications_unread_count_retrieve: {
+        parameters: {
+            query?: never;
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnreadCount"];
+                };
+            };
+        };
+    };
+    notifications_usage_list: {
+        parameters: {
+            query?: {
+                /** @description The pagination cursor value. */
+                cursor?: string;
+                /** @description Which field to use when ordering the results. */
+                ordering?: string;
+                /** @description Number of results to return per page. */
+                page_size?: number;
+                /** @description A search term. */
+                search?: string;
+            };
+            header: {
+                /** @description ID of the active farm. Must be a farm the user belongs to. */
+                "X-Farm-ID": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedUsageList"];
                 };
             };
         };

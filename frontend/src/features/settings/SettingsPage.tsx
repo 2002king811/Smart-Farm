@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +29,7 @@ import { VerifyPhoneModal } from '@/features/session/VerifyPhoneModal';
 import { can } from '@/routes/permissions';
 
 type Farm = Schemas['Farm'];
+const NotificationSettingsSection = lazy(() => import('@/features/notifications/NotificationSettings'));
 
 export default function SettingsPage() {
   const { role } = useSession();
@@ -36,6 +37,7 @@ export default function SettingsPage() {
   const tabs = [
     ...(isAdmin ? [['farm', 'Farm profile']] : []),
     ['profile', 'My profile'],
+    ['notifications', 'Notifications'],
     ...(isAdmin ? [['system', 'System']] : []),
   ] as const;
 
@@ -59,6 +61,14 @@ export default function SettingsPage() {
       <Routes>
         <Route index element={<Navigate to={isAdmin ? 'farm' : 'profile'} replace />} />
         <Route path="profile" element={<ProfileSection />} />
+        <Route
+          path="notifications"
+          element={
+            <Suspense fallback={<LoadingState />}>
+              <NotificationSettingsSection />
+            </Suspense>
+          }
+        />
         {isAdmin && <Route path="farm" element={<FarmSection />} />}
         {isAdmin && <Route path="system" element={<SystemSection />} />}
         <Route path="*" element={<Navigate to="/settings/profile" replace />} />

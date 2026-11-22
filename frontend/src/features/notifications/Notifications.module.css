@@ -1,0 +1,132 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.item {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.item:last-child {
+  border-bottom: 0;
+}
+.unread {
+  background: var(--color-surface-muted);
+}
+.open {
+  display: grid;
+  gap: var(--space-1);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.open:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-primary-700);
+  flex: none;
+}
+.urgent {
+  color: var(--tone-red-fg);
+  flex: none;
+}
+.message {
+  white-space: pre-line;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+.meta {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.deliveries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.deliveries li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+}
+.channel {
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+}
+.hint {
+  color: var(--color-text-muted);
+}
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+}
+.matrix th,
+.matrix td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+.matrix th:first-child,
+.matrix td:first-child {
+  text-align: left;
+}
+.matrix input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--color-primary-700);
+}
+.contacts {
+  display: grid;
+  gap: var(--space-3);
+}
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.meter {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  overflow: hidden;
+}
+.meter span {
+  display: block;
+  height: 100%;
+  background: var(--color-primary-700);
+}
+.meter .warn {
+  background: var(--tone-amber-fg);
+}
+.times {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+}

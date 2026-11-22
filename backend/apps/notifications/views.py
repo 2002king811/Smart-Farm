@@ -37,6 +37,8 @@ class NotificationViewSet(
     }
 
     def get_queryset(self) -> Any:
+        if getattr(self, "swagger_fake_view", False):
+            return Notification.objects.none()
         qs = (
             self.farm_queryset()
             .filter(recipient=self.request.user, show_in_app=True)

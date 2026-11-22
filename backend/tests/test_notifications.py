@@ -640,3 +640,10 @@ def test_websocket_pushes_new_notifications(farm_a, member):  # type: ignore[no-
         await ws.disconnect()
 
     async_to_sync(run)()
+
+
+def test_run_jobs_once(farm, member):  # type: ignore[no-untyped-def]
+    from django.core.management import call_command
+
+    person(member, farm)
+    call_command("run_jobs", "--once")

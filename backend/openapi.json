@@ -4243,6 +4243,110 @@
                 }
             }
         },
+        "/api/v1/channel-contacts": {
+            "get": {
+                "operationId": "channel_contacts_list",
+                "description": "Where the signed-in person receives email, SMS and WhatsApp, and their consent.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "channel-contacts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Contact"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/channel-contacts/{channel}": {
+            "patch": {
+                "operationId": "channel_contacts_partial_update",
+                "description": "Non-model endpoints (dashboard, reports) that still need the active farm.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "channel",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "channel-contacts"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedContactUpdateRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedContactUpdateRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedContactUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Contact"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/countries": {
             "get": {
                 "operationId": "countries_list",
@@ -8988,6 +9092,490 @@
                 }
             }
         },
+        "/api/v1/notification-preferences": {
+            "get": {
+                "operationId": "notification_preferences_retrieve",
+                "description": "The event × channel matrix and quiet hours / digest / language for the signed-in person.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notification-preferences"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Preferences"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "notification_preferences_update",
+                "description": "The event × channel matrix and quiet hours / digest / language for the signed-in person.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notification-preferences"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PreferencesRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PreferencesRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PreferencesRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Preferences"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications": {
+            "get": {
+                "operationId": "notifications_list",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "event_type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "unread",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "urgent",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedNotificationList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/{id}": {
+            "get": {
+                "operationId": "notifications_retrieve",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this notification.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Notification"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/{id}/read": {
+            "post": {
+                "operationId": "notifications_read_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "A UUID string identifying this notification.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Notification"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/read-all": {
+            "post": {
+                "operationId": "notifications_read_all_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnreadCount"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/test": {
+            "post": {
+                "operationId": "notifications_test_create",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestSendRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestSendRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestSendRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Notification"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/unread-count": {
+            "get": {
+                "operationId": "notifications_unread_count_retrieve",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnreadCount"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/notifications/usage": {
+            "get": {
+                "operationId": "notifications_usage_list",
+                "description": "Resolves request.farm / request.membership before permission checks run.\n\nThe active farm is also put into the request context, so FarmScopedModel managers\nscope every query in this request, including ones inside serializers and services.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "X-Farm-ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "ID of the active farm. Must be a farm the user belongs to.",
+                        "required": true
+                    },
+                    {
+                        "name": "cursor",
+                        "required": false,
+                        "in": "query",
+                        "description": "The pagination cursor value.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "notifications"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedUsageList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/api/v1/nutrition-assessments": {
             "get": {
                 "operationId": "nutrition_assessments_list",
@@ -13212,7 +13800,7 @@
                     "title"
                 ]
             },
-            "AlertChannelsEnum": {
+            "AlertChannelEnum": {
                 "enum": [
                     "in_app",
                     "whatsapp",
@@ -14301,23 +14889,6 @@
                     "password"
                 ]
             },
-            "ChannelEnum": {
-                "enum": [
-                    "email",
-                    "sms"
-                ],
-                "type": "string",
-                "description": "* `email` - Email\n* `sms` - SMS"
-            },
-            "ChannelsEnum": {
-                "enum": [
-                    "email",
-                    "sms",
-                    "whatsapp"
-                ],
-                "type": "string",
-                "description": "* `email` - Email\n* `sms` - SMS\n* `whatsapp` - WhatsApp"
-            },
             "CodeRequest": {
                 "type": "object",
                 "properties": {
@@ -14339,6 +14910,58 @@
                 ],
                 "type": "string",
                 "description": "* `normal` - Normal\n* `assisted` - Assisted\n* `difficult` - Difficult (dystocia)"
+            },
+            "Contact": {
+                "type": "object",
+                "properties": {
+                    "channel": {
+                        "$ref": "#/components/schemas/AlertChannelEnum"
+                    },
+                    "channel_label": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "maxLength": 254
+                    },
+                    "verified": {
+                        "type": "boolean"
+                    },
+                    "opted_in": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "opted_in_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "description": "WhatsApp needs recorded consent"
+                    },
+                    "opted_out_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "description": "SMS STOP / WhatsApp opt-out"
+                    },
+                    "bounced_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "description": "Email hard bounce"
+                    },
+                    "problem": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "address",
+                    "channel",
+                    "channel_label",
+                    "opted_in",
+                    "problem"
+                ]
             },
             "Country": {
                 "type": "object",
@@ -14397,6 +15020,71 @@
                 ],
                 "type": "string",
                 "description": "* `month` - Month\n* `week` - Week\n* `day` - Day\n* `agenda` - Agenda"
+            },
+            "Delivery": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "channel": {
+                        "$ref": "#/components/schemas/AlertChannelEnum"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/DeliveryStatusEnum"
+                    },
+                    "error": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "attempts": {
+                        "type": "integer",
+                        "maximum": 32767,
+                        "minimum": 0
+                    },
+                    "send_after": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true,
+                        "description": "Held for quiet hours"
+                    },
+                    "sent_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "status_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "channel",
+                    "id"
+                ]
+            },
+            "DeliveryChannelEnum": {
+                "enum": [
+                    "email",
+                    "sms",
+                    "whatsapp"
+                ],
+                "type": "string",
+                "description": "* `email` - Email\n* `sms` - SMS\n* `whatsapp` - WhatsApp"
+            },
+            "DeliveryStatusEnum": {
+                "enum": [
+                    "queued",
+                    "sent",
+                    "delivered",
+                    "read",
+                    "failed"
+                ],
+                "type": "string",
+                "description": "* `queued` - Queued\n* `sent` - Sent\n* `delivered` - Delivered\n* `read` - Read\n* `failed` - Failed"
             },
             "Detail": {
                 "type": "object",
@@ -15042,6 +15730,14 @@
                     "quantity"
                 ]
             },
+            "ForgotPasswordChannelEnum": {
+                "enum": [
+                    "email",
+                    "sms"
+                ],
+                "type": "string",
+                "description": "* `email` - Email\n* `sms` - SMS"
+            },
             "ForgotPasswordRequest": {
                 "type": "object",
                 "properties": {
@@ -15052,7 +15748,7 @@
                     "channel": {
                         "allOf": [
                             {
-                                "$ref": "#/components/schemas/ChannelEnum"
+                                "$ref": "#/components/schemas/ForgotPasswordChannelEnum"
                             }
                         ],
                         "default": "email"
@@ -15484,7 +16180,7 @@
                     "channels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ChannelsEnum"
+                            "$ref": "#/components/schemas/DeliveryChannelEnum"
                         }
                     },
                     "status": {
@@ -15616,7 +16312,7 @@
                     "channels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ChannelsEnum"
+                            "$ref": "#/components/schemas/DeliveryChannelEnum"
                         }
                     }
                 },
@@ -16064,6 +16760,63 @@
                 "type": "string",
                 "description": "* `active` - Active\n* `kidded` - Kidded\n* `failed` - Failed\n* `aborted` - Aborted"
             },
+            "MatrixRow": {
+                "type": "object",
+                "properties": {
+                    "event_type": {
+                        "$ref": "#/components/schemas/MatrixRowEventTypeEnum"
+                    },
+                    "label": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "channels": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "required": [
+                    "channels",
+                    "event_type",
+                    "label"
+                ]
+            },
+            "MatrixRowEventTypeEnum": {
+                "enum": [
+                    "activity.upcoming",
+                    "activity.due_today",
+                    "activity.overdue",
+                    "vaccination.reminder",
+                    "deworming.reminder",
+                    "health.alert",
+                    "task.assigned",
+                    "activity.completed",
+                    "feed.low_stock",
+                    "daily.summary"
+                ],
+                "type": "string",
+                "description": "* `activity.upcoming` - Upcoming activity\n* `activity.due_today` - Activity due today\n* `activity.overdue` - Overdue activity\n* `vaccination.reminder` - Vaccination reminder\n* `deworming.reminder` - Deworming reminder\n* `health.alert` - Health alert\n* `task.assigned` - Task assigned\n* `activity.completed` - Activity completed\n* `feed.low_stock` - Low feed stock\n* `daily.summary` - Daily summary"
+            },
+            "MatrixRowRequest": {
+                "type": "object",
+                "properties": {
+                    "event_type": {
+                        "$ref": "#/components/schemas/MatrixRowEventTypeEnum"
+                    },
+                    "channels": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "required": [
+                    "channels",
+                    "event_type"
+                ]
+            },
             "Me": {
                 "type": "object",
                 "properties": {
@@ -16128,7 +16881,7 @@
                     "alert_channels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/AlertChannelsEnum"
+                            "$ref": "#/components/schemas/AlertChannelEnum"
                         },
                         "readOnly": true
                     },
@@ -16354,7 +17107,7 @@
                     "channels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ChannelsEnum"
+                            "$ref": "#/components/schemas/DeliveryChannelEnum"
                         }
                     },
                     "first_name": {
@@ -16755,6 +17508,142 @@
                 "required": [
                     "text"
                 ]
+            },
+            "Notification": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "event_type": {
+                        "$ref": "#/components/schemas/NotificationEventTypeEnum"
+                    },
+                    "event_label": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "maxLength": 160
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "link": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "urgent": {
+                        "type": "boolean"
+                    },
+                    "read": {
+                        "type": "boolean",
+                        "readOnly": true
+                    },
+                    "read_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "deliveries": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Delivery"
+                        },
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "deliveries",
+                    "event_label",
+                    "event_type",
+                    "id",
+                    "message",
+                    "read",
+                    "title"
+                ]
+            },
+            "NotificationEventTypeEnum": {
+                "enum": [
+                    "activity.upcoming",
+                    "activity.due_today",
+                    "activity.overdue",
+                    "vaccination.reminder",
+                    "deworming.reminder",
+                    "health.alert",
+                    "task.assigned",
+                    "activity.completed",
+                    "feed.low_stock",
+                    "daily.summary",
+                    "usage.warning",
+                    "test"
+                ],
+                "type": "string",
+                "description": "* `activity.upcoming` - Upcoming activity\n* `activity.due_today` - Activity due today\n* `activity.overdue` - Overdue activity\n* `vaccination.reminder` - Vaccination reminder\n* `deworming.reminder` - Deworming reminder\n* `health.alert` - Health alert\n* `task.assigned` - Task assigned\n* `activity.completed` - Activity completed\n* `feed.low_stock` - Low feed stock\n* `daily.summary` - Daily summary\n* `usage.warning` - Message allowance warning\n* `test` - Test message"
+            },
+            "NotificationSettings": {
+                "type": "object",
+                "properties": {
+                    "quiet_hours_enabled": {
+                        "type": "boolean"
+                    },
+                    "quiet_start": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "quiet_end": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "digest_time": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/LanguageEnum"
+                    },
+                    "default_reminder_days": {
+                        "type": "integer",
+                        "maximum": 30,
+                        "minimum": 0
+                    }
+                }
+            },
+            "NotificationSettingsRequest": {
+                "type": "object",
+                "properties": {
+                    "quiet_hours_enabled": {
+                        "type": "boolean"
+                    },
+                    "quiet_start": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "quiet_end": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "digest_time": {
+                        "type": "string",
+                        "format": "time"
+                    },
+                    "language": {
+                        "$ref": "#/components/schemas/LanguageEnum"
+                    },
+                    "default_reminder_days": {
+                        "type": "integer",
+                        "maximum": 30,
+                        "minimum": 0
+                    }
+                }
             },
             "NutritionAssessment": {
                 "type": "object",
@@ -17451,6 +18340,37 @@
                     }
                 }
             },
+            "PaginatedNotificationList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Notification"
+                        }
+                    }
+                }
+            },
             "PaginatedNutritionAssessmentList": {
                 "type": "object",
                 "required": [
@@ -17602,6 +18522,37 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Treatment"
+                        }
+                    }
+                }
+            },
+            "PaginatedUsageList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 140
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cD00ODY%3D\""
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?cursor=cj0xJnA9NDg3"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Usage"
                         }
                     }
                 }
@@ -18146,6 +19097,14 @@
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 40
+                    }
+                }
+            },
+            "PatchedContactUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "opted_in": {
+                        "type": "boolean"
                     }
                 }
             },
@@ -19123,6 +20082,42 @@
                     "file"
                 ]
             },
+            "Preferences": {
+                "type": "object",
+                "properties": {
+                    "matrix": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MatrixRow"
+                        }
+                    },
+                    "settings": {
+                        "$ref": "#/components/schemas/NotificationSettings"
+                    }
+                },
+                "required": [
+                    "matrix",
+                    "settings"
+                ]
+            },
+            "PreferencesRequest": {
+                "type": "object",
+                "properties": {
+                    "matrix": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MatrixRowRequest"
+                        }
+                    },
+                    "settings": {
+                        "$ref": "#/components/schemas/NotificationSettingsRequest"
+                    }
+                },
+                "required": [
+                    "matrix",
+                    "settings"
+                ]
+            },
             "Pregnancy": {
                 "type": "object",
                 "properties": {
@@ -19212,7 +20207,7 @@
                     "channels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ChannelsEnum"
+                            "$ref": "#/components/schemas/DeliveryChannelEnum"
                         }
                     }
                 },
@@ -19391,7 +20386,7 @@
                     "alert_channels": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/AlertChannelsEnum"
+                            "$ref": "#/components/schemas/AlertChannelEnum"
                         }
                     }
                 },
@@ -19681,6 +20676,17 @@
                     "name"
                 ]
             },
+            "TestSendRequest": {
+                "type": "object",
+                "properties": {
+                    "channel": {
+                        "$ref": "#/components/schemas/AlertChannelEnum"
+                    }
+                },
+                "required": [
+                    "channel"
+                ]
+            },
             "TimelineEvent": {
                 "type": "object",
                 "properties": {
@@ -19941,6 +20947,21 @@
                 "type": "string",
                 "description": "* `kg` - kg\n* `bale` - bale\n* `bag` - bag\n* `litre` - litre\n* `block` - block"
             },
+            "UnreadCount": {
+                "type": "object",
+                "properties": {
+                    "unread": {
+                        "type": "integer"
+                    },
+                    "urgent": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "unread",
+                    "urgent"
+                ]
+            },
             "UploadRequest": {
                 "type": "object",
                 "properties": {
@@ -19951,6 +20972,34 @@
                 },
                 "required": [
                     "file"
+                ]
+            },
+            "Usage": {
+                "type": "object",
+                "properties": {
+                    "channel": {
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "used": {
+                        "type": "integer"
+                    },
+                    "allowance": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "month": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "allowance",
+                    "channel",
+                    "label",
+                    "month",
+                    "used"
                 ]
             },
             "Vaccination": {

@@ -118,3 +118,25 @@
     display: none;
   }
 }
+
+.iconButton {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-primary-700);
+  color: var(--color-text-inverse);
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  line-height: 18px;
+  text-align: center;
+}
+.badgeUrgent {
+  background: var(--tone-red-fg);
+}

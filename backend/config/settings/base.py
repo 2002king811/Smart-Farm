@@ -201,6 +201,9 @@ SPECTACULAR_SETTINGS = {
         "ActivityStatusEnum": "apps.calendar.models.ActivityStatus",
         "TreatmentStatusEnum": "apps.health.models.TreatmentStatus",
         "DoneStatusEnum": "apps.health.models.DoneStatus",
+        "AlertChannelEnum": "apps.accounts.models.AlertChannel",
+        "DeliveryChannelEnum": "apps.accounts.models.DeliveryChannel",
+        "DeliveryStatusEnum": "apps.notifications.models.DeliveryStatus",
     },
 }
 

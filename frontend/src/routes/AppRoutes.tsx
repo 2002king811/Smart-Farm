@@ -21,6 +21,7 @@ import { can, type Module } from './permissions';
 
 const UsersPage = lazy(() => import('@/features/users/UsersPage'));
 const SettingsPage = lazy(() => import('@/features/settings/SettingsPage'));
+const NotificationsPage = lazy(() => import('@/features/notifications/NotificationsPage'));
 const LivestockRoutes = lazy(() => import('@/features/livestock/LivestockRoutes'));
 const HealthPage = lazy(() => import('@/features/health/HealthPage'));
 const CalendarPage = lazy(() => import('@/features/calendar/CalendarPage'));
@@ -36,6 +37,7 @@ const BUILT: Partial<Record<Module, () => ReactNode>> = {
   activities: () => <ActivitiesPage />,
   breeding: () => <BreedingPage />,
   nutrition: () => <NutritionPage />,
+  notifications: () => <NotificationsPage />,
   users: () => <UsersPage />,
   settings: () => <SettingsPage />,
 };
