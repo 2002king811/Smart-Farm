@@ -328,7 +328,7 @@ def to_pdf(data: ReportData, farm: Any, user: Any) -> bytes:
             for i in range(0, len(data.summary), per_row)
         ]
         for r in cells:
-            r += [""] * (per_row - len(r))
+            r += [""] * (per_row - len(r))  # type: ignore[list-item]
         cards = Table(cells, colWidths=[width / per_row] * per_row)
         cards.setStyle(
             TableStyle(
