@@ -12,8 +12,11 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 // Keep the app on the phone so it opens without a connection (production builds only).
+// The build creates /sw.js; registering it directly needs no build-time helper.
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
-  void import('virtual:pwa-register').then(({ registerSW }) => registerSW({ immediate: true }));
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => undefined);
+  });
 }
 
 createRoot(document.getElementById('root')!).render(
