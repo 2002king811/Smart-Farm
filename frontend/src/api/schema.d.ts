@@ -1646,6 +1646,40 @@ export interface paths {
         patch: operations["me_partial_update"];
         trace?: never;
     };
+    "/api/v1/me/data": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Download everything Smart Farm holds about you (JSON). */
+        get: operations["me_data_retrieve"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Delete your account and personal data. Needs your password. */
+        post: operations["me_delete_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/farms": {
         parameters: {
             query?: never;
@@ -2831,11 +2865,14 @@ export interface components {
          *     * `delete` - Deleted
          *     * `restore` - Restored
          *     * `status_change` - Status changed
+         *     * `access` - Viewed by platform support
          * @enum {string}
          */
-        ActionEnum: "create" | "update" | "delete" | "restore" | "status_change";
+        ActionEnum: "create" | "update" | "delete" | "restore" | "status_change" | "access";
         ActionRequest: {
             note?: string;
+            /** Format: date-time */
+            offline_at?: string;
         };
         Activity: {
             /** Format: uuid */
@@ -3346,6 +3383,9 @@ export interface components {
          * @enum {string}
          */
         DefaultCalendarViewEnum: "month" | "week" | "day" | "agenda";
+        DeleteAccountRequest: {
+            password: string;
+        };
         Delivery: {
             /** Format: uuid */
             readonly id: string;
@@ -7356,8 +7396,9 @@ export interface operations {
                  *     * `delete` - Deleted
                  *     * `restore` - Restored
                  *     * `status_change` - Status changed
+                 *     * `access` - Viewed by platform support
                  */
-                action?: "create" | "delete" | "restore" | "status_change" | "update";
+                action?: "access" | "create" | "delete" | "restore" | "status_change" | "update";
                 /** @description The pagination cursor value. */
                 cursor?: string;
                 object_id?: string;
@@ -9605,6 +9646,51 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Me"];
                 };
+            };
+        };
+    };
+    me_data_retrieve: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    me_delete_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteAccountRequest"];
+                "application/x-www-form-urlencoded": components["schemas"]["DeleteAccountRequest"];
+                "multipart/form-data": components["schemas"]["DeleteAccountRequest"];
+            };
+        };
+        responses: {
+            /** @description No response body */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

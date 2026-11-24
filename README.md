@@ -15,7 +15,7 @@ The stack is Django 5.2 + Django REST Framework + PostgreSQL 16 + Celery/Redis +
 | 5 | Breeding and nutrition: matings, pregnancies, births creating kids, mortality, feed stock, feeding, assessments, supplements, water & hygiene | **Done** |
 | 6 | Notifications: in-app, WhatsApp, SMS, email, reminders, quiet hours, webhooks, live bell | **Done** (real SMS/WhatsApp delivery still to be tried with test accounts) |
 | 7 | Dashboard and reports: real figures, 15 reports, PDF/Excel/CSV, scheduled reports, WhatsApp sharing, farm data export | **Done** |
-| 8 | Mobile, offline and launch | Next |
+| 8 | Mobile, offline and launch: installable app, offline queue and sync, Kiswahili, accessibility, demo data, staff console, privacy, deployment, backups | **Built** (staging needs a server) |
 
 ## Repository layout
 
@@ -341,6 +341,18 @@ cd frontend && DATABASE_URL=postgres://postgres:postgres@localhost:5432/smartfar
 The health-calendar journey runs `manage.py mark_overdue` against the same database, so give the test run the same `DATABASE_URL` as the API.
 
 
+**Against staging:** set `E2E_BASE_URL` (the staging address) and `E2E_MANAGE` (how to run `manage.py` there, for example `ssh deploy@host cd smart-farm/deploy '&&' docker compose -f docker-compose.prod.yml exec -T api python manage.py`). CI does this after each staging deploy.
+
+The journeys covered:
+- accounts and roles;
+- livestock;
+- health and calendar, including the overdue job;
+- breeding and nutrition;
+- notifications;
+- dashboard and report exports;
+- **an attendant completing tasks offline and syncing**;
+- an accessibility scan.
+
 ## How multi-farm tenancy works
 
 Every record belongs to exactly one farm, and the backend enforces this at the model layer, not only in views.
@@ -385,14 +397,133 @@ Every create, update, soft delete, restore and status change on a farm-owned mod
 - **Status colours.** Every status maps to a colour in exactly one place: `StatusBadge` (`frontend/src/components/StatusBadge.tsx`).
 - **Layouts.** Administrators and managers get the desktop shell (sidebar, header and farm switcher). Livestock attendants get the phone layout with bottom navigation (Home, Tasks, Animals, Calendar, Alerts).
 
-## Deployment (outline; completed in phase 8)
+## Demo data
 
-- **One backend image, four roles** (`backend/Dockerfile`, target `prod`):
-  - `api`: `gunicorn config.wsgi`
-  - `websocket`: `uvicorn config.asgi:application`
-  - `worker`: `celery -A config worker`
-  - `beat`: `celery -A config beat`
-- **Web image** (`frontend/Dockerfile`, target `prod`): nginx serving the built SPA, with security headers and a Content Security Policy.
-- **Migrations** run as a separate release step: `python manage.py migrate --noinput`.
-- **Production settings** are `config.settings.prod`: HTTPS redirect, HSTS, secure cookies and Argon2 password hashing. `MESSAGING_ADAPTER` must be set explicitly.
-- **Secrets** are environment variables only (see `.env.example`), never in the repository or the database.
+```bash
+cd backend && python manage.py seed_demo
+```
+
+This loads **YPA FARM** (Mbarara, Uganda, UGX). It has:
+- 20 goats, from YPA-001 Simba to YPA-020 Subira, including 5 kids, 4 pregnant does, and animals that are under treatment, sick, quarantined or being monitored;
+- 8 people: Daniel Mwangi and Faith Wambui (Administrators), Grace Wanjiru and Esther Njeri (Farm Managers), and Peter Otieno, Mary Achieng, James Kiprop and Ali Hassan (Livestock Attendants; Ali is inactive);
+- the November 2026 activities and the 23 planned 2027 calendar activities;
+- vaccination, deworming, treatment, vet visit (Dr. Samuel Mutua), breeding, kid, feeding and notification records.
+
+Everyone signs in with their email (for example `peter.otieno@ypafarm.example.com`) and the password `Demo-Farm-2026`.
+
+The command is safe to run again (it adds nothing twice). `--reset` rebuilds the farm from scratch. It refuses to run in staging or production unless you add `--force`.
+
+## Phones, offline use and Kiswahili (phase 8)
+
+- **Install the app:** open Smart Farm in Chrome on Android and choose *Add to Home screen* (on iPhone, Safari → *Share* → *Add to Home Screen*). It opens full screen with its own icon and splash screen, and starts even without a connection. A service worker keeps the app on the phone (production builds only).
+- **Attendants** get a phone layout with a bottom bar: Home, Tasks, Animals, Calendar, Alerts. Buttons are at least 44 px. *Add photo* opens the camera.
+- **Offline** (`src/offline`):
+  - **Saved for offline use:** today's and upcoming tasks, overdue tasks, the animal list, the 14-day calendar and the lists the forms need. They are saved in IndexedDB whenever the app is online.
+  - **What you can do offline:** complete or start a task, add a task note, record feeding, record a weight, and register an animal. These changes are queued and show on the phone straight away.
+  - **The banner:** a banner says *You are offline* and *Waiting to sync (3)*.
+  - **Syncing:** when the connection returns, the queue is sent in order. Each change carries an `Idempotency-Key`, so a resend is never saved twice.
+  - **Conflicts:** last write wins, and the task history notes "Done offline at …, synced later".
+  - **Refused changes:** a change the server refuses (for example, an animal ID that was taken meanwhile) is shown with the reason.
+  - **Logging out** clears the saved data and the queue from the phone.
+- **Kiswahili:**
+  - The navigation, the attendant home screen, tasks, task details, notifications, status labels and the sync messages are in Kiswahili.
+  - The language comes from each person's profile, and changing it (in the header, or the account menu on phones) saves it to the profile.
+  - Messages (SMS, WhatsApp, email) follow the language set in Settings → Notifications.
+  - The office screens (reports, settings, user management) are still in English.
+- **Accessibility:** real buttons and labels, keyboard access with focus kept inside dialogs, and visible focus. `e2e/accessibility.spec.ts` runs axe (WCAG 2.1 AA, including 4.5:1 contrast) on the main screens.
+- **Speed:** each screen loads its own code, and report tables over 200 rows draw only the rows on screen.
+
+## Platform staff console, privacy and security
+
+- **Staff console** (`/admin/`, for platform staff with `is_staff`):
+  - The farm list shows members, animals and SMS/WhatsApp used against each farm's monthly credits.
+  - Staff can change a farm's credits and suspend or reactivate farms.
+  - **Farm records** (animals, tasks, health) can only be opened during a **support-access grant**. A grant has a reason, lasts up to 72 hours and can be revoked.
+  - Creating a grant, and every look at the records, is written to that farm's own audit log.
+- **Personal data** (Uganda Data Protection and Privacy Act 2019, Kenya Data Protection Act 2019):
+  - `GET /me/data` downloads everything held about the person.
+  - `POST /me/delete` (needs the password) removes their personal data and signs them out everywhere.
+  - The only administrator of a farm must hand over first.
+  - Consent for WhatsApp, and SMS/WhatsApp opt-outs, are recorded per person.
+  - Message logs and notifications are deleted after 12 months (`notifications.purge_old`, daily).
+- **Security:**
+  - Argon2 passwords; hashed OTP codes and reset tokens.
+  - HTTPS with HSTS, secure cookies, and CSRF protection on the refresh cookie.
+  - CORS locked to the frontend origins.
+  - A Content Security Policy on the API (Django) and on the web app (Nginx).
+  - Rate limits on login, OTP, password reset, test messages and report sharing.
+
+## Deployment
+
+**What runs** (`deploy/docker-compose.prod.yml`, on one server):
+
+| Service | What it is |
+|---|---|
+| `caddy` | HTTPS with automatic Let's Encrypt certificates; sends `/api`, `/admin`, `/static`, `/media` to `api`, `/ws` to `websocket`, everything else to `web` |
+| `web` | Nginx serving the built app (`frontend/Dockerfile`), with CSP and no-cache for the service worker |
+| `api` | Gunicorn (`backend/Dockerfile`, target `prod`) |
+| `websocket` | Uvicorn for the live bell |
+| `worker`, `beat` | Celery: messages, reminders, reports, scheduled jobs |
+| `migrate` | The release step, run before each start |
+| `db`, `redis` | PostgreSQL 16 and Redis. For production, a managed PostgreSQL with point-in-time recovery is better: point `DATABASE_URL` at it and remove `db` |
+| `backup` | `pg_dump` nightly at 01:30 UTC. Dumps are kept 30 days, and copied to `BACKUP_S3_BUCKET` if set (give the bucket a 30-day lifecycle rule) |
+
+**First time on a server** (Ubuntu with Docker installed; a domain pointing at the server):
+
+```bash
+git clone https://github.com/2002king811/Smart-Farm.git smart-farm && cd smart-farm/deploy
+```
+```bash
+cp ../.env.example .env && nano .env
+```
+In `.env`, set at least:
+- `APP_ENV=production` and `DJANGO_SETTINGS_MODULE=config.settings.prod`;
+- a long random `DJANGO_SECRET_KEY`;
+- `DJANGO_ALLOWED_HOSTS`, `SITE_DOMAIN`, `FRONTEND_URL`, `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS` for your domain;
+- `POSTGRES_PASSWORD`, plus a `DATABASE_URL` that uses it;
+- `REDIS_URL=redis://redis:6379/0`;
+- the S3 settings;
+- the email settings;
+- `MESSAGING_ADAPTER=live` with the WhatsApp and Africa's Talking keys;
+- `WEBHOOK_TOKEN` and `SENTRY_DSN`.
+
+```bash
+docker compose -f docker-compose.prod.yml pull
+```
+```bash
+docker compose -f docker-compose.prod.yml run --rm migrate
+```
+```bash
+docker compose -f docker-compose.prod.yml up -d
+```
+```bash
+docker compose -f docker-compose.prod.yml exec api python manage.py createsuperuser
+```
+
+**Automatic deploys** (`.github/workflows/ci.yml`):
+- After lint, type-check, tests and build, CI pushes the images to `ghcr.io/2002king811/smart-farm`.
+- **Staging:** every merge to `main` deploys with `deploy/deploy.sh` (pull, migrate, restart, wait for `/api/health`), then runs the full Playwright suite against staging. It needs these repository settings:
+  - variables `STAGING_HOST`, `STAGING_URL` and optionally `STAGING_USER`;
+  - the secret `STAGING_SSH_KEY`.
+- **Production:** a version tag (`git tag v1.0.0 && git push --tags`) deploys it. It needs:
+  - variables `PRODUCTION_HOST` and optionally `PRODUCTION_USER`;
+  - the secret `PRODUCTION_SSH_KEY`;
+  - the GitHub environment `production`, with required reviewers so a person approves each release.
+- The deploy jobs are skipped until those settings exist.
+
+**Backups and restore:**
+- Backups run nightly by themselves.
+- **Test a restore every quarter.** This restores into a scratch database and prints the farm and animal counts:
+```bash
+docker compose -f docker-compose.prod.yml exec backup sh -c 'restore.sh $(ls -t /backups/*.dump | head -1)'
+```
+- **Real restore:**
+```bash
+docker compose -f docker-compose.prod.yml exec backup restore.sh /backups/<file>.dump "$DATABASE_URL"
+```
+- **Point-in-time recovery** needs a managed PostgreSQL (for example AWS RDS or DigitalOcean Managed PostgreSQL) or WAL archiving. Nightly dumps alone restore to the last night.
+
+**Monitoring:**
+- `GET /api/health` checks the database and cache; point an uptime monitor at `https://<domain>/api/health` (for example Better Stack or UptimeRobot, every minute).
+- Logs are JSON (`LOG_FORMAT=json`) with a request ID on every line.
+- Errors go to Sentry when `SENTRY_DSN` is set.

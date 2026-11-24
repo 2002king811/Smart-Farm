@@ -1,0 +1,104 @@
+# Staging / production on one server (a small VPS is enough to start).
+#
+#   cp ../.env.example .env        # then fill in real values (never commit .env)
+#   docker compose -f docker-compose.prod.yml pull
+#   docker compose -f docker-compose.prod.yml run --rm migrate     # release step
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# Caddy gets and renews the HTTPS certificate for SITE_DOMAIN automatically.
+# For production, a managed PostgreSQL with point-in-time recovery is recommended: set
+# DATABASE_URL to it and remove the "db" service (the nightly backups still run).
+
+x-app: &app
+  image: ${REGISTRY:-ghcr.io/2002king811/smart-farm}/api:${TAG:-latest}
+  env_file: .env
+  restart: unless-stopped
+  depends_on:
+    db: { condition: service_healthy }
+    redis: { condition: service_healthy }
+
+services:
+  caddy:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:?Set SITE_DOMAIN, e.g. app.smartfarm.ug}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [web, api, websocket]
+
+  web:
+    image: ${REGISTRY:-ghcr.io/2002king811/smart-farm}/web:${TAG:-latest}
+    restart: unless-stopped
+
+  api:
+    <<: *app
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 60 --access-logfile -
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  websocket:
+    <<: *app
+    command: uvicorn config.asgi:application --host 0.0.0.0 --port 8001 --proxy-headers
+
+  worker:
+    <<: *app
+    command: celery -A config worker -l info --concurrency 2
+
+  beat:
+    <<: *app
+    command: celery -A config beat -l info
+
+  # Release step: run before "up" on every deploy.
+  migrate:
+    <<: *app
+    restart: "no"
+    command: python manage.py migrate --noinput
+    profiles: ["release"]
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-smartfarm}
+      POSTGRES_USER: ${POSTGRES_USER:-smartfarm}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-smartfarm}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes: ["redisdata:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Nightly database backup at 01:30 UTC, kept 30 days here and copied to S3 if configured.
+  backup:
+    build: ./backup
+    restart: unless-stopped
+    env_file: .env
+    volumes: ["backups:/backups"]
+    depends_on:
+      db: { condition: service_healthy }
+
+volumes:
+  pgdata:
+  redisdata:
+  backups:
+  caddy_data:
+  caddy_config:

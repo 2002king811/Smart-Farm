@@ -92,26 +92,101 @@ jobs:
       - name: Build
         run: npm run build
 
+  # Build the images; on main and on version tags also push them to GitHub's registry.
   images:
     needs: [backend, frontend]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
-      - name: Build backend image (api, websocket, worker, beat)
+      - id: tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then echo "tag=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT";
+          else echo "tag=main-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"; fi
+      - id: push
+        run: echo "push=${{ github.event_name == 'push' }}" >> "$GITHUB_OUTPUT"
+      - if: steps.push.outputs.push == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Backend image (api, websocket, worker, beat)
         uses: docker/build-push-action@v6
         with:
           context: backend
           target: prod
-          push: false
+          push: ${{ steps.push.outputs.push == 'true' }}
+          tags: ghcr.io/2002king811/smart-farm/api:${{ steps.tag.outputs.tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Build web image
+      - name: Web image
         uses: docker/build-push-action@v6
         with:
           context: frontend
           target: prod
-          push: false
+          push: ${{ steps.push.outputs.push == 'true' }}
+          tags: ghcr.io/2002king811/smart-farm/web:${{ steps.tag.outputs.tag }}
 
-  # Deploy jobs (staging on merge to main, production on a v* tag) are added in phase 8,
-  # once the hosting target and registry are agreed.
+  # Staging: every merge to main. Needs repository variables STAGING_HOST and STAGING_URL and
+  # secrets STAGING_SSH_KEY (and STAGING_USER, default "deploy"). Skipped until they exist.
+  deploy-staging:
+    if: github.ref == 'refs/heads/main' && vars.STAGING_HOST != ''
+    needs: images
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy (pull, migrate, restart)
+        env:
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+          HOST: ${{ vars.STAGING_HOST }}
+          USER: ${{ vars.STAGING_USER || 'deploy' }}
+          TAG: ${{ needs.images.outputs.tag }}
+        run: ./deploy/deploy.sh
+
+  # The full end-to-end suite against staging.
+  e2e-staging:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci && npx playwright install --with-deps chromium
+      - name: Playwright against staging
+        env:
+          E2E_BASE_URL: ${{ vars.STAGING_URL }}
+          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+        run: |
+          install -m 600 /dev/null ~/.ssh_key && echo "$SSH_KEY" > ~/.ssh_key
+          export E2E_MANAGE="ssh -i ~/.ssh_key -o StrictHostKeyChecking=accept-new ${{ vars.STAGING_USER || 'deploy' }}@${{ vars.STAGING_HOST }} cd smart-farm/deploy '&&' docker compose -f docker-compose.prod.yml exec -T api python manage.py"
+          npx playwright test --trace off
+
+  # Production: a version tag (v1.0.0). Protect the "production" environment with required
+  # reviewers so a person approves each release.
+  deploy-production:
+    if: startsWith(github.ref, 'refs/tags/v') && vars.PRODUCTION_HOST != ''
+    needs: images
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy (pull, migrate, restart)
+        env:
+          SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+          HOST: ${{ vars.PRODUCTION_HOST }}
+          USER: ${{ vars.PRODUCTION_USER || 'deploy' }}
+          TAG: ${{ needs.images.outputs.tag }}
+        run: ./deploy/deploy.sh

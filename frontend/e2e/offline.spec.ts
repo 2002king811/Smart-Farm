@@ -1,19 +1,12 @@
-import { execFileSync } from 'node:child_process';
-import path from 'node:path';
-
 import { devices, expect, test } from '@playwright/test';
+
+import { manage } from './manage';
 
 /** Phase 8 "done when": an attendant completes tasks with data switched off, and they sync
  * when it is back on. Uses the demo farm (python manage.py seed_demo). */
 
 function seedDemo() {
-  const backend = path.resolve(process.cwd(), '../backend');
-  const python = process.env.BACKEND_PYTHON ?? path.join(backend, '.venv/bin/python');
-  execFileSync(python, ['manage.py', 'seed_demo', '--reset'], {
-    cwd: backend,
-    env: process.env,
-    stdio: 'pipe',
-  });
+  manage('seed_demo', '--reset', ...(process.env.E2E_MANAGE ? ['--force'] : []));
 }
 
 test.use({ ...devices['Pixel 5'] });

@@ -1,9 +1,7 @@
-import { execFileSync } from 'node:child_process';
-import path from 'node:path';
-
 import { expect, test } from '@playwright/test';
 
 import { signUpFarm } from './helpers';
+import { manage } from './manage';
 
 const iso = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -15,13 +13,7 @@ const inDays = (n: number) => {
 
 /** Run the overdue job as if it were a later day (the scheduled job does this at 00:05). */
 function markOverdue(asOf: string) {
-  const backend = path.resolve(process.cwd(), '../backend');
-  const python = process.env.BACKEND_PYTHON ?? path.join(backend, '.venv/bin/python');
-  execFileSync(python, ['manage.py', 'mark_overdue', '--as-of', asOf], {
-    cwd: backend,
-    env: process.env,
-    stdio: 'pipe',
-  });
+  manage('mark_overdue', '--as-of', asOf);
 }
 
 /** Phase 4 "done when": a vaccination with a next due date appears on the calendar and turns

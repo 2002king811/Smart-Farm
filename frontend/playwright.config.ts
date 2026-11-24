@@ -18,10 +18,8 @@ export default defineConfig({
     launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {},
   },
   projects: [{ name: 'desktop', use: { ...devices['Desktop Chrome'] } }],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5180',
-    reuseExistingServer: true,
-    timeout: 60_000,
-  },
+  // Against staging (E2E_BASE_URL set) nothing is started locally.
+  webServer: process.env.E2E_BASE_URL
+    ? undefined
+    : { command: 'npm run dev', url: 'http://localhost:5180', reuseExistingServer: true, timeout: 60_000 },
 });
