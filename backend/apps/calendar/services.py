@@ -104,8 +104,20 @@ def set_status(activity: Activity, to: str, user: Any = None, note: str = "") ->
     return activity
 
 
-def transition(activity: Activity, action: str, user: Any, note: str = "") -> Activity:
+def transition(
+    activity: Activity, action: str, user: Any, note: str = "", offline_at: Any = None
+) -> Activity:
     allowed, to = ALLOWED[action]
+    if offline_at is not None:
+        # A change made offline and synced later. Repeating it is harmless, and if someone
+        # changed the activity meanwhile the latest sync wins ("last write wins"); the history
+        # says so either way.
+        if activity.status == to:
+            return activity
+        when = timezone.localtime(offline_at).strftime("%d %b %H:%M")
+        conflict = activity.status not in allowed
+        extra = f"Done offline at {when}, synced later" + (" (last write wins)" if conflict else "")
+        return set_status(activity, to, user, f"{note} – {extra}" if note else extra)
     if activity.status not in allowed:
         raise ValidationError(
             {

@@ -11,6 +11,7 @@ class AuditAction(models.TextChoices):
     DELETE = "delete", "Deleted"
     RESTORE = "restore", "Restored"
     STATUS_CHANGE = "status_change", "Status changed"
+    ACCESS = "access", "Viewed by platform support"
 
 
 class AuditLog(FarmOwnedModel):

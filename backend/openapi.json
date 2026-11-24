@@ -3486,6 +3486,7 @@
                         "schema": {
                             "type": "string",
                             "enum": [
+                                "access",
                                 "create",
                                 "delete",
                                 "restore",
@@ -3493,7 +3494,7 @@
                                 "update"
                             ]
                         },
-                        "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed"
+                        "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed\n* `access` - Viewed by platform support"
                     },
                     {
                         "name": "cursor",
@@ -7957,6 +7958,72 @@
                             }
                         },
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/me/data": {
+            "get": {
+                "operationId": "me_data_retrieve",
+                "description": "Download everything Smart Farm holds about you (JSON).",
+                "tags": [
+                    "me"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {}
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/v1/me/delete": {
+            "post": {
+                "operationId": "me_delete_create",
+                "description": "Delete your account and personal data. Needs your password.",
+                "tags": [
+                    "me"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeleteAccountRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeleteAccountRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DeleteAccountRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
                     }
                 }
             }
@@ -14410,10 +14477,11 @@
                     "update",
                     "delete",
                     "restore",
-                    "status_change"
+                    "status_change",
+                    "access"
                 ],
                 "type": "string",
-                "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed"
+                "description": "* `create` - Created\n* `update` - Updated\n* `delete` - Deleted\n* `restore` - Restored\n* `status_change` - Status changed\n* `access` - Viewed by platform support"
             },
             "ActionRequest": {
                 "type": "object",
@@ -14421,6 +14489,10 @@
                     "note": {
                         "type": "string",
                         "maxLength": 300
+                    },
+                    "offline_at": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 }
             },
@@ -15988,6 +16060,18 @@
                 ],
                 "type": "string",
                 "description": "* `month` - Month\n* `week` - Week\n* `day` - Day\n* `agenda` - Agenda"
+            },
+            "DeleteAccountRequest": {
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "password"
+                ]
             },
             "Delivery": {
                 "type": "object",

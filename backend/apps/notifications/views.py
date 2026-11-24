@@ -13,6 +13,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 
 from apps.accounts.models import Role
 from apps.core.views import FarmContextMixin, FarmScopedAPIView
@@ -28,6 +29,7 @@ class NotificationViewSet(
     serializer_class = s.NotificationSerializer
     permission_module = "notifications"
     model = Notification
+    throttle_scope = "message_test"  # used only by the test action (ScopedRateThrottle)
     action_permissions = {
         "read": "view",
         "read_all": "view",
@@ -87,7 +89,7 @@ class NotificationViewSet(
         return Response({"unread": unread.count(), "urgent": unread.filter(urgent=True).count()})
 
     @extend_schema(request=s.TestSendSerializer, responses={201: s.NotificationSerializer})
-    @action(detail=False, methods=["post"])
+    @action(detail=False, methods=["post"], throttle_classes=[ScopedRateThrottle])
     def test(self, request: Request) -> Response:
         body = s.TestSendSerializer(data=request.data)
         body.is_valid(raise_exception=True)

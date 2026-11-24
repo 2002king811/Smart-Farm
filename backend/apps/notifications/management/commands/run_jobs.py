@@ -16,7 +16,7 @@ from django.utils import timezone
 
 from apps.calendar.tasks import extend_all_series, mark_overdue_all
 from apps.notifications.schedules import run_schedules
-from apps.notifications.services import release_due
+from apps.notifications.services import purge_old, release_due
 from apps.reports.services import send_scheduled
 
 logger = logging.getLogger("smartfarm.jobs")
@@ -39,6 +39,7 @@ class Command(BaseCommand):
                     last_hour = now.strftime("%Y%m%d%H")
                 if now.date() != last_day:
                     extend_all_series()
+                    purge_old()
                     last_day = now.date()
                 sent = run_schedules()
                 released = release_due()

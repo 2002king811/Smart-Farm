@@ -2,12 +2,13 @@
 
 from .messaging import deliver as deliver_account_message
 from .schedules import run_schedules
-from .services import deliver_outbound, dispatch_event, release_due
+from .services import deliver_outbound, dispatch_event, purge_old, release_due
 
 __all__ = [
     "deliver_account_message",
     "deliver_outbound",
     "dispatch_event",
+    "purge_old",
     "release_due",
     "run_schedules",
 ]

@@ -26,6 +26,8 @@ urlpatterns = [
     path("me/photo", views.MePhotoView.as_view(), name="me-photo"),
     path("me/password", views.MePasswordView.as_view(), name="me-password"),
     path("me/farms", views.MyFarmsView.as_view(), name="me-farms"),
+    path("me/data", views.MeDataView.as_view(), name="me-data"),
+    path("me/delete", views.MeDeleteView.as_view(), name="me-delete"),
     # Farm settings (farm-scoped)
     path("farm", views.FarmView.as_view(), name="farm"),
     path("farm/logo", views.FarmLogoView.as_view(), name="farm-logo"),

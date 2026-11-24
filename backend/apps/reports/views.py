@@ -13,6 +13,7 @@ from rest_framework import mixins, serializers, status, viewsets
 from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 
 from apps.accounts.models import Role
 from apps.accounts.services import normalise_phone
@@ -166,6 +167,8 @@ class ReportShareView(FarmScopedAPIView):
     """Send a short summary and a 24-hour link to the PDF by WhatsApp."""
 
     permission_module = "reports"
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "report_share"
 
     @extend_schema(
         parameters=PERIOD_PARAMS, request=ShareSerializer, responses={202: OpenApiTypes.OBJECT}

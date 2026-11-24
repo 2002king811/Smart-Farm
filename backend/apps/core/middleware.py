@@ -50,3 +50,69 @@ class RequestContextMiddleware:
         finally:
             if token is not None:
                 reset_context(token)
+
+
+CSP = (
+    "default-src 'self'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; "
+    "script-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+)
+
+
+class SecurityHeadersMiddleware:
+    """Content Security Policy and related headers for everything Django serves (the API,
+    the platform admin, the dev outbox). The web app's own headers are set by Nginx."""
+
+    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse]) -> None:
+        self.get_response = get_response
+
+    def __call__(self, request: HttpRequest) -> HttpResponse:
+        response = self.get_response(request)
+        response.headers.setdefault("Content-Security-Policy", CSP)
+        response.headers.setdefault("Referrer-Policy", "same-origin")
+        response.headers.setdefault(
+            "Permissions-Policy", "geolocation=(), microphone=(), camera=(self)"
+        )
+        return response
+
+
+class IdempotencyMiddleware:
+    """Offline sync: the phone app sends each queued change with an ``Idempotency-Key``.
+    If the same change arrives twice (the first answer was lost on a bad connection), the
+    saved answer is returned instead of saving it again. Kept for 24 hours."""
+
+    HEADER = "HTTP_IDEMPOTENCY_KEY"
+    TTL = 24 * 3600
+
+    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse]) -> None:
+        self.get_response = get_response
+
+    def __call__(self, request: HttpRequest) -> HttpResponse:
+        from django.core.cache import cache
+
+        key = request.META.get(self.HEADER, "")
+        if (
+            not key
+            or request.method not in ("POST", "PATCH", "PUT")
+            or not request.path.startswith("/api/")
+        ):
+            return self.get_response(request)
+        cache_key = f"idem:{request.META.get('HTTP_X_FARM_ID', '')}:{request.path}:{key[:80]}"
+        saved = cache.get(cache_key)
+        if saved is not None:
+            response = HttpResponse(
+                saved["body"], status=saved["status"], content_type=saved["type"]
+            )
+            response["Idempotent-Replay"] = "true"
+            return response
+        response = self.get_response(request)
+        if 200 <= response.status_code < 300 and not getattr(response, "streaming", False):
+            cache.set(
+                cache_key,
+                {
+                    "body": response.content,
+                    "status": response.status_code,
+                    "type": response.get("Content-Type", ""),
+                },
+                self.TTL,
+            )
+        return response

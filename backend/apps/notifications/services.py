@@ -737,3 +737,17 @@ def send_test(user: Any, farm: Any, channel: str) -> Notification | None:
         urgent=True,  # a test should not wait for quiet hours
         force_channels=sorted({Channel.IN_APP, channel}),
     )
+
+
+# --- Retention ------------------------------------------------------------------------------------
+
+RETENTION_DAYS = 365
+
+
+@shared_task(name="notifications.purge_old")
+def purge_old() -> int:
+    """Daily: message logs and notifications are kept for 12 months, then deleted."""
+    cutoff = timezone.now() - dt.timedelta(days=RETENTION_DAYS)
+    removed, _ = OutboundMessage.unscoped.filter(created_at__lt=cutoff).delete()
+    notes, _ = Notification.unscoped.filter(created_at__lt=cutoff).delete()
+    return removed + notes

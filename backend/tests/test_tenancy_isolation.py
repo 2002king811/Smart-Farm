@@ -31,6 +31,8 @@ NON_FARM_ENDPOINTS = {
     "me/farms",
     "me/photo",
     "me/password",
+    "me/data",
+    "me/delete",
     "auth/signup",
     "auth/login",
     "auth/refresh",

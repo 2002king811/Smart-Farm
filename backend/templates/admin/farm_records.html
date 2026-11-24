@@ -1,0 +1,27 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div id="content-main">
+  {% if not grant %}
+    <p class="errornote">You need an active support-access grant for {{ farm.name }} to see its records.
+      <a href="{% url 'admin:accounts_supportaccessgrant_add' %}?farm={{ farm.pk }}">Request one</a>
+      (it is written to the farm's audit log).</p>
+  {% else %}
+    <p class="help">Support access until {{ grant.expires_at|date:"d M Y H:i" }} – reason: {{ grant.reason }}.
+      This page view has been recorded in {{ farm.name }}'s audit log.</p>
+    <h2>Animals ({{ animals|length }})</h2>
+    <table><thead><tr><th>ID</th><th>Name</th><th>Sex</th><th>Location</th><th>Health</th><th>Active</th></tr></thead><tbody>
+    {% for a in animals %}<tr><td>{{ a.animal_id }}</td><td>{{ a.name }}</td><td>{{ a.get_sex_display }}</td><td>{{ a.location|default:"" }}</td><td>{{ a.get_health_status_display }}</td><td>{{ a.is_active|yesno }}</td></tr>{% empty %}<tr><td colspan="6">None</td></tr>{% endfor %}
+    </tbody></table>
+    <h2>Recent activities</h2>
+    <table><thead><tr><th>Date</th><th>Title</th><th>Assigned to</th><th>Status</th></tr></thead><tbody>
+    {% for x in activities %}<tr><td>{{ x.date }}</td><td>{{ x.title }}</td><td>{{ x.assigned_to|default:"" }}</td><td>{{ x.get_status_display }}</td></tr>{% endfor %}
+    </tbody></table>
+    <h2>Recent health records</h2>
+    <table><thead><tr><th>Date</th><th>Animal</th><th>Record</th></tr></thead><tbody>
+    {% for x in vaccinations %}<tr><td>{{ x.date }}</td><td>{{ x.animal|default:"group" }}</td><td>Vaccination: {{ x.vaccine_name }}</td></tr>{% endfor %}
+    {% for x in treatments %}<tr><td>{{ x.date }}</td><td>{{ x.animal }}</td><td>Treatment: {{ x.diagnosis }} ({{ x.get_status_display }})</td></tr>{% endfor %}
+    {% for x in observations %}<tr><td>{{ x.date }}</td><td>{{ x.animal }}</td><td>Observation: {{ x.get_severity_display }} – {{ x.symptoms }}</td></tr>{% endfor %}
+    </tbody></table>
+  {% endif %}
+</div>
+{% endblock %}

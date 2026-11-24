@@ -179,6 +179,8 @@ class ActivityWriteSerializer(FarmScopedModelSerializer):
 
 class ActionSerializer(serializers.Serializer):
     note = serializers.CharField(required=False, allow_blank=True, max_length=300)
+    # Set by the phone app when the change was made offline and is being synced now.
+    offline_at = serializers.DateTimeField(required=False)
 
 
 class AssignSerializer(serializers.Serializer):

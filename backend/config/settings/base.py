@@ -58,6 +58,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.core.middleware.RequestContextMiddleware",
+    "apps.core.middleware.SecurityHeadersMiddleware",
+    "apps.core.middleware.IdempotencyMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -158,6 +160,8 @@ REST_FRAMEWORK = {
         "user": "600/minute",
         "auth": "20/minute",
         "auth_identifier": "10/minute",
+        "message_test": "5/minute",
+        "report_share": "10/minute",
     },
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
     # "?format=" is ours (export?format=csv|xlsx|pdf), not DRF's renderer switch.
@@ -214,6 +218,7 @@ CORS_ALLOWED_ORIGINS = env.list(
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     "accept",
+    "idempotency-key",
     "authorization",
     "content-type",
     "x-csrftoken",

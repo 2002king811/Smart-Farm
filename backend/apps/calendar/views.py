@@ -187,7 +187,11 @@ class ActivityViewSet(FarmScopedViewSet):
         body = s.ActionSerializer(data=request.data)
         body.is_valid(raise_exception=True)
         activity = services.transition(
-            self.get_object(), name, request.user, body.validated_data.get("note", "")
+            self.get_object(),
+            name,
+            request.user,
+            body.validated_data.get("note", ""),
+            offline_at=body.validated_data.get("offline_at"),
         )
         return self._out(activity)
 

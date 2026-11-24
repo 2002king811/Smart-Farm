@@ -271,3 +271,30 @@ class PasswordResetToken(models.Model):
 
     def __str__(self) -> str:
         return f"Password reset for {self.user}"
+
+
+class SupportAccessGrant(models.Model):
+    """Platform staff may look at a farm's records only during a logged, time-limited grant.
+    Creating one, and every look, is written to the farm's own audit log."""
+
+    MAX_HOURS = 72
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name="support_grants")
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, related_name="support_grants")
+    reason = models.CharField(max_length=300, help_text="Ticket number or what the farm asked for")
+    expires_at = models.DateTimeField()
+    revoked_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self) -> str:
+        return f"{self.staff} → {self.farm} until {self.expires_at:%d %b %Y %H:%M}"
+
+    @property
+    def active(self) -> bool:
+        from django.utils import timezone
+
+        return self.revoked_at is None and self.expires_at > timezone.now()

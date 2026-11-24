@@ -5,10 +5,12 @@ import secrets
 from typing import Any
 
 from django.conf import settings
+from django.http import HttpResponse
+from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema
-from rest_framework import mixins, permissions, status, viewsets
+from rest_framework import mixins, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.generics import ListAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.request import Request
@@ -224,6 +226,46 @@ class MeView(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response(s.MeSerializer(user).data)
+
+
+class DeleteAccountSerializer(serializers.Serializer):
+    password = serializers.CharField()
+
+
+class MeDataView(APIView):
+    """Download everything Smart Farm holds about you (JSON)."""
+
+    @extend_schema(responses={(200, "application/json"): OpenApiTypes.OBJECT})
+    def get(self, request: Request) -> HttpResponse:
+        import json
+
+        from .privacy import personal_data
+
+        response = HttpResponse(
+            json.dumps(personal_data(request.user), indent=2, default=str),  # type: ignore[arg-type]
+            content_type="application/json",
+        )
+        response["Content-Disposition"] = 'attachment; filename="my-smart-farm-data.json"'
+        return response
+
+
+class MeDeleteView(APIView):
+    """Delete your account and personal data. Needs your password."""
+
+    throttle_classes = [AuthIPThrottle]
+
+    @extend_schema(request=DeleteAccountSerializer, responses={204: None})
+    def post(self, request: Request) -> Response:
+        from .privacy import delete_account
+
+        body = DeleteAccountSerializer(data=request.data)
+        body.is_valid(raise_exception=True)
+        if not request.user.check_password(body.validated_data["password"]):
+            raise ValidationError({"password": ["That password is not right."]})
+        delete_account(request.user)  # type: ignore[arg-type]
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        _clear_session_cookies(response)
+        return response
 
 
 class MePhotoView(APIView):
