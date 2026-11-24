@@ -8,6 +8,8 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
+# Health checks come from inside the server over plain HTTP.
+SECURE_REDIRECT_EXEMPT = [r"^api/health"]
 SECURE_HSTS_SECONDS = 60 * 60 * 24 * 365
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True

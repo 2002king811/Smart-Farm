@@ -13,6 +13,8 @@ x-app: &app
   image: ${REGISTRY:-ghcr.io/2002king811/smart-farm}/api:${TAG:-latest}
   env_file: .env
   restart: unless-stopped
+  # Uploaded photos and report files when USE_S3=false (Caddy serves /media from here).
+  volumes: ["media:/app/media"]
   depends_on:
     db: { condition: service_healthy }
     redis: { condition: service_healthy }
@@ -26,6 +28,7 @@ services:
       SITE_DOMAIN: ${SITE_DOMAIN:?Set SITE_DOMAIN, e.g. app.smartfarm.ug}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - media:/srv/media:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on: [web, api, websocket]
@@ -97,6 +100,7 @@ services:
       db: { condition: service_healthy }
 
 volumes:
+  media:
   pgdata:
   redisdata:
   backups:

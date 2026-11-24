@@ -21,7 +21,7 @@ RUN pip install -r requirements/base.txt
 COPY . .
 RUN DJANGO_SECRET_KEY=build-only DATABASE_URL=sqlite:///tmp/x.db \
     DJANGO_SETTINGS_MODULE=config.settings.base python manage.py collectstatic --noinput \
-    && chown -R app:app /app
+    && mkdir -p /app/media && chown -R app:app /app
 USER app
 ENV DJANGO_SETTINGS_MODULE=config.settings.prod
 EXPOSE 8000

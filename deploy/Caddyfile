@@ -11,7 +11,12 @@
 	handle /ws/* {
 		reverse_proxy websocket:8001
 	}
-	@backend path /api/* /admin/* /static/* /media/*
+	# Uploaded files kept on the server (when not using S3).
+	handle /media/* {
+		root * /srv
+		file_server
+	}
+	@backend path /api/* /admin/* /static/*
 	handle @backend {
 		reverse_proxy api:8000
 	}

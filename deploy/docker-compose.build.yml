@@ -1,0 +1,19 @@
+# Build the images on the server from this checkout instead of pulling them from a registry
+# (used by setup-server.sh until CI publishes images):
+#   docker compose -f docker-compose.prod.yml -f docker-compose.build.yml up -d --build
+x-api-build: &api-build
+  image: smartfarm-api:local
+  build: { context: ../backend, target: prod }
+
+services:
+  api: *api-build
+  websocket: *api-build
+  worker: *api-build
+  beat: *api-build
+  migrate: *api-build
+  web:
+    image: smartfarm-web:local
+    build:
+      context: ../frontend
+      target: prod
+      args: { VITE_API_BASE_URL: /api/v1 }
