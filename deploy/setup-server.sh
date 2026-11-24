@@ -14,6 +14,7 @@ DIR="$HOME/smart-farm"
 say() { printf '\n\033[1;32m== %s\033[0m\n' "$*"; }
 
 say "1/6 Memory: adding 2 GB swap (helps small servers build the app)"
+MEM_MB=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)
 if ! sudo swapon --show | grep -q /swapfile; then
   sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile >/dev/null && sudo swapon /swapfile
   grep -q /swapfile /etc/fstab || echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab >/dev/null
@@ -62,6 +63,11 @@ WEBHOOK_TOKEN=$(rand 24)
 LOG_FORMAT=json
 TAG=local
 ENV
+  if [ "$MEM_MB" -lt 1800 ]; then
+    # Small server (1 GB): fewer copies of the web server and one background worker.
+    printf 'GUNICORN_WORKERS=2\nCELERY_CONCURRENCY=1\n' >> .env
+    echo "Small server ($MEM_MB MB memory): using a lighter setup"
+  fi
   chmod 600 .env
   echo "Created deploy/.env for https://$DOMAIN (secrets generated on this server only)"
 elif [ -n "${SITE_DOMAIN:-}" ]; then
