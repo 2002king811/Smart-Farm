@@ -12,6 +12,7 @@ import {
   Wheat,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {
   Bar,
@@ -95,6 +96,7 @@ const day = (iso: string) =>
 
 export default function DashboardPage() {
   const { user, activeFarm } = useSession();
+  const { t, i18n } = useTranslation();
   const summary = useQuery({
     queryKey: ['dashboard', 'summary'],
     queryFn: () => api<Summary>('/dashboard/summary'),
@@ -104,7 +106,7 @@ export default function DashboardPage() {
     return <ErrorState message={summary.error.message} onRetry={() => void summary.refetch()} />;
   const s = summary.data;
   const hour = new Date().getHours();
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const greeting = t(hour < 12 ? 'home.morning' : hour < 17 ? 'home.afternoon' : 'home.evening');
   return (
     <>
       <div className={page.header}>
@@ -113,9 +115,8 @@ export default function DashboardPage() {
             {greeting}, {user?.first_name}
           </h2>
           <p>
-            {s.own ? 'Your tasks and alerts' : `What is happening at ${activeFarm?.farm.name ?? 'the farm'}`}{' '}
-            ·{' '}
-            {new Date(`${s.today}T00:00:00`).toLocaleDateString('en-GB', {
+            {s.own ? t('home.yourTasks') : `What is happening at ${activeFarm?.farm.name ?? 'the farm'}`} ·{' '}
+            {new Date(`${s.today}T00:00:00`).toLocaleDateString(i18n.language === 'sw' ? 'sw-KE' : 'en-GB', {
               weekday: 'long',
               day: 'numeric',
               month: 'long',
@@ -129,35 +130,35 @@ export default function DashboardPage() {
 }
 
 function AttendantDashboard({ s }: { s: Summary }) {
+  const { t } = useTranslation();
   return (
     <>
       <div className={styles.stats}>
-        <StatCard label="My tasks today" value={s.tasks_today} icon={CalendarCheck} />
-        <StatCard label="My overdue tasks" value={s.overdue} icon={AlertTriangle} />
+        <StatCard label={t('home.myToday')} value={s.tasks_today} icon={CalendarCheck} />
+        <StatCard label={t('home.myOverdue')} value={s.overdue} icon={AlertTriangle} />
         <StatCard
-          label="Unread alerts"
+          label={t('home.unread')}
           value={s.unread_alerts}
           icon={Bell}
-          hint={s.urgent_alerts ? `${s.urgent_alerts} urgent` : undefined}
+          hint={s.urgent_alerts ? t('home.urgent', { count: s.urgent_alerts }) : undefined}
         />
         <StatCard
-          label="Done this month"
-          value={`${s.activity_overview.completed} of ${s.activity_overview.total - s.activity_overview.cancelled}`}
+          label={t('home.doneMonth')}
+          value={t('home.of', {
+            done: s.activity_overview.completed,
+            total: s.activity_overview.total - s.activity_overview.cancelled,
+          })}
           icon={ClipboardList}
         />
       </div>
       <div className={styles.columns}>
-        <UpcomingCard title="My next tasks" />
+        <UpcomingCard title={t('home.nextTasks')} />
         <section className={page.card}>
           <div className={page.cardBody}>
-            <h3>Alerts</h3>
-            <p>
-              {s.unread_alerts
-                ? `You have ${s.unread_alerts} unread alert${s.unread_alerts === 1 ? '' : 's'}.`
-                : 'No new alerts.'}
-            </p>
+            <h3>{t('home.alerts')}</h3>
+            <p>{s.unread_alerts ? t('home.unreadText', { count: s.unread_alerts }) : t('home.noAlerts')}</p>
             <Link to="/notifications" className="btn btn-secondary">
-              Open notifications
+              {t('home.openNotifications')}
             </Link>
           </div>
         </section>
@@ -345,6 +346,7 @@ function ChartsCard() {
 }
 
 function UpcomingCard({ title }: { title: string }) {
+  const { t } = useTranslation();
   const list = useQuery({
     queryKey: ['dashboard', 'upcoming'],
     queryFn: () => api<Upcoming[]>('/dashboard/upcoming'),
@@ -354,14 +356,14 @@ function UpcomingCard({ title }: { title: string }) {
       <div className={page.cardBody}>
         <div className={styles.cardHead}>
           <h3>{title}</h3>
-          <Link to="/activities">All activities</Link>
+          <Link to="/activities">{t('home.allActivities')}</Link>
         </div>
         {list.isPending ? (
           <LoadingState />
         ) : list.isError ? (
           <ErrorState message={list.error.message} onRetry={() => void list.refetch()} />
         ) : list.data.length === 0 ? (
-          <EmptyState title="Nothing coming up" message="No open tasks in the next 7 days." />
+          <EmptyState title={t('home.nothingUpcoming')} message={t('home.nothingUpcomingText')} />
         ) : (
           <ul className={styles.list}>
             {list.data.map((a) => (

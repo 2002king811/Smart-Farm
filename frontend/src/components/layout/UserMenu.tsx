@@ -1,15 +1,18 @@
-import { LogOut, Settings, UserRound } from 'lucide-react';
+import { Languages, LogOut, Settings, UserRound } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { useSession } from '@/features/session/SessionContext';
+import { LANGUAGES } from '@/i18n';
 
+import { useChangeLanguage } from './useChangeLanguage';
 import styles from './UserMenu.module.css';
 
 export function UserMenu() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, activeFarm, logout } = useSession();
+  const changeLanguage = useChangeLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -51,6 +54,21 @@ export function UserMenu() {
           <Link role="menuitem" to="/settings" className={styles.item} onClick={() => setOpen(false)}>
             <Settings size={18} aria-hidden="true" /> {t('nav.settings')}
           </Link>
+          {LANGUAGES.filter((l) => l.code !== i18n.language).map((l) => (
+            <button
+              key={l.code}
+              role="menuitem"
+              type="button"
+              className={styles.item}
+              lang={l.code}
+              onClick={() => {
+                changeLanguage(l.code);
+                setOpen(false);
+              }}
+            >
+              <Languages size={18} aria-hidden="true" /> {l.label}
+            </button>
+          ))}
           <button role="menuitem" type="button" className={styles.item} onClick={() => void logout()}>
             <LogOut size={18} aria-hidden="true" /> {t('header.signOut')}
           </button>

@@ -1,9 +1,10 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { ClipboardList, Plus } from 'lucide-react';
 import { useDeferredValue, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
-import { api, ApiError } from '@/api/client';
+import { api, ApiError, isQueued } from '@/api/client';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { FormInput, FormSelect } from '@/components/forms';
@@ -21,15 +22,16 @@ import { PRIORITIES, timeLabel, todayIso, useAssignees, useCategories, type Acti
 import cal from './Calendar.module.css';
 
 const STATUS_TABS = [
-  ['pending,in_progress,overdue', 'Open'],
-  ['overdue', 'Overdue'],
-  ['completed', 'Completed'],
-  ['cancelled', 'Cancelled'],
-  ['', 'All'],
+  ['pending,in_progress,overdue', 'open'],
+  ['overdue', 'overdue'],
+  ['completed', 'completed'],
+  ['cancelled', 'cancelled'],
+  ['', 'all'],
 ] as const;
 
 export default function ActivitiesPage() {
   const { role, activeFarm } = useSession();
+  const { t } = useTranslation();
   const fmt = activeFarm?.farm.date_format ?? 'DD MMM YYYY';
   const own = scopeOf(role, 'activities') === 'own';
   const toast = useToast();
@@ -73,9 +75,11 @@ export default function ActivitiesPage() {
       await Promise.all(
         ['activities', 'calendar', 'health'].map((k) => qc.invalidateQueries({ queryKey: [k] })),
       );
-      toast.success(action === 'start' ? `Started: ${a.title}` : `Completed: ${a.title}`);
+      toast.success(t(action === 'start' ? 'tasks.started' : 'tasks.done', { title: a.title }));
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : 'Something went wrong.');
+      if (isQueued(err))
+        await Promise.all(['activities', 'calendar'].map((k) => qc.invalidateQueries({ queryKey: [k] })));
+      toast.error(err instanceof ApiError ? err.message : t('tasks.error'));
     }
   };
 
@@ -83,12 +87,8 @@ export default function ActivitiesPage() {
     <>
       <div className={page.header}>
         <div>
-          <h2>{own ? 'My tasks' : 'Farm activities'}</h2>
-          <p>
-            {own
-              ? 'Tasks assigned to you. Start them, complete them and add notes.'
-              : 'Every task on the farm, who it is assigned to, and where it stands.'}
-          </p>
+          <h2>{own ? t('tasks.myTasks') : t('tasks.farmActivities')}</h2>
+          <p>{own ? t('tasks.myTasksIntro') : t('tasks.farmIntro')}</p>
         </div>
         {can(role, 'activities', 'create') && (
           <button type="button" className="btn btn-primary" onClick={() => setCreating(true)}>
@@ -96,7 +96,7 @@ export default function ActivitiesPage() {
           </button>
         )}
       </div>
-      <div className={page.tabs} role="tablist" aria-label="Status">
+      <div className={page.tabs} role="tablist" aria-label={t('tasks.status')}>
         {STATUS_TABS.map(([v, l]) => (
           <button
             key={l}
@@ -106,7 +106,7 @@ export default function ActivitiesPage() {
             className={page.tab}
             onClick={() => setStatus(v)}
           >
-            {l}
+            {t(`tasks.${l}`)}
           </button>
         ))}
       </div>
@@ -114,14 +114,18 @@ export default function ActivitiesPage() {
         <div className={page.toolbar}>
           <div className={page.search}>
             <FormInput
-              label="Search"
+              label={t('tasks.search')}
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <FormSelect label="Category" value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="">All</option>
+          <FormSelect
+            label={t('tasks.category')}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">{t('tasks.all')}</option>
             {categories.data?.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -129,10 +133,14 @@ export default function ActivitiesPage() {
             ))}
           </FormSelect>
           {!own && (
-            <FormSelect label="Assigned to" value={assignee} onChange={(e) => setAssignee(e.target.value)}>
-              <option value="">Anyone</option>
-              <option value="me">Me</option>
-              <option value="none">Nobody</option>
+            <FormSelect
+              label={t('tasks.assignedTo')}
+              value={assignee}
+              onChange={(e) => setAssignee(e.target.value)}
+            >
+              <option value="">{t('tasks.anyone')}</option>
+              <option value="me">{t('tasks.me')}</option>
+              <option value="none">{t('tasks.nobody')}</option>
               {assignees.data?.map((u) => (
                 <option key={u.id} value={u.id}>
                   {u.name}
@@ -140,8 +148,12 @@ export default function ActivitiesPage() {
               ))}
             </FormSelect>
           )}
-          <FormSelect label="Priority" value={priority} onChange={(e) => setPriority(e.target.value)}>
-            <option value="">All</option>
+          <FormSelect
+            label={t('tasks.priority')}
+            value={priority}
+            onChange={(e) => setPriority(e.target.value)}
+          >
+            <option value="">{t('tasks.all')}</option>
             {PRIORITIES.map(([v, l]) => (
               <option key={v} value={v}>
                 {l}
@@ -161,8 +173,8 @@ export default function ActivitiesPage() {
           <div className={page.cardBody}>
             <EmptyState
               icon={ClipboardList}
-              title="No activities"
-              message={own ? 'Nothing is assigned to you here.' : 'Nothing matches these filters.'}
+              title={t('tasks.noActivities')}
+              message={own ? t('tasks.nothingAssigned') : t('tasks.nothingMatches')}
             />
           </div>
         ) : (
@@ -182,13 +194,15 @@ export default function ActivitiesPage() {
                           {formatDate(a.date, fmt)} · {timeLabel(a)}
                         </span>
                         <CategoryChip category={a.category} />
-                        {!own && <span>{a.assigned_to?.name ?? 'Unassigned'}</span>}
+                        {!own && <span>{a.assigned_to?.name ?? t('tasks.unassigned')}</span>}
                         {a.animals.length > 0 && <span>{a.animals.map((x) => x.animal_id).join(', ')}</span>}
                       </div>
                     </div>
                     <StatusBadge
                       status={a.priority}
-                      label={a.priority === 'high' ? 'High' : a.priority === 'low' ? 'Low' : 'Medium'}
+                      label={t(
+                        `tasks.${a.priority === 'high' ? 'high' : a.priority === 'low' ? 'low' : 'medium'}`,
+                      )}
                     />
                     <StatusBadge status={a.status} />
                     {isOpen && (
@@ -199,7 +213,7 @@ export default function ActivitiesPage() {
                             className="btn btn-secondary"
                             onClick={() => void quick(a, 'start')}
                           >
-                            Start
+                            {t('tasks.start')}
                           </button>
                         )}
                         {can(role, 'activities', 'complete') && (
@@ -208,7 +222,7 @@ export default function ActivitiesPage() {
                             className="btn btn-primary"
                             onClick={() => void quick(a, 'complete')}
                           >
-                            Complete
+                            {t('tasks.complete')}
                           </button>
                         )}
                       </div>
@@ -219,11 +233,9 @@ export default function ActivitiesPage() {
             </ul>
             {list.hasNextPage && (
               <div className={page.footer}>
-                <span>
-                  Showing {rows.length} of {list.data?.pages[0]?.count}
-                </span>
+                <span>{t('tasks.showing', { shown: rows.length, total: list.data?.pages[0]?.count })}</span>
                 <button type="button" className="btn btn-secondary" onClick={() => void list.fetchNextPage()}>
-                  Load more
+                  {t('tasks.loadMore')}
                 </button>
               </div>
             )}

@@ -240,39 +240,47 @@ function MonthGrid({
   const today = todayIso();
   return (
     <div className={cal.month} role="grid" aria-label="Month">
-      {DOW.map((d) => (
-        <div key={d} className={cal.dow} role="columnheader">
-          {d}
-        </div>
-      ))}
-      {days.map((d) => {
-        const items = byDay.get(d) ?? [];
-        const other = parse(d).getMonth() !== month;
-        return (
-          <div
-            key={d}
-            role="gridcell"
-            className={`${cal.cell} ${other ? cal.cellOther : ''} ${d === today ? cal.today : ''}`}
-          >
-            <button
-              type="button"
-              className={cal.dayNum}
-              onClick={() => onDay(d)}
-              aria-label={`${d}, ${items.length} activities`}
-            >
-              {parse(d).getDate()}
-            </button>
-            {items.slice(0, 3).map((a) => (
-              <Chip key={a.id} a={a} onOpen={onOpen} />
-            ))}
-            {items.length > 3 && (
-              <button type="button" className={cal.more} onClick={() => onDay(d)}>
-                +{items.length - 3} more
-              </button>
-            )}
+      <div role="row" className={cal.row}>
+        {DOW.map((d) => (
+          <div key={d} className={cal.dow} role="columnheader">
+            {d}
           </div>
-        );
-      })}
+        ))}
+      </div>
+      {Array.from({ length: Math.ceil(days.length / 7) }, (_, w) => days.slice(w * 7, w * 7 + 7)).map(
+        (week) => (
+          <div role="row" key={week[0]} className={cal.row}>
+            {week.map((d) => {
+              const items = byDay.get(d) ?? [];
+              const other = parse(d).getMonth() !== month;
+              return (
+                <div
+                  key={d}
+                  role="gridcell"
+                  className={`${cal.cell} ${other ? cal.cellOther : ''} ${d === today ? cal.today : ''}`}
+                >
+                  <button
+                    type="button"
+                    className={cal.dayNum}
+                    onClick={() => onDay(d)}
+                    aria-label={`${d}, ${items.length} activities`}
+                  >
+                    {parse(d).getDate()}
+                  </button>
+                  {items.slice(0, 3).map((a) => (
+                    <Chip key={a.id} a={a} onOpen={onOpen} />
+                  ))}
+                  {items.length > 3 && (
+                    <button type="button" className={cal.more} onClick={() => onDay(d)}>
+                      +{items.length - 3} more
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ),
+      )}
     </div>
   );
 }

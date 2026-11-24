@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useLiveNotifications, useUnreadCount } from '@/features/notifications/api';
 import { useSession } from '@/features/session/SessionContext';
 import { LANGUAGES } from '@/i18n';
+import { useChangeLanguage } from './useChangeLanguage';
 
 import styles from './Header.module.css';
 import { UserMenu } from './UserMenu';
@@ -19,6 +20,7 @@ interface Props {
 export function Header({ title, onMenu, menuOpen = false, compact = false }: Props) {
   const { t, i18n } = useTranslation();
   const { activeFarm } = useSession();
+  const changeLanguage = useChangeLanguage();
   const unread = useUnreadCount(Boolean(activeFarm));
   useLiveNotifications(Boolean(activeFarm));
   const count = unread.data?.unread ?? 0;
@@ -61,7 +63,7 @@ export function Header({ title, onMenu, menuOpen = false, compact = false }: Pro
               id="language"
               className={styles.language}
               value={i18n.language}
-              onChange={(e) => void i18n.changeLanguage(e.target.value)}
+              onChange={(e) => changeLanguage(e.target.value)}
             >
               {LANGUAGES.map((l) => (
                 <option key={l.code} value={l.code}>

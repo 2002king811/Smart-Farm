@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Repeat } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { api, ApiError, isQueued } from '@/api/client';
@@ -59,6 +60,7 @@ export function CategoryChip({ category }: { category: Activity['category'] }) {
 
 export function ActivityDetail({ id, onClose }: { id: string; onClose: () => void }) {
   const { role, user, activeFarm } = useSession();
+  const { t } = useTranslation();
   const fmt = activeFarm?.farm.date_format ?? 'DD MMM YYYY';
   const toast = useToast();
   const refresh = useRefresh();
@@ -156,12 +158,12 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 style={{ marginRight: 'auto', color: 'var(--tone-red-fg)' }}
                 onClick={() => void remove()}
               >
-                Delete
+                {t('tasks.delete')}
               </button>
             )}
             {can(role, 'activities', 'update') && (
               <button type="button" className="btn btn-secondary" onClick={() => setEditing(true)}>
-                Edit
+                {t('tasks.edit')}
               </button>
             )}
             {open && (a.status === 'pending' || a.status === 'overdue') && may('start') && (
@@ -171,7 +173,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 disabled={busy}
                 onClick={() => void act('start')}
               >
-                Start
+                {t('tasks.start')}
               </button>
             )}
             {open && may('cancel') && (
@@ -181,7 +183,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 disabled={busy}
                 onClick={() => void act('cancel')}
               >
-                Cancel activity
+                {t('tasks.cancelActivity')}
               </button>
             )}
             {open && may('complete') && (
@@ -191,7 +193,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 disabled={busy}
                 onClick={() => void act('complete')}
               >
-                Mark complete
+                {t('tasks.markComplete')}
               </button>
             )}
             {!open && can(role, 'activities', 'update') && (
@@ -201,7 +203,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 disabled={busy}
                 onClick={() => void act('reopen')}
               >
-                Reopen
+                {t('tasks.reopen')}
               </button>
             )}
           </>
@@ -216,7 +218,9 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
             <StatusBadge status={a.status} />
             <StatusBadge
               status={a.priority}
-              label={`${a.priority === 'high' ? 'High' : a.priority === 'low' ? 'Low' : 'Medium'} priority`}
+              label={t('tasks.priorityLabel', {
+                level: t(`tasks.${a.priority === 'high' ? 'high' : a.priority === 'low' ? 'low' : 'medium'}`),
+              })}
             />
             <CategoryChip category={a.category} />
             {a.is_recurring && (
@@ -227,18 +231,18 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
           </div>
           <dl className={styles.facts}>
             <div>
-              <dt>Date</dt>
+              <dt>{t('tasks.date')}</dt>
               <dd>
                 {formatDate(a.date, fmt)} · {timeLabel(a)}
               </dd>
             </div>
             <div>
-              <dt>Assigned to</dt>
-              <dd>{a.assigned_to?.name ?? 'Nobody yet'}</dd>
+              <dt>{t('tasks.assignedTo')}</dt>
+              <dd>{a.assigned_to?.name ?? t('tasks.nobodyYet')}</dd>
             </div>
             {a.animals.length > 0 && (
               <div>
-                <dt>Animals</dt>
+                <dt>{t('tasks.animals')}</dt>
                 <dd>
                   {a.animals.map((x, i) => (
                     <span key={x.id}>
@@ -251,17 +255,17 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
             )}
             {a.group && (
               <div>
-                <dt>Group</dt>
+                <dt>{t('tasks.group')}</dt>
                 <dd>{a.group.name}</dd>
               </div>
             )}
             <div>
-              <dt>Created from</dt>
+              <dt>{t('tasks.createdFrom')}</dt>
               <dd>{a.source_label}</dd>
             </div>
             {a.completed_at && (
               <div>
-                <dt>Completed</dt>
+                <dt>{t('tasks.completedLabel')}</dt>
                 <dd>
                   {formatDate(a.completed_at, fmt)}
                   {a.completed_by_name ? ` by ${a.completed_by_name}` : ''}
@@ -272,7 +276,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
           {a.description && <p style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{a.description}</p>}
 
           <section>
-            <h3 style={{ fontSize: 'var(--text-md)', marginBottom: 8 }}>Notes</h3>
+            <h3 style={{ fontSize: 'var(--text-md)', marginBottom: 8 }}>{t('tasks.notes')}</h3>
             {notes.data?.length ? (
               <ul className={cal.notes}>
                 {notes.data.map((n) => (
@@ -285,13 +289,13 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 ))}
               </ul>
             ) : (
-              <p className={page.sub}>No notes yet.</p>
+              <p className={page.sub}>{t('tasks.noNotes')}</p>
             )}
             {can(role, 'activities', 'add_note') && (mine || can(role, 'activities', 'update')) && (
               <div style={{ display: 'flex', gap: 8, alignItems: 'end', marginTop: 8 }}>
                 <div style={{ flex: 1 }}>
                   <FormInput
-                    label="Add a note (also saved with Complete / Cancel)"
+                    label={t('tasks.addNoteLabel')}
                     value={note}
                     onChange={(e) => setNote(e.target.value)}
                   />
@@ -302,13 +306,13 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                   onClick={() => void addNote()}
                   disabled={!note.trim()}
                 >
-                  Add note
+                  {t('tasks.addNote')}
                 </button>
               </div>
             )}
           </section>
           <section>
-            <h3 style={{ fontSize: 'var(--text-md)', marginBottom: 8 }}>History</h3>
+            <h3 style={{ fontSize: 'var(--text-md)', marginBottom: 8 }}>{t('tasks.history')}</h3>
             {history.data?.length ? (
               <ul className={cal.notes}>
                 {history.data.map((h) => (
@@ -322,7 +326,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
                 ))}
               </ul>
             ) : (
-              <p className={page.sub}>No status changes yet.</p>
+              <p className={page.sub}>{t('tasks.noHistory')}</p>
             )}
           </section>
         </>

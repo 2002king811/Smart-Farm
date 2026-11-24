@@ -10,6 +10,7 @@ import { LoadingState } from '@/components/LoadingState';
 import { Modal } from '@/components/Modal';
 import page from '@/components/Page.module.css';
 import { useToast } from '@/components/Toast';
+import { VirtualTable } from '@/components/VirtualTable';
 import { useAssignees, useCategories } from '@/features/calendar/api';
 import { useAnimalOptions } from '@/features/health/Records';
 import { useLocations } from '@/features/livestock/api';
@@ -164,42 +165,34 @@ function Report({ info }: { info: ReportInfo }) {
               {t.rows.length === 0 ? (
                 <EmptyState title="No records" message="Nothing in this period. Try a longer period." />
               ) : (
-                <div className={page.tableWrap}>
-                  <table className={page.table}>
-                    <thead>
-                      <tr>
-                        {t.columns.map((c) => (
-                          <th
-                            key={c.key}
-                            scope="col"
-                            className={c.type === 'number' || c.type === 'percent' ? styles.num : undefined}
-                          >
-                            {c.label}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {t.rows.slice(0, 500).map((r, i) => (
-                        <tr key={i}>
-                          {t.columns.map((c) => (
-                            <td
-                              key={c.key}
-                              className={c.type === 'number' || c.type === 'percent' ? styles.num : undefined}
-                            >
-                              {formatCell(r[c.key], c.type)}
-                            </td>
-                          ))}
-                        </tr>
+                <VirtualTable
+                  rows={t.rows}
+                  head={
+                    <tr>
+                      {t.columns.map((c) => (
+                        <th
+                          key={c.key}
+                          scope="col"
+                          className={c.type === 'number' || c.type === 'percent' ? styles.num : undefined}
+                        >
+                          {c.label}
+                        </th>
                       ))}
-                    </tbody>
-                  </table>
-                  {t.rows.length > 500 && (
-                    <p className={styles.meta}>
-                      Showing the first 500 of {t.rows.length} rows. Export to see them all.
-                    </p>
+                    </tr>
+                  }
+                  renderRow={(r, i) => (
+                    <tr key={i}>
+                      {t.columns.map((c) => (
+                        <td
+                          key={c.key}
+                          className={c.type === 'number' || c.type === 'percent' ? styles.num : undefined}
+                        >
+                          {formatCell(r[c.key], c.type)}
+                        </td>
+                      ))}
+                    </tr>
                   )}
-                </div>
+                />
               )}
             </section>
           ))}

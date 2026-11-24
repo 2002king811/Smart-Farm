@@ -13,6 +13,7 @@ import {
   type Schemas,
   type Session,
 } from '@/api/client';
+import { setLanguage } from '@/i18n';
 import { cacheClear } from '@/offline/store';
 import { prefetchForOffline } from '@/offline/prefetch';
 import { discardAll, startSyncLoop } from '@/offline/sync';
@@ -81,6 +82,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       cancelled = true;
     };
   }, [status]);
+
+  // The person's language from their profile follows them to every device.
+  const profileLanguage = user?.language;
+  useEffect(() => {
+    if (profileLanguage) setLanguage(profileLanguage);
+  }, [profileLanguage]);
 
   useEffect(() => {
     setSessionEndedHandler(endSession);

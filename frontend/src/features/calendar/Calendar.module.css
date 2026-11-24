@@ -50,6 +50,10 @@
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
 }
+/* Rows exist for screen readers; the 7-column grid lays out their cells. */
+.row {
+  display: contents;
+}
 .dow {
   padding: var(--space-2);
   font-size: var(--text-xs);

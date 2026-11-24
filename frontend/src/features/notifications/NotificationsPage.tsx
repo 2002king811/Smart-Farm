@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AlertTriangle, BellOff } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { api, ApiError } from '@/api/client';
@@ -15,13 +16,10 @@ import { useCursorList } from '@/features/users/api';
 import { CHANNEL_LABEL, markRead, timeAgo, type Notification } from './api';
 import styles from './Notifications.module.css';
 
-const FILTERS = [
-  ['all', 'All'],
-  ['unread', 'Unread'],
-  ['urgent', 'Urgent'],
-] as const;
+const FILTERS = ['all', 'unread', 'urgent'] as const;
 
 export default function NotificationsPage() {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<string>('all');
   const query: Record<string, string> = filter === 'all' ? {} : { [filter]: 'true' };
   const list = useCursorList<Notification>(['notifications', 'list'], '/notifications', query);
@@ -33,7 +31,7 @@ export default function NotificationsPage() {
     mutationFn: () => api('/notifications/read-all', { method: 'POST' }),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['notifications'] });
-      toast.success('All notifications marked as read.');
+      toast.success(t('alertsPage.markedAll'));
     },
     onError: (e) => toast.error(e instanceof ApiError ? e.message : 'Could not mark them as read.'),
   });
@@ -57,12 +55,12 @@ export default function NotificationsPage() {
     <>
       <div className={page.header}>
         <div>
-          <h2>Notifications</h2>
-          <p>Reminders, alerts and task updates for you on this farm.</p>
+          <h2>{t('alertsPage.title')}</h2>
+          <p>{t('alertsPage.intro')}</p>
         </div>
         <div className={page.rowActions}>
           <Link to="/settings/notifications" className="btn btn-secondary">
-            Notification settings
+            {t('alertsPage.settings')}
           </Link>
           <button
             type="button"
@@ -70,12 +68,12 @@ export default function NotificationsPage() {
             onClick={() => readAll.mutate()}
             disabled={readAll.isPending || rows.every((r) => r.read)}
           >
-            Mark all as read
+            {t('alertsPage.markAll')}
           </button>
         </div>
       </div>
       <div className={page.tabs} role="tablist" aria-label="Show">
-        {FILTERS.map(([v, l]) => (
+        {FILTERS.map((v) => (
           <button
             key={v}
             type="button"
@@ -84,7 +82,7 @@ export default function NotificationsPage() {
             className={page.tab}
             onClick={() => setFilter(v)}
           >
-            {l}
+            {t(`alertsPage.${v}`)}
           </button>
         ))}
       </div>
@@ -92,12 +90,12 @@ export default function NotificationsPage() {
         {list.isLoading ? (
           <LoadingState />
         ) : list.isError ? (
-          <ErrorState message="Could not load notifications." onRetry={() => void list.refetch()} />
+          <ErrorState message={t('alertsPage.loadError')} onRetry={() => void list.refetch()} />
         ) : rows.length === 0 ? (
           <EmptyState
             icon={BellOff}
-            title={filter === 'all' ? 'No notifications yet' : 'Nothing here'}
-            message="Reminders, health alerts and task updates will show up here."
+            title={filter === 'all' ? t('alertsPage.none') : t('alertsPage.nothingHere')}
+            message={t('alertsPage.emptyText')}
           />
         ) : (
           <ul className={styles.list} aria-label={`${total} notifications`}>
@@ -121,7 +119,7 @@ export default function NotificationsPage() {
                         <span className={styles.channel}>{CHANNEL_LABEL[d.channel] ?? d.channel}</span>
                         <StatusBadge status={d.status ?? 'queued'} />
                         {d.status === 'queued' && d.send_after && (
-                          <span className={styles.hint}>after quiet hours</span>
+                          <span className={styles.hint}>{t('alertsPage.afterQuiet')}</span>
                         )}
                         {d.status === 'failed' && d.error && <span className={styles.hint}>{d.error}</span>}
                       </li>

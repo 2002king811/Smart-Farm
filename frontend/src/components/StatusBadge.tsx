@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import styles from './StatusBadge.module.css';
 
 /**
@@ -91,9 +93,13 @@ interface Props {
 export function StatusBadge({ status: raw, label }: Props) {
   const status = raw ?? '';
   const def = statusDef(status);
+  const { t, i18n } = useTranslation();
+  // English keeps the prototype's exact wording; other languages translate it.
+  const text =
+    label ?? (i18n.language === 'en' ? def.label : t(`status.${status}`, { defaultValue: def.label }));
   return (
     <span className={`${styles.badge} ${styles[def.tone]}`} data-status={status} data-tone={def.tone}>
-      {label ?? def.label}
+      {text}
     </span>
   );
 }
