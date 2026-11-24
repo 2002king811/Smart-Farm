@@ -1,0 +1,4 @@
+# Vercel hosts only the website (frontend/). The server runs on AWS.
+backend/
+deploy/
+*.bat
