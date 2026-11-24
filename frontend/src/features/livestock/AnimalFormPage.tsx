@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { z } from 'zod';
 
-import { api, ApiError } from '@/api/client';
+import { api, ApiError, isQueued } from '@/api/client';
 import { ErrorState } from '@/components/ErrorState';
 import { applyServerErrors, FormError, FormInput, FormSelect } from '@/components/forms';
 import { LoadingState } from '@/components/LoadingState';
@@ -190,6 +190,11 @@ function AnimalForm({ animal, initial }: { animal?: Animal; initial: Values }) {
       if (photoFailed) toast.error(`Photo not saved: ${photoFailed}`);
       navigate(`/livestock/${saved.id}`, { replace: true });
     } catch (err) {
+      if (isQueued(err)) {
+        toast.info(`${values.animal_id}: ${err.message}`);
+        navigate('/livestock', { replace: true });
+        return;
+      }
       applyServerErrors(err, form.setError, FIELDS);
     }
   });

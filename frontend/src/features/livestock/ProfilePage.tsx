@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { z } from 'zod';
 
-import { api, ApiError } from '@/api/client';
+import { api, ApiError, isQueued } from '@/api/client';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { applyServerErrors, FormError, FormInput, FormSelect } from '@/components/forms';
@@ -544,6 +544,11 @@ export function RecordWeightModal({
       toast.success(`Weight saved for ${animal.animal_id}.`);
       close();
     } catch (err) {
+      if (isQueued(err)) {
+        toast.info(err.message);
+        close();
+        return;
+      }
       applyServerErrors(err, form.setError, ['weight_kg', 'date', 'body_condition_score', 'notes']);
     }
   });

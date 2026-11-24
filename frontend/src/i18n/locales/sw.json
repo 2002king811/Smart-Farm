@@ -45,5 +45,14 @@
   "notFound": {
     "title": "Ukurasa haupatikani",
     "message": "Ukurasa ulioomba haupo."
+  },
+  "sync": {
+    "offline": "Huna mtandao – unaona data iliyohifadhiwa",
+    "waiting_one": "Inasubiri kusawazisha ({{count}})",
+    "waiting_other": "Zinasubiri kusawazisha ({{count}})",
+    "now": "Sawazisha sasa",
+    "failed_one": "Badiliko {{count}} halikuhifadhiwa:",
+    "failed_other": "Mabadiliko {{count}} hayakuhifadhiwa:",
+    "dismiss": "Ondoa"
   }
 }

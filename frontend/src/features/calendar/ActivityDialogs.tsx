@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import { api, ApiError } from '@/api/client';
+import { api, ApiError, isQueued } from '@/api/client';
 import {
   applyServerErrors,
   Checkbox,
@@ -102,6 +102,10 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
         ],
       );
     } catch (err) {
+      if (isQueued(err)) {
+        setNote('');
+        await refresh();
+      }
       toast.error(err instanceof ApiError ? err.message : 'Something went wrong.');
     } finally {
       setBusy(false);
@@ -115,6 +119,7 @@ export function ActivityDetail({ id, onClose }: { id: string; onClose: () => voi
       await refresh();
       toast.success('Note added.');
     } catch (err) {
+      if (isQueued(err)) setNote('');
       toast.error(err instanceof ApiError ? err.message : 'Could not add the note.');
     }
   };

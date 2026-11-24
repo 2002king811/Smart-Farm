@@ -1,0 +1,51 @@
+.stack {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+.offline {
+  background: var(--tone-grey-bg);
+  color: var(--tone-grey-fg);
+}
+.waiting {
+  background: var(--tone-blue-bg);
+  color: var(--tone-blue-fg);
+}
+.failed {
+  background: var(--tone-red-bg);
+  color: var(--tone-red-fg);
+}
+.action {
+  margin-left: auto;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+}

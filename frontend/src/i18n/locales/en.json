@@ -45,5 +45,14 @@
   "notFound": {
     "title": "Page not found",
     "message": "The page you asked for does not exist."
+  },
+  "sync": {
+    "offline": "You are offline – showing saved data",
+    "waiting_one": "Waiting to sync ({{count}})",
+    "waiting_other": "Waiting to sync ({{count}})",
+    "now": "Sync now",
+    "failed_one": "{{count}} change could not be saved:",
+    "failed_other": "{{count}} changes could not be saved:",
+    "dismiss": "Dismiss"
   }
 }

@@ -3,7 +3,9 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 
 import {
   api,
+  forgetOfflineUser,
   hasSessionCookie,
+  onSynced,
   refreshSession,
   setAccessToken,
   setActiveFarmId,
@@ -11,6 +13,9 @@ import {
   type Schemas,
   type Session,
 } from '@/api/client';
+import { cacheClear } from '@/offline/store';
+import { prefetchForOffline } from '@/offline/prefetch';
+import { discardAll, startSyncLoop } from '@/offline/sync';
 import type { Role } from '@/routes/permissions';
 
 export type Me = Schemas['Me'];
@@ -50,6 +55,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [farmId, setFarmId] = useState<string | null>(readStoredFarm);
 
   const endSession = useCallback(() => {
+    forgetOfflineUser();
+    void cacheClear();
     setAccessToken(null);
     setActiveFarmId(null);
     setUser(null);
@@ -80,6 +87,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     return () => setSessionEndedHandler(null);
   }, [endSession]);
 
+  // Offline changes sync in the background; afterwards every screen reloads its data.
+  useEffect(() => {
+    if (status !== 'authenticated') return;
+    onSynced(() => void queryClient.invalidateQueries());
+    return startSyncLoop();
+  }, [status, queryClient]);
+
   const farmsQuery = useQuery({
     queryKey: ['me', 'farms'],
     queryFn: () => api<MyFarm[]>('/me/farms'),
@@ -91,6 +105,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
 
   // Set synchronously during render so the first farm-scoped request already carries it.
   setActiveFarmId(activeFarm?.farm.id ?? null);
+
+  // Save the field data for offline use once the farm is known (and again on farm switch).
+  const activeId = activeFarm?.farm.id;
+  useEffect(() => {
+    if (activeId && import.meta.env.MODE !== 'test') void prefetchForOffline();
+  }, [activeId]);
 
   const startSession = useCallback(
     (session: Session) => {
@@ -106,6 +126,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     try {
       await api('/auth/logout', { method: 'POST', noRefresh: true });
     } finally {
+      await discardAll();
       endSession();
     }
   }, [endSession]);

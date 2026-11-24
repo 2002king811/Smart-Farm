@@ -8,6 +8,18 @@
  * - Sends X-Farm-ID for the active farm.
  * - Turns the API's {"errors": {field: [messages]}} shape into an ApiError.
  */
+import {
+  configureSync,
+  enqueue,
+  isCacheable,
+  markOnline,
+  QUEUED_MESSAGE,
+  queueLabel,
+  savedResponse,
+  saveResponse,
+} from '@/offline/sync';
+import type { QueuedChange } from '@/offline/store';
+
 import type { components, paths } from './schema';
 
 export type Schemas = components['schemas'];
@@ -40,9 +52,50 @@ export class ApiError extends Error {
   }
 }
 
+/** A change saved on the phone while offline; it syncs later. Not a failure. */
+export class OfflineQueuedError extends ApiError {
+  queued = true;
+  constructor() {
+    super(0, { detail: [QUEUED_MESSAGE] });
+    this.name = 'OfflineQueuedError';
+  }
+}
+
+export function isQueued(err: unknown): err is OfflineQueuedError {
+  return err instanceof OfflineQueuedError;
+}
+
+const NO_CONNECTION = 'No connection. Check your data or Wi-Fi and try again.';
+
 export interface Session {
   access: string;
   user: Schemas['Me'];
+  /** True when the phone is offline and the last signed-in user is resumed from this device. */
+  offline?: boolean;
+}
+
+const OFFLINE_USER_KEY = 'sf.offlineUser';
+
+function rememberUser(user: Schemas['Me'] | null) {
+  try {
+    if (user) window.localStorage.setItem(OFFLINE_USER_KEY, JSON.stringify(user));
+    else window.localStorage.removeItem(OFFLINE_USER_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+function rememberedUser(): Schemas['Me'] | null {
+  try {
+    const raw = window.localStorage.getItem(OFFLINE_USER_KEY);
+    return raw ? (JSON.parse(raw) as Schemas['Me']) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function forgetOfflineUser() {
+  rememberUser(null);
 }
 
 let accessToken: string | null = null;
@@ -86,14 +139,24 @@ export function refreshSession(): Promise<Session | null> {
     refreshing = (async () => {
       const csrf = readCookie('sf_csrf');
       if (!csrf) return null;
-      const res = await fetch(`${API_BASE}/auth/refresh`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { Accept: 'application/json', 'X-CSRF-Token': csrf },
-      }).catch(() => null);
-      if (!res || !res.ok) return null;
+      let res: Response;
+      try {
+        res = await fetch(`${API_BASE}/auth/refresh`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { Accept: 'application/json', 'X-CSRF-Token': csrf },
+        });
+      } catch {
+        // Offline: carry on as the last person signed in on this device, from saved data.
+        markOnline(false);
+        const user = rememberedUser();
+        return user ? { access: '', user, offline: true } : null;
+      }
+      if (!res.ok) return null;
+      markOnline(true);
       const session = (await res.json()) as Session;
       accessToken = session.access;
+      rememberUser(session.user);
       return session;
     })().finally(() => {
       refreshing = null;
@@ -137,7 +200,25 @@ export async function api<T>(
     });
   };
 
-  let res = await send();
+  const rel = url.pathname.slice(BASE_PATH.length);
+  let res: Response;
+  try {
+    res = await send();
+    markOnline(true);
+  } catch (err) {
+    if (signal?.aborted) throw err;
+    markOnline(false);
+    if (method === 'GET' && isCacheable(rel)) {
+      const saved = await savedResponse(activeFarmId, url);
+      if (saved !== undefined) return saved as T;
+    }
+    const label = queueLabel(method, rel, body);
+    if (label) {
+      await enqueue(activeFarmId, rel, body, label);
+      throw new OfflineQueuedError();
+    }
+    throw new ApiError(0, { detail: [NO_CONNECTION] });
+  }
   if (res.status === 401 && !noRefresh && hasSessionCookie()) {
     const session = await refreshSession();
     if (session) {
@@ -153,5 +234,35 @@ export async function api<T>(
   if (!res.ok) {
     throw new ApiError(res.status, (data && data.errors) || { detail: [res.statusText || 'Request failed'] });
   }
+  if (method === 'GET' && isCacheable(rel)) void saveResponse(activeFarmId, url, data);
   return data as T;
 }
+
+const BASE_PATH = new URL(API_BASE, 'http://localhost').pathname;
+
+/** Sends one change queued offline (used by the sync loop). */
+async function sendQueued(change: QueuedChange): Promise<Response> {
+  if (!accessToken) await refreshSession();
+  const send = () =>
+    fetch(new URL(`${API_BASE}${change.path}`, window.location.origin), {
+      method: change.method,
+      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Idempotency-Key': change.idempotencyKey,
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        ...(change.farmId ? { 'X-Farm-ID': change.farmId } : {}),
+      },
+      body: JSON.stringify(change.body ?? {}),
+    });
+  let res = await send();
+  if (res.status === 401 && (await refreshSession())) res = await send();
+  return res;
+}
+
+let afterSync: () => void = () => {};
+export function onSynced(fn: () => void) {
+  afterSync = fn;
+}
+configureSync(sendQueued, () => afterSync());

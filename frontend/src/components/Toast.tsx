@@ -1,5 +1,7 @@
-import { CheckCircle2, X, XCircle } from 'lucide-react';
+import { CheckCircle2, CloudOff, X, XCircle } from 'lucide-react';
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+
+import { QUEUED_MESSAGE } from '@/offline/sync';
 
 import styles from './Toast.module.css';
 
@@ -7,7 +9,7 @@ import styles from './Toast.module.css';
  * Toasts confirm what the API has confirmed. Call `toast.success` only after the request
  * succeeded — never optimistically.
  */
-type Kind = 'success' | 'error';
+type Kind = 'success' | 'error' | 'info';
 interface ToastItem {
   id: number;
   kind: Kind;
@@ -16,6 +18,7 @@ interface ToastItem {
 interface ToastApi {
   success: (message: string) => void;
   error: (message: string) => void;
+  info: (message: string) => void;
 }
 
 const ToastContext = createContext<ToastApi | null>(null);
@@ -34,7 +37,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     [dismiss],
   );
   const api = useMemo<ToastApi>(
-    () => ({ success: (m) => push('success', m), error: (m) => push('error', m) }),
+    () => ({
+      success: (m) => push('success', m),
+      // A change saved offline is not a failure: show it as information.
+      error: (m) => push(m === QUEUED_MESSAGE ? 'info' : 'error', m),
+      info: (m) => push('info', m),
+    }),
     [push],
   );
 
@@ -50,6 +58,8 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           >
             {t.kind === 'success' ? (
               <CheckCircle2 size={18} aria-hidden="true" />
+            ) : t.kind === 'info' ? (
+              <CloudOff size={18} aria-hidden="true" />
             ) : (
               <XCircle size={18} aria-hidden="true" />
             )}

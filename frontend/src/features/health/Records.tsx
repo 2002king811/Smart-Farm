@@ -3,7 +3,7 @@ import { HeartPulse, Plus } from 'lucide-react';
 import { useDeferredValue, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { api, ApiError } from '@/api/client';
+import { api, ApiError, isQueued } from '@/api/client';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { applyServerErrors, Checkbox, FormError, FormInput, FormSelect } from '@/components/forms';
@@ -327,6 +327,11 @@ function RecordFormBody({
       toast.success(row ? `The ${type.singular} was updated.` : `The ${type.singular} was recorded.`);
       onClose();
     } catch (err) {
+      if (isQueued(err)) {
+        toast.info(err.message);
+        onClose();
+        return;
+      }
       applyServerErrors(
         err,
         form.setError,

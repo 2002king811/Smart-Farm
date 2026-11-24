@@ -9,7 +9,9 @@ import { AppRoutes } from '@/routes/AppRoutes';
 export function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
-      queries: { staleTime: 30_000, refetchOnWindowFocus: false },
+      // "always": requests still run offline, and the API client answers from saved data.
+      queries: { staleTime: 30_000, refetchOnWindowFocus: false, networkMode: 'always' },
+      mutations: { networkMode: 'always' },
     },
   });
 }
