@@ -10,6 +10,18 @@ if not exist "backend\.venv\Scripts\python.exe" (
   exit /b 1
 )
 
+rem After "git pull", install any new parts (quick when nothing changed).
+echo Checking for updates to the Smart Farm parts...
+"backend\.venv\Scripts\python.exe" -m pip install -q --disable-pip-version-check -r "backend\requirements\dev.txt"
+if errorlevel 1 (
+  echo Could not install the Smart Farm parts. Check your internet connection and try again.
+  pause
+  exit /b 1
+)
+pushd frontend
+call npm.cmd install --no-audit --no-fund --loglevel=error
+popd
+
 echo Starting the Smart Farm API (port 8010) and web app (port 5180)...
 start "Smart Farm API - keep open" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\python.exe manage.py migrate --noinput && .venv\Scripts\python.exe manage.py runserver 8010"
 start "Smart Farm reminders - keep open" cmd /k "cd /d "%~dp0backend" && timeout /t 8 /nobreak >nul && .venv\Scripts\python.exe manage.py run_jobs"
